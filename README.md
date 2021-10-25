@@ -1,2 +1,2 @@
 # Four-in-a-Row
-A JEE school project
+Our JEE school project
