@@ -16,7 +16,7 @@
   
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<start-class>fr.eisti.cergy.jee.Application</start-class>
+		<start-class>helloworld.Application</start-class>
 		<java.version>1.8</java.version>
 	</properties>
 	
