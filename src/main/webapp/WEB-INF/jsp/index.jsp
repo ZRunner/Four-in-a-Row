@@ -3,17 +3,14 @@
 
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="UTF-8">
-	<title>HelloWorld page</title>
-</head>
+	<%@include file="include/header.jsp" %>
 <body>
 
-<h1>Hello World!</h1>
+<h1>Home page!</h1>
 
-<p>This is just a test page</p>
+<a href="/signin">S'identifier</a><br/>
+<a href="/signup">Créer son compte</a>
 
-<footer><i>UwU</i></footer>
-
+	<%@include file="include/footer.jsp" %>
 </body>
 </html>
