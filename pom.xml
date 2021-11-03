@@ -21,7 +21,13 @@
 	</properties>
 	
 	<dependencies>
-	
+	<!-- Json library dependencies -->
+	<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		</dependency>
+
 	<!-- This is a web application -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
