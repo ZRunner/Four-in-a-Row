@@ -3,6 +3,9 @@ package fourinarow.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.Map;
+
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +20,11 @@ public class ApiController {
 	
 	private final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
-	@GetMapping("ping")
-	public String hello() throws Exception {
+	@GetMapping(value="ping", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> hello() throws Exception {
 		logger.info("Ping log");
-		return new JSONObject("{response:pong}").toString();
+		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
+		return ResponseEntity.ok(resp.toString());
 	}
 
 }
