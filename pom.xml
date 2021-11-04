@@ -21,7 +21,17 @@
 	</properties>
 	
 	<dependencies>
-	<!-- Json library dependencies -->
+	<!-- Jupiter Test unit -->
+	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.7.0</version>
+		    <scope>test</scope>
+		</dependency>
+	
+	
+	<!-- Json library-->
 	<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
