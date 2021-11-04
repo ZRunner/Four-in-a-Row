@@ -4,12 +4,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+@Service
 public class AuthenticationUtils {
+	
+	@Autowired
+	private UserRepository userRepository;
 	
 	protected static String generateJWT(String username) {
 		Algorithm algorithm = Algorithm.HMAC256("secret");
@@ -21,19 +27,21 @@ public class AuthenticationUtils {
 		        .sign(algorithm);
 	}
 	
-	public static boolean checkUser(String username, String password) {
-		return true;
+	public boolean checkUser(String username, String password) {
+		System.out.println("username: "+username+"   password: "+password);
+		System.out.println("   repo: "+userRepository);
+		return this.userRepository.existsFromLogin(username, password) == 1;
 	}
 	
-	public static String loginUser(String username, String password) {
+	public String loginUser(String username, String password) {
 		if (checkUser(username, password)) {
 			return generateJWT(username);
 		}
 		return null;
 	}
 	
-	public static ResponseEntity<String> POST_login(Map<String, Object> model) {
-		String token = loginUser((String) model.get("username"), (String) model.get("password"));
+	public ResponseEntity<String> POST_login(JSONObject json) {
+		String token = loginUser((String) json.get("username"), (String) json.get("password"));
 		if (token == null) {
 			return ResponseEntity.badRequest().body("Invalid username or password");
 		}
