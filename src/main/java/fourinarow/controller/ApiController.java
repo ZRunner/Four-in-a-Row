@@ -6,25 +6,31 @@ import java.util.Map;
 
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import fourinarow.services.AuthenticationUtils;
+
 import org.json.JSONObject;
 
 @RestController
 @RequestMapping("/api") //make all URL's through this controller relative to /api
-/* use @GetMapping for GET method and @PostMapping for POST method */
 public class ApiController {
 	
 	private final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
-	@GetMapping(value="ping", produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
 		logger.info("Ping log");
 		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
 		return ResponseEntity.ok(resp.toString());
+	}
+	
+	@PostMapping(path="login", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> login(Map<String, Object> model) {
+		return AuthenticationUtils.POST_login(model);
 	}
 
 }
