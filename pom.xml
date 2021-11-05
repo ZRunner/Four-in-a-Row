@@ -21,14 +21,22 @@
 	</properties>
 	
 	<dependencies>
-	<!-- Json library dependencies -->
-	<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<!-- Json library dependencies -->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
 		</dependency>
+		
+		<!-- JWT-based authentication -->
+		<!-- https://github.com/auth0/java-jwt -->
+		<dependency>
+		    <groupId>com.auth0</groupId>
+		    <artifactId>java-jwt</artifactId>
+		    <version>3.18.2</version>
+		</dependency>
 
-	<!-- This is a web application -->
+		<!-- This is a web application -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
