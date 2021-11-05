@@ -1,5 +1,6 @@
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import fourinarow.classes.Tictactoe;
@@ -15,7 +16,7 @@ class TictactoeTest {
 		Tictactoe tictactoe = new Tictactoe();
 		Players gagnant = null;
 		for(int i=0;i<8;i++) {
-			tictactoe.setGrid(i,i%2==0?Players.PLAYER:Players.IA);
+			tictactoe.setSquare(i,i%2==0?Players.PLAYER:Players.IA);
 			gagnant = tictactoe.win();
 			if(gagnant!=null) {
 				break;
@@ -76,6 +77,21 @@ class TictactoeTest {
 		}else {
 			fail("The winner should be PLAYER and it is not.");
 		}
+	}
+	
+
+	/**
+	 * toString methode with JSONArray
+	 */
+	@Test
+	void parseJSONArray() {
+		Tictactoe tictactoe = new Tictactoe();
+		if(tictactoe.toString().equals("{\"grid\":[0,0,0,0,0,0,0,0,0]}")) {
+			System.out.println("toJSONString Test : passed");
+		}else {
+		    fail("toString() as JSON doesn't work.");
+		}
+		
 	}
 }
 

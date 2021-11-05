@@ -2,12 +2,34 @@ package fourinarow.classes;
 
 import java.util.Arrays;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 
 public class Tictactoe {
 
-	public enum Players {NOBODY, PLAYER, IA}; //Each state of a grid square
+	public enum Players {
+		NOBODY(0), PLAYER(1), IA(2); //Each state of a grid square
+		private int value;
+		
+		/**
+		 * enum constructor
+		 * @param value : equivalent int value for the type
+		 */
+		Players(int value){
+			this.value = value;
+		}
+		
+		/**
+		 * value getter
+		 * @return value : equivalent int value for the type
+		 */
+		public int getValue(){
+			return value;
+		}
+	}; 
 	private Players[] grid = new Players[9]; //Grid of Players
+	private String message = "";
 	
 	private int[][] winCondition = {
 			{0,1,2},
@@ -27,6 +49,7 @@ public class Tictactoe {
 		for (int i = 0; i < 9; i++) {
 			this.grid[i]=Players.NOBODY;
 		}
+		setMessage("ok");
 	}
 
 	/**
@@ -37,31 +60,63 @@ public class Tictactoe {
 		for (int i = 0; i < 9; i++) {
 			this.grid[i]=grid[i];
 		}
-	}
+		setMessage("ok");
+	}	
 	
 	/**
-	 * Grid setter
-	 * @param number : grid square to change player (position)
-	 * @param value : the player who played
-	 * @return
-	 * 		true : everything run correctly
-	 * 		false : the number is wrong
+	 * message getter
+	 * @return message of this class
 	 */
-	public boolean setGrid(int number, Players value) {
-		if(number>9 || number<0) {
-			return false;
-		}else {
-			this.grid[number] = value;
-			return true;
+	public String getMessage() {
+		return message;
+	}
+
+	/**
+	 * message setter
+	 * @param message : message to set
+	 */
+	public void setMessage(String message) {
+		this.message = message;
+	}
+
+	
+	public void setGrid(int[] jsonGrid) {
+		try {
+			if(jsonGrid.length!=9) {throw new Exception("The array's length must be 9");}
+			for(int i=0 ; i<9; i++){
+				int player = jsonGrid[i];
+				if(player >2 || player<0) {throw new Exception("Array's elements must be between 0 and 2");}
+				this.grid[i] = Players.values()[player];
+			}
+			setMessage("ok");
+		}catch(Exception e) {
+			setMessage(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Grid getter
 	 * @return the current grid
 	 */
 	public Players[] getGrid() {
 		return this.grid;
+	}
+	
+	/**
+	 * Square setter
+	 * @param number : grid square to change player (position)
+	 * @param value : the player who played
+	 * @return
+	 * 		true : everything run correctly
+	 * 		false : the number is wrong
+	 */
+	public boolean setSquare(int number, Players value) {
+		if(number>=9 || number<0) {
+			return false;
+		}else {
+			this.grid[number] = value;
+			return true;
+		}
 	}
 	
 	/**
@@ -92,24 +147,32 @@ public class Tictactoe {
 		if(getGrid()[8] == Players.NOBODY) {isEnd = false;}
 		return isEnd?Players.NOBODY:null;
 	}
-
 	
 	/**
-	 * Grid to JSON converter
-	 * @return a JSON object of the grid
+	 * Grid to String converter
+	 * @return a string with the state of each square in the grid
 	 */
 	public JSONObject toJSON() {
-		return new JSONObject(getGrid());
+		JSONObject json = new JSONObject();
+		if(message.equals("ok")) {
+			JSONArray grid = new JSONArray();
+			for(int i=0; i<9; i++) {
+				grid.put(this.grid[i].getValue());
+			}
+			json.put("grid", grid);
+			Players player = win();
+			json.put("winner", player==null?null:player.getValue());
+		}
+		return json;
 	}
-
+	
 	/**
 	 * Grid to String converter
 	 * @return a string with the state of each square in the grid
 	 */
 	@Override
 	public String toString() {
-		return "Tictactoe [grid=" + Arrays.toString(grid) + "]";
+		return toJSON().toString();
 	}
-	
 	
 }
