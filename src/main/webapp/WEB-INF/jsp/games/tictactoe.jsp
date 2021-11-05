@@ -25,27 +25,34 @@
 <body>
 
 <h1>Page de tictactoe</h1>
+	<%@include file="../include/navbar.jsp" %>
+<div id="game">
+	<table>
+		<tbody>
+			<tr class="plateau plateau1">
+				<td><button id="0" value="0">Case0</button></td>
+				<td><button id="1" value="0">Case1</button></td>
+				<td><button id="2" value="0">Case2</button></td>
+			</tr>
+			<tr class="plateau">
+				<td><button id="3" value="0">Case3</button></td>
+				<td><button id="4" value="0">Case4</button></td>
+				<td><button id="5" value="0">Case5</button></td>
+			</tr>
+			<tr class="plateau">
+				<td><button id="6" value="0">Case6</button></td>
+				<td><button id="7" value="0">Case7</button></td>
+				<td><button id="8" value="0">Case8</button></td>
+			</tr>
+		</tbody>
+	</table>
+</div>	
+<script>
 
-<table>
-	<tbody>
-		<tr class="plateau">
-			<td><button>Case1</button></td>
-			<td><button>Case2</button></td>
-			<td><button>Case3</button></td>
-		</tr>
-		<tr class="plateau">
-			<td><button>Case4</button></td>
-			<td><button>Case5</button></td>
-			<td><button>Case6</button></td>
-		</tr>
-		<tr class="plateau">
-			<td><button>Case7</button></td>
-			<td><button>Case8</button></td>
-			<td><button>Case1</button></td>
-		</tr>
-	</tbody>
-</table>
-
+</script>
+	
+	
+	
 
 	<%@include file="../include/footer.jsp" %>
 </body>
