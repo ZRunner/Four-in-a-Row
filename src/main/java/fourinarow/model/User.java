@@ -1,13 +1,12 @@
 package fourinarow.model;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
@@ -19,7 +18,7 @@ public class User implements java.io.Serializable {
 	private Long idUser;
 	private String username;
 	private String password;
-	private Date createdAt;
+	private Timestamp createdAt;
 	
 	public User() {
 		
@@ -34,7 +33,7 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public User(Long idUser, String username, String password, Date createdAt) {
+	public User(Long idUser, String username, String password, Timestamp createdAt) {
 		super();
 		this.idUser = idUser;
 		this.username = username;
@@ -43,9 +42,10 @@ public class User implements java.io.Serializable {
 	}
 	
 	@Id
-	@Column(name="id")
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USER_gen_seq")
-    @SequenceGenerator(name="USER_gen_seq", sequenceName="USER_SEQ", allocationSize=1)
+	@Column(name="id", updatable=false)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+//	  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USER_gen_seq")
+//    @SequenceGenerator(name="USER_gen_seq", sequenceName="USER_SEQ", allocationSize=1)
 	public Long getIdUser() {
 		return this.idUser;
 	}
@@ -72,12 +72,12 @@ public class User implements java.io.Serializable {
 		this.password = password;
 	}
 
-	@Column()
-	public Date getCreatedAt() {
+	@Column(columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP", insertable=false, updatable=false)
+	public Timestamp getCreatedAt() {
 		return createdAt;
 	}
 
-	public void setCreatedAt(Date createdAt) {
+	public void setCreatedAt(Timestamp createdAt) {
 		this.createdAt = createdAt;
 	}
 	

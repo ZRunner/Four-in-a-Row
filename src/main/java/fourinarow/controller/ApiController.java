@@ -38,5 +38,12 @@ public class ApiController {
 		JSONObject json = new JSONObject(httpEntity.getBody());
 		return authenticationUtils.POST_login(json);
 	}
+	
+	@PostMapping(path="signup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> signup(HttpEntity<String> httpEntity) {
+		JSONObject json = new JSONObject(httpEntity.getBody());
+		return authenticationUtils.POST_signup(json);
+	}
 
 }
