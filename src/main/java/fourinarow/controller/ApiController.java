@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fourinarow.services.AuthenticationUtils;
+import fourinarow.services.AuthenticationUtils.InvalidTokenException;
+import fourinarow.services.AuthenticationUtils.MissingTokenException;
 
 import org.json.JSONObject;
 
@@ -44,6 +46,17 @@ public class ApiController {
 	public ResponseEntity<String> signup(HttpEntity<String> httpEntity) {
 		JSONObject json = new JSONObject(httpEntity.getBody());
 		return authenticationUtils.POST_signup(json);
+	}
+	
+	@PostMapping(path="logout")
+	public ResponseEntity<String> logout(HttpEntity<String> httpEntity) {
+		try {
+			return authenticationUtils.POST_logout(httpEntity.getHeaders());
+		} catch (MissingTokenException e) {
+			return ResponseEntity.status(401).body("Missing token");
+		} catch (InvalidTokenException e) {
+			return ResponseEntity.status(401).body("Invalid token");
+		}
 	}
 
 }

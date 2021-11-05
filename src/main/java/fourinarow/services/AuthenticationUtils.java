@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpHeaders;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -24,6 +25,19 @@ public class AuthenticationUtils {
 	
 	@Autowired
 	private TokenRepository tokenRepository;
+	
+	public static class MissingTokenException extends Exception {
+		private static final long serialVersionUID = -3057499381260178233L;
+		public MissingTokenException() {
+			super("No authentication token found in request headers");
+		}
+	}
+	public static class InvalidTokenException extends Exception {
+		private static final long serialVersionUID = 7772118219382198080L;
+		public InvalidTokenException() {
+			super("Invalid authentication token");
+		}
+	}
 	
 	/**
 	 * Generate a new token for a specific user and save it into the database
@@ -78,11 +92,23 @@ public class AuthenticationUtils {
 	 * @param userId
 	 * @return The new token or null
 	 */
-	public String loginUser(String username, String password, Long userId) {
+	private String loginUser(String username, String password, Long userId) {
 		if (checkUser(username, password)) {
 			return generateJWT(username, userId);
 		}
 		return null;
+	}
+	
+	/**
+	 * Get a user object from an authentication token
+	 * @param token
+	 * @return The attached user
+	 * @throws InvalidTokenException if the token cannot be found
+	 */
+	public User getUserFromToken(String token) throws InvalidTokenException {
+		Token tokenObj = tokenRepository.findOne(token);
+		if (tokenObj == null) throw new InvalidTokenException();
+		return userRepository.findOne(tokenObj.getUserId());
 	}
 	
 	public ResponseEntity<String> POST_login(JSONObject json) {
@@ -121,6 +147,20 @@ public class AuthenticationUtils {
 		response.put("token", token);
 		// send to client
 		return ResponseEntity.ok(response.toString());
+	}
+	
+	public ResponseEntity<String> POST_logout(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
+		String auth = headers.getFirst("Authorization");
+		if (auth == null) {
+			throw new MissingTokenException();
+		}
+		User user = getUserFromToken(auth);
+		if (user != null) {
+			this.tokenRepository.deleteFromUser(user.getIdUser());
+		} else {
+			System.out.println("Token not found: "+auth);
+		}
+		return ResponseEntity.ok("Used logged out");
 	}
 
 }
