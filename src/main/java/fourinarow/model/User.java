@@ -1,6 +1,7 @@
 package fourinarow.model;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import org.json.JSONObject;
 
 @Entity
 @Table(name="users")
@@ -82,5 +85,13 @@ public class User implements java.io.Serializable {
 	}
 	
 	
-
+	public JSONObject toJSON() {
+		JSONObject o = new JSONObject();
+		o.put("id", this.idUser);
+		o.put("username", username);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
+		o.put( "createdAt", sdf.format(createdAt));
+		return o;
+	}
+	
 }

@@ -104,8 +104,12 @@ public class AuthenticationUtils {
 	 * @param token
 	 * @return The attached user
 	 * @throws InvalidTokenException if the token cannot be found
+	 * @throws MissingTokenException if no token has been provided
 	 */
-	public User getUserFromToken(String token) throws InvalidTokenException {
+	public User getUserFromToken(String token) throws InvalidTokenException, MissingTokenException {
+		if (token == null) {
+			throw new MissingTokenException();
+		}
 		Token tokenObj = tokenRepository.findOne(token);
 		if (tokenObj == null) throw new InvalidTokenException();
 		return userRepository.findOne(tokenObj.getUserId());
@@ -151,16 +155,15 @@ public class AuthenticationUtils {
 	
 	public ResponseEntity<String> POST_logout(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
 		String auth = headers.getFirst("Authorization");
-		if (auth == null) {
-			throw new MissingTokenException();
-		}
 		User user = getUserFromToken(auth);
-		if (user != null) {
-			this.tokenRepository.deleteFromUser(user.getIdUser());
-		} else {
-			System.out.println("Token not found: "+auth);
-		}
+		this.tokenRepository.deleteFromUser(user.getIdUser());
 		return ResponseEntity.ok("Used logged out");
+	}
+	
+	public ResponseEntity<String> GET_profile(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
+		String auth = headers.getFirst("Authorization");
+		User user = getUserFromToken(auth);
+		return ResponseEntity.ok(user.toJSON().toString());
 	}
 
 }
