@@ -47,8 +47,6 @@ public class User implements java.io.Serializable {
 	@Id
 	@Column(name="id", updatable=false)
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-//	  @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="USER_gen_seq")
-//    @SequenceGenerator(name="USER_gen_seq", sequenceName="USER_SEQ", allocationSize=1)
 	public Long getIdUser() {
 		return this.idUser;
 	}
@@ -90,7 +88,7 @@ public class User implements java.io.Serializable {
 		o.put("id", this.idUser);
 		o.put("username", username);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
-		o.put( "createdAt", sdf.format(createdAt));
+		o.put("createdAt", sdf.format(createdAt));
 		return o;
 	}
 	
