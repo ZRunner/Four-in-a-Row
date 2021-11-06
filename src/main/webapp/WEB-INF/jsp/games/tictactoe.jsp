@@ -17,8 +17,12 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	
 	<spring:url value="/css/tictactoe.css" var="tictactoeCss" />
-	
 	<link href="${tictactoeCss}" rel="stylesheet" />
+	
+	<spring:url value="/js/tictactoe.js" var="tictactoeJs" />
+	<script src="${tictactoeJs}"></script>
+	
+	
 </head>
 
 	<%@include file="../include/header.jsp" %>
@@ -30,29 +34,28 @@
 	<table>
 		<tbody>
 			<tr class="plateau plateau1">
-				<td><button id="0" value="0">Case0</button></td>
-				<td><button id="1" value="0">Case1</button></td>
-				<td><button id="2" value="0">Case2</button></td>
+				<td><button onclick="onclick1(0)" id="0">Case0</button></td>
+				<td><button onclick="onclick1(1)" id="1">Case1</button></td>
+				<td><button onclick="onclick1(2)" id="2">Case2</button></td>
 			</tr>
 			<tr class="plateau">
-				<td><button id="3" value="0">Case3</button></td>
-				<td><button id="4" value="0">Case4</button></td>
-				<td><button id="5" value="0">Case5</button></td>
+				<td><button onclick="onclick1(3)" id="3">Case3</button></td>
+				<td><button onclick="onclick1(4)" id="4">Case4</button></td>
+				<td><button onclick="onclick1(5)" id="5">Case5</button></td>
 			</tr>
 			<tr class="plateau">
-				<td><button id="6" value="0">Case6</button></td>
-				<td><button id="7" value="0">Case7</button></td>
-				<td><button id="8" value="0">Case8</button></td>
+				<td><button onclick="onclick1(6)" id="6">Case6</button></td>
+				<td><button onclick="onclick1(7)" id="7">Case7</button></td>
+				<td><button onclick="onclick1(8)" id="8">Case8</button></td>
 			</tr>
 		</tbody>
 	</table>
 </div>	
-<script>
+<div id="result">
+	<h1></h1>
+</div>
+	
 
-</script>
-	
-	
-	
 
 	<%@include file="../include/footer.jsp" %>
 </body>
