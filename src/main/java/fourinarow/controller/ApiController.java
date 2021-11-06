@@ -58,13 +58,15 @@ public class ApiController {
 		}
 		((Tictactoe) session.getAttribute("tictactoe")).setSquare(index,Players.PLAYER);
 		if(((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok")) {
-			/* Implement AI there */
-			do{
-				((Tictactoe) session.getAttribute("tictactoe")).setSquare((int)(Math.random() * 9),Players.IA);
-				System.out.println(((Tictactoe) session.getAttribute("tictactoe")).toString());
-			}while(!((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok"));
+			if(((Tictactoe) session.getAttribute("tictactoe")).getWinner()==null) {
+				/* Implement AI there */
+				do{
+					((Tictactoe) session.getAttribute("tictactoe")).setSquare((int)(Math.random() * 9),Players.IA);
+					System.out.println(((Tictactoe) session.getAttribute("tictactoe")).toString());
+				}while(!((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok"));
+				/* End Implement AI */
+			}
 			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
-			/* End Implement AI */
 			if(game.getWinner()!=null) {
 				if(game.getWinner()==Players.PLAYER) {
 					//Add a winning game to statistics
