@@ -21,14 +21,31 @@
 	</properties>
 	
 	<dependencies>
-	<!-- Json library dependencies -->
+	<!-- Jupiter Test unit -->
+	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<dependency>
+		    <groupId>org.junit.jupiter</groupId>
+		    <artifactId>junit-jupiter-api</artifactId>
+		    <version>5.7.0</version>
+		</dependency>
+	
+	
+	<!-- Json library-->
 	<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
 		</dependency>
+		
+		<!-- JWT-based authentication -->
+		<!-- https://github.com/auth0/java-jwt -->
+		<dependency>
+		    <groupId>com.auth0</groupId>
+		    <artifactId>java-jwt</artifactId>
+		    <version>3.18.2</version>
+		</dependency>
 
-	<!-- This is a web application -->
+		<!-- This is a web application -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -100,7 +117,7 @@
         <dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.46</version>
+			<version>8.0.16</version>
 		</dependency>
 
         <!-- HikariCP connection pool -->
