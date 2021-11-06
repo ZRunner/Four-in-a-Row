@@ -56,14 +56,15 @@ public class ApiController {
 		if(session.getAttribute("tictactoe")==null){
 			session.setAttribute("tictactoe", new Tictactoe());
 		}
-		((Tictactoe) session.getAttribute("tictactoe")).setSquare(index,Players.PLAYER);
-		if(((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok")) {
-			/* Implement AI there */
-			do{
-				((Tictactoe) session.getAttribute("tictactoe")).setSquare((int)(Math.random() * 9),Players.IA);
-				System.out.println(((Tictactoe) session.getAttribute("tictactoe")).toString());
-			}while(!((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok"));
-			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		game.setSquare(index,Players.PLAYER);
+		if(game.getMessage().equals("ok")) {
+			if (game.getWinner()==null) {/* Implement AI there */
+				do{
+					game.setSquare((int)(Math.random() * 9),Players.IA);
+					System.out.println(game.toString());
+				}while(!game.getMessage().equals("ok"));
+			}
 			/* End Implement AI */
 			if(game.getWinner()!=null) {
 				if(game.getWinner()==Players.PLAYER) {
@@ -75,7 +76,6 @@ public class ApiController {
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
-			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
 			JSONObject response = new JSONObject();
 			response.put("timestamp", new Date().getTime());
 			response.put("status", 400);
