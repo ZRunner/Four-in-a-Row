@@ -6,6 +6,8 @@ import org.slf4j.LoggerFactory;
 import java.util.Date;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -40,24 +42,41 @@ public class ApiController {
 	}
 	
 	/**************************************
-	 * Check the Tictactoe grid
-	 * path : /api/updateTictactoe
-	 * method : POST
-	 * content-type : 
-	 * 		in : JSON
+	 * Set a square in the Tictactoe grid
+	 * If won game : reset the grid and put stats in database
+	 * path : /api/setTictactoe
+	 * method : GET
+	 * params : 
+	 * 		index : position where the player played
+	 * content-type :
 	 * 		out : JSON
-	 * params: 
-	 * 		grid : integer array
 	 ***************************************/
-	@PostMapping(value="/updateTictactoe", consumes=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateTictactoe(@RequestBody Tictactoe game) {
-		if(game.getMessage().equals("ok")) {
+	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session) {
+		if(session.getAttribute("tictactoe")==null){
+			session.setAttribute("tictactoe", new Tictactoe());
+		}
+		((Tictactoe) session.getAttribute("tictactoe")).setSquare(index,Players.PLAYER);
+		if(((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok")) {
+			/* Implement AI there */
+			do{
+				((Tictactoe) session.getAttribute("tictactoe")).setSquare((int)(Math.random() * 9),Players.IA);
+				System.out.println(((Tictactoe) session.getAttribute("tictactoe")).toString());
+			}while(!((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok"));
+			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+			/* End Implement AI */
+			if(game.getWinner()!=null) {
+				if(game.getWinner()==Players.PLAYER) {
+					//Add a winning game to statistics
+				}else {
+					//Add a loose game to statistics
+				}
+				session.setAttribute("tictactoe", new Tictactoe());
+			}
 			return ResponseEntity.ok(game.toString());
 		}else{
-			if(game.getMessage().equals("")) {
-				game.setMessage("The grid parameter isn't present");
-			}
-			JSONObject response = game.toJSON();
+			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+			JSONObject response = new JSONObject();
 			response.put("timestamp", new Date().getTime());
 			response.put("status", 400);
 			response.put("error", "Bad Request");
@@ -67,5 +86,19 @@ public class ApiController {
 					.body(response.toString());
 		}
 	}
-	
+
+	/**************************************
+	 * Get the Tictactoe grid
+	 * path : /api/getTictactoe
+	 * method : GET
+	 * content-type :
+	 * 		out : the grid
+	 ***************************************/
+	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getTictactoe(HttpSession session) {
+		if(session.getAttribute("tictactoe")==null){
+			session.setAttribute("tictactoe", new Tictactoe());
+		}
+		return ResponseEntity.ok(session.getAttribute("tictactoe").toString());		
+	}
 }

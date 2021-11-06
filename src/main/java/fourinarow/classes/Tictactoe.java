@@ -30,6 +30,7 @@ public class Tictactoe {
 	}; 
 	private Players[] grid = new Players[9]; //Grid of Players
 	private String message = "";
+	private Players winner = null;
 	
 	private int[][] winCondition = {
 			{0,1,2},
@@ -62,6 +63,22 @@ public class Tictactoe {
 		}
 		setMessage("ok");
 	}	
+	
+	/**
+	 * winner getter
+	 * @return winner of the game
+	 */
+	public Players getWinner() {
+		return winner;
+	}
+
+	/**
+	 * winner setter
+	 * @param player : player to set
+	 */
+	public void setWinner(Players winner) {
+		this.winner = winner;
+	}
 	
 	/**
 	 * message getter
@@ -106,19 +123,20 @@ public class Tictactoe {
 	 * Square setter
 	 * @param number : grid square to change player (position)
 	 * @param value : the player who played
-	 * @return
-	 * 		true : everything run correctly
-	 * 		false : the number is wrong
 	 */
-	public boolean setSquare(int number, Players value) {
-		if(number>=9 || number<0) {
-			return false;
-		}else {
+	public void setSquare(int number, Players value) {
+		try {
+			if(number>=9 || number<0) throw new Exception("The index must be between 0 and 8");
+			if(getGrid()[number] == Players.PLAYER) throw new Exception("You can't play there again");
+			if(getGrid()[number] == Players.IA) throw new Exception("You can't choose your adversary square");
 			this.grid[number] = value;
-			return true;
+			setMessage("ok");
+			setWinner(win());
+		}catch(Exception e) {
+			setMessage(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * Array of winning condition getter
 	 * @param i : the line of winning configuration (between 0 and 7)
