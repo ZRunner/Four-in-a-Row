@@ -67,6 +67,17 @@ public class ApiController {
 				/* End Implement AI */
 			}
 			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		game.setSquare(index,Players.PLAYER);
+		if(game.getMessage().equals("ok")) {
+			if (game.getWinner()==null) {/* Implement AI there */
+				do{
+					game.setSquare((int)(Math.random() * 9),Players.IA);
+					System.out.println(game.toString());
+				}while(!game.getMessage().equals("ok"));
+			}
+			/* End Implement AI */
+>>>>>>> branch 'main' of https://github.com/ZRunner/Four-in-a-Row.git
 			if(game.getWinner()!=null) {
 				if(game.getWinner()==Players.PLAYER) {
 					//Add a winning game to statistics
@@ -77,7 +88,6 @@ public class ApiController {
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
-			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
 			JSONObject response = new JSONObject();
 			response.put("timestamp", new Date().getTime());
 			response.put("status", 400);
