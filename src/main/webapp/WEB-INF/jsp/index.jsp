@@ -8,7 +8,6 @@
 <body>
 
 <h1>Home page!</h1>
-	<%@include file="include/navbar.jsp" %>
 	<a href="/signin">S'identifier</a><br/>
 	<a href="/signup">Créer son compte</a>
 	<%@include file="include/footer.jsp" %>
