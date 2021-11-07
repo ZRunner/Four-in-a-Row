@@ -1,5 +1,6 @@
 package fourinarow.controller;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
@@ -52,15 +53,8 @@ public class ApiController {
 	 * 		out : JSON
 	 ***************************************/
 	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers) {
-		User user;
-		try {
-			user = authenticationUtils.getUserFromToken(headers.getFirst("Authorization"));
-		} catch (MissingTokenException e) {
-			return ResponseEntity.status(401).body("Missing token");
-		} catch (InvalidTokenException e) {
-			return ResponseEntity.status(401).body("Invalid token");
-		}
+	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
 		if(session.getAttribute("tictactoe")==null){
 			session.setAttribute("tictactoe", new Tictactoe());
 		}
@@ -132,14 +126,8 @@ public class ApiController {
 	 * 		out : the grid
 	 ***************************************/
 	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getTictactoe(HttpSession session, @RequestHeader HttpHeaders headers) {
-		try {
-			authenticationUtils.getUserFromToken(headers.getFirst("Authorization"));
-		} catch (MissingTokenException e) {
-			return ResponseEntity.status(401).body("Missing token");
-		} catch (InvalidTokenException e) {
-			return ResponseEntity.status(401).body("Invalid token");
-		}
+	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
+		System.out.println(((User) request.getAttribute("user")).getUsername());
 		if(session.getAttribute("tictactoe")==null){
 			session.setAttribute("tictactoe", new Tictactoe());
 		}
