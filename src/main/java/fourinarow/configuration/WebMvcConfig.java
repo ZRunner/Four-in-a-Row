@@ -1,5 +1,6 @@
 package fourinarow.configuration;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -12,6 +13,11 @@ import fourinarow.interceptor.AuthInterceptor;
 @Configuration
 @EnableWebMvc
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
+	
+	@Bean
+    AuthInterceptor AuthInterceptor() {
+         return new AuthInterceptor();
+    }
 
     // Static Resource Config
     @Override
@@ -24,11 +30,10 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-    //
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AuthInterceptor())
-        	.addPathPatterns("/api/getTictactoe","/api/setTictactoe");
+        registry.addInterceptor(AuthInterceptor())
+        	.addPathPatterns("/api/???Tictactoe");
 
         //Example
         /*registry.addInterceptor(new AdminInterceptor())

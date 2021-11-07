@@ -3,43 +3,58 @@ package fourinarow.interceptor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import fourinarow.model.User;
+import fourinarow.services.AuthenticationUtils;
+import fourinarow.services.AuthenticationUtils.InvalidTokenException;
+import fourinarow.services.AuthenticationUtils.MissingTokenException;
+
+//Based on : https://devstory.net/11229/spring-mvc-interceptor
 public class AuthInterceptor extends HandlerInterceptorAdapter{
-	 @Override
-	    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
-	            throws Exception {
-	        long startTime = System.currentTimeMillis();
-	        System.out.println("\n-------- LogInterception.preHandle --- ");
-	        System.out.println("Request URL: " + request.getRequestURL());
-	        System.out.println("Start Time: " + System.currentTimeMillis());
 
-	        request.setAttribute("startTime", startTime);
-	         
-	        return true;
-	    }
+	@Autowired
+	private AuthenticationUtils authenticationUtils;
 
-	    @Override
-	    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
-	            ModelAndView modelAndView) throws Exception {
-	        System.out.println("\n-------- LogInterception.postHandle --- ");
-	        System.out.println("Request URL: " + request.getRequestURL());
+	
+	/** Before the controller
+	 *  @return 
+	 *  	true : let it pass
+	 *  	false : stop the request (don't forget to send error)
+	 */
+ 	@Override
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+            throws Exception {
+        User user;
+		try {
+			user = authenticationUtils.getUserFromToken(request.getHeader("Authorization"));
+			/* Identification log */
+			System.out.println("Info -- User "+user.getUsername()+" identified !");
+			/* Put the user in the request, to get it in the API : 
+			 * add HttpServletRequest request to parameters
+			 * get user with request.getAttribute("user") */
+	        request.setAttribute("user", user);
+		} catch (MissingTokenException e) {
+			response.sendError(401, "Missing token");
+	        return false;
+		} catch (InvalidTokenException e) {
+			response.sendError(401, "Invalid token");
+	        return false;
+		}
+		return true;
+    }
 
-	        // You can add attributes in the modelAndView
-	        // and use that in the view page
-	    }
-
-	    @Override
-	    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
-	            throws Exception {
-	        System.out.println("\n-------- LogInterception.afterCompletion --- ");
-
-	        long startTime = (Long) request.getAttribute("startTime");
-	        long endTime = System.currentTimeMillis();
-	        System.out.println("Request URL: " + request.getRequestURL());
-	        System.out.println("End Time: " + endTime);
-
-	        System.out.println("Time Taken: " + (endTime - startTime));
-	    }
+ 	/* After the controller */
+    @Override
+    public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+            ModelAndView modelAndView) throws Exception {
+    }
+    
+    /* After completion */
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+    }
 }
