@@ -13,7 +13,6 @@ public class IndexController {
 	
 	private final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	
 	@RequestMapping(value="/", method= RequestMethod.GET)
 	public String index(Map<String, Object> model) throws Exception {
 		logger.info("Hello world");
@@ -29,13 +28,14 @@ public class IndexController {
 	@RequestMapping(value="/signin", method= RequestMethod.GET)
 	public String signin(Map<String, Object> model) throws Exception {
 		logger.info("Login page");
-		return "/connection/signin";
+		return "connection/signin";
 	}
 	
 	@RequestMapping(value="/signup", method= RequestMethod.GET)
 	public String signup(Map<String, Object> model) throws Exception {
 		logger.info("Register page");
-		return "/connection/signup";
+		
+		return "connection/signup";
 	}
 	
 
