@@ -2,8 +2,12 @@ package fourinarow.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -26,16 +30,29 @@ public class IndexController {
 	 ***************************************/
 	
 	@RequestMapping(value="/signin", method= RequestMethod.GET)
-	public String signin(Map<String, Object> model) throws Exception {
+	public String signin(Model model) throws Exception {
 		logger.info("Login page");
-		return "connection/signin";
+		
+		List<String> css = new ArrayList<String>();
+		css.add("/css/login.css");
+		
+		model.addAttribute("css",css);
+		model.addAttribute("title","Sign in");
+		
+		return "connection/signin"; 
 	}
 	
 	@RequestMapping(value="/signup", method= RequestMethod.GET)
-	public String signup(Map<String, Object> model) throws Exception {
+	public String signup(Model model) throws Exception {
 		logger.info("Register page");
 		
-		return "connection/signup";
+		List<String> css = new ArrayList<String>();
+		css.add("/css/login.css");
+		
+		model.addAttribute("css",css);
+		model.addAttribute("title","Sign up");
+		
+		return "connection/signin"; 
 	}
 	
 

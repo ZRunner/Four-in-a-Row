@@ -57,6 +57,11 @@ section .contentBx .formBx h2{
     letter-spacing: 1px;
 }
 
+section .contentBx .formBx .errorMsg{
+	text-align : center;
+	color: var(--color-red-error);
+}
+
 section .contentBx .formBx .inputBx{
     margin-bottom: 20px;
 }
@@ -71,7 +76,8 @@ section .contentBx .formBx .inputBx span{
     letter-spacing: 1px;
 }
 
-section .contentBx .formBx .inputBx input{
+section .contentBx .formBx .inputBx input,
+section .contentBx .formBx .inputBx .input_submit{
     width: 100%;
     padding: 10px 20px;
     outline: none;
@@ -84,7 +90,7 @@ section .contentBx .formBx .inputBx input{
     border-radius: 30px;
 }
 
-section .contentBx .formBx .inputBx input[type="submit"]{
+section .contentBx .formBx .inputBx .input_submit{
     background: var(--color-primary);
     color: #ffffff;
     outline: none;
@@ -93,7 +99,7 @@ section .contentBx .formBx .inputBx input[type="submit"]{
     cursor: pointer;
 }
 
-section .contentBx .formBx .inputBx input[type="submit"]:hover{
+section .contentBx .formBx .inputBx .input_submit:hover{
     background: var(--color-dark-primary);
 }
 
