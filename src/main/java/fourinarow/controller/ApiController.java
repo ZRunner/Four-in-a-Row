@@ -54,7 +54,6 @@ public class ApiController {
 	 ***************************************/
 	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
-		User user = (User) request.getAttribute("user");
 		if(session.getAttribute("tictactoe")==null){
 			session.setAttribute("tictactoe", new Tictactoe());
 		}

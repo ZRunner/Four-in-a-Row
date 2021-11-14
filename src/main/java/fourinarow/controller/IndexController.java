@@ -60,7 +60,7 @@ public class IndexController {
 		
 		return "connection/signin"; 
 	}
-	
+
 
 	/**************************************
 	 * Espace de l'utilisateur
