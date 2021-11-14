@@ -57,7 +57,7 @@ section .contentBx .formBx h2{
     letter-spacing: 1px;
 }
 
-section .contentBx .formBx .errorMsg{
+section .contentBx .formBx #errorMsg{
 	text-align : center;
 	color: var(--color-red-error);
 }

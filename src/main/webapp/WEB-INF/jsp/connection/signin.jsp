@@ -12,9 +12,10 @@
 		<c:if test = "${title != null}"><c:out value = "${title}"/></c:if>
 		<c:if test = "${title == null}"><c:out value = "Projet JEE"/></c:if>
 	</title>
-	<c:forEach  items="${css}" var ="css">
-		<link rel="stylesheet" href="${css}">
+	<c:forEach items="${css}" var ="css_style">
+		<link rel="stylesheet" href="${css_style}">
 	</c:forEach>
+	<!-- Check token cookie -->
 </head>
 <body>
 	<section>
@@ -24,8 +25,8 @@
 		<div class="contentBx">
 			<div class="formBx">
 				<h2>${title}</h2>
-				<form id="login_form">
-					<p class="errorMsg"></p>
+				<form id="login_form" >
+					<p id="errorMsg"></p>
 					<div class="inputBx">
 						<span>Username</span>
 						<input type="text" name="username">
@@ -39,21 +40,30 @@
 							<span>Confirm password</span>
 							<input type="password" name="password_verif">
 						</div>
+						<div class="inputBx">
+							<button class="input_submit" type="button" onclick="signup()">${title}</button>
+						</div>
+						<div class="inputBx">
+							<p>Already have an account ? <a href="/signin">Sign in</a></p>
+						</div>
 					</c:if>
-					<div class="inputBx">
-						<button class="input_submit" type="button">${title}</button>
-					</div>
-					<div class="inputBx">
 					<c:if test = "${title == 'Sign in'}">
-						<p>Don't have an account ? <a href="/signup">Sign up</a></p>
+						<div class="inputBx">
+							<button class="input_submit" type="button" onclick="signin()">${title}</button>
+						</div>
+						<div class="inputBx">
+							<p>Don't have an account ? <a href="/signup">Sign up</a></p>
+						</div>
 					</c:if>
-					<c:if test = "${title == 'Sign up'}">
-						<p>Already have an account ? <a href="/signin">Sign in</a></p>
-					</c:if>
-					</div>
 				</form>
 			</div>
 		</div>
 	</section>
+	<footer>
+	<c:forEach items="${js}" var ="javascript">
+		 <script src="${javascript}"></script>
+	</c:forEach>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+	</footer>
 </body>
 </html>

@@ -35,8 +35,11 @@ public class IndexController {
 		
 		List<String> css = new ArrayList<String>();
 		css.add("/css/login.css");
+		List<String> js = new ArrayList<String>();
+		js.add("/js/login.js");
 		
 		model.addAttribute("css",css);
+		model.addAttribute("js",js);
 		model.addAttribute("title","Sign in");
 		
 		return "connection/signin"; 
@@ -48,8 +51,11 @@ public class IndexController {
 		
 		List<String> css = new ArrayList<String>();
 		css.add("/css/login.css");
+		List<String> js = new ArrayList<String>();
+		js.add("/js/login.js");
 		
 		model.addAttribute("css",css);
+		model.addAttribute("js",js);
 		model.addAttribute("title","Sign up");
 		
 		return "connection/signin"; 
@@ -67,7 +73,7 @@ public class IndexController {
 		return "/user/dashboard";
 	}
 	
-	@RequestMapping(value="/choice", method= RequestMethod.GET)
+	@RequestMapping(value="/home", method= RequestMethod.GET)
 	public String choice(Map<String, Object> model) throws Exception {
 		logger.info("Game choice page");
 		return "/user/gameChoice";
