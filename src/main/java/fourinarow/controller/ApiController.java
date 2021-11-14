@@ -82,14 +82,20 @@ public class ApiController {
 		}
 	}
      
-	@PostMapping(path="login", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="login")
 	@ResponseBody
 	public ResponseEntity<String> login(HttpEntity<String> httpEntity) {
-		JSONObject json = new JSONObject(httpEntity.getBody());
+		JSONObject json;
+		try {
+			json = new JSONObject(httpEntity.getBody());
+		} catch (NullPointerException e) {
+			return ResponseEntity.status(400).body("Invalid JSON body");
+		}
+		
 		return authenticationUtils.POST_login(json);
 	}
 	
-	@PostMapping(path="signup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="signup")
 	@ResponseBody
 	public ResponseEntity<String> signup(HttpEntity<String> httpEntity) {
 		JSONObject json = new JSONObject(httpEntity.getBody());
