@@ -194,7 +194,7 @@ public class AuthenticationUtils {
 		}
 		// package it into a header
 		HttpHeaders headers = new HttpHeaders();
-		headers.add("Set-Cookie", token+"; Path=/; Max-Age=604800; HttpOnly"); // 7 days
+		headers.add("Set-Cookie", "token="+token+"; Path=/; Max-Age=604800; HttpOnly"); // 7 days
 		// send to client
 		return ResponseEntity.ok().headers(headers).body("OK");
 	}
