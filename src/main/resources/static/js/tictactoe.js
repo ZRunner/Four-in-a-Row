@@ -17,12 +17,17 @@ function onclick1(index){
         	var jsonResponse = xhr.response;
             array=jsonResponse.grid;
         }else if(xhr.status==400){
-        	alert("T'es nul et moche, cheh !");
+        	alert("Veuillez choisir une case vierge !");
         	return;
         }
         updateTictactoe(array);
         if (jsonResponse.winner != null){
-        	document.getElementById("result").innerHTML= jsonResponse.winner+" a gagné !";
+        	if (jsonResponse.winner === 1){
+        		document.getElementById("result").innerHTML= "Bravo, vous avez gagné !";
+        	}else if (jsonResponse.winner === 2){
+            	document.getElementById("result").innerHTML= "Dommage, l'ordinateur a gagné !";}
+        }else{
+        	document.getElementById("result").innerHTML= "";
         }
     }
 }

@@ -1,0 +1,76 @@
+h1.title-page{
+	text-align: center;
+	margin-top: 50px
+}
+/* Home Image */
+
+div.gallery {
+  margin: auto;
+  margin-top: 5%;
+  border: 1px solid #ccc;
+  align: center;
+  width: 200px;
+}
+
+div.gallery:hover {
+  border: 1px solid #777;
+}
+
+div img{
+  width: 100%;
+  height: auto;
+}
+
+div.desc{
+  padding: 15px;
+  text-align: center;
+}
+
+div.cards-center{
+}
+
+div.card1, div.card2{
+	border: 1px solid #ccc;
+}
+div.card3, div.card2{
+	border: 1px solid #ccc;
+}
+
+
+div.presentation{
+	width: 40%;
+	padding-right: 7%;
+}
+
+div.presentation p{
+	text-align: justify;
+	padding-top: 20%;
+}
+
+
+div.general{	
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+}
+
+
+div#game{
+	padding-top: 5%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
