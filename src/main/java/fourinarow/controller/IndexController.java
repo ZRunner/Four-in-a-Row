@@ -73,14 +73,22 @@ public class IndexController {
 		logger.info("Settings page");
 		
 		List<String> css = new ArrayList<String>();
-		css.add("/css/login.css");
+		css.add("/css/dashboard.css");
 		List<String> js = new ArrayList<String>();
-		js.add("/js/login.js");
+		js.add("/js/dashboard.js");
 		
+		switch(page) {
+		  case "statistics":
+				model.addAttribute("title","Statistics");
+		    break;
+		  case "history":
+				model.addAttribute("title","Game history");
+		    break;
+		  default:
+				model.addAttribute("title","Settings");
+		}
 		model.addAttribute("css",css);
 		model.addAttribute("js",js);
-		model.addAttribute("title","Dashboard");
-		model.addAttribute("page",page);
 		
 		return "/user/dashboard";
 	}
