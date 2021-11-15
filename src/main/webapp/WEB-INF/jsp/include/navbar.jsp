@@ -15,9 +15,6 @@
         <li class="nav-item">
           <a class="nav-link active" href="signup">Sign in</a>
         </li>
-        <li class="nav-item justify-content-end">
-          <a class="nav-link active" href="signin">Sign up</a>
-        </li>
       </ul>
     </div>
   </div>

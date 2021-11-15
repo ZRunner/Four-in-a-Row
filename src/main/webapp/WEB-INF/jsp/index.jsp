@@ -3,42 +3,32 @@
 	<body class="bg-info text-dark bg-opacity-10">
 	<%@include file="./include/header.jsp" %>
 	<%@include file="./include/navbar.jsp" %>
-		<h1 class="title-page">Projet JEE 2021</h1>
+		<h1 class="title-page">Notre projet JEE</h1>
 		<div class="general">
 			<div class="presentation row justify-content-center ">
-				<p>Ceci est le projet de notre groupe composé d'Arthur BLAISE, de Théo JULIEN et d'Aurélien GUIMONT. Nous avons voulu combiner plusieurs matières afin de rendre
+				<p class="align-middle">Ceci est le projet de notre groupe composé d'Arthur BLAISE, de Théo JULIEN et d'Aurélien GUIMONT. Nous avons voulu combiner plusieurs matières afin de rendre
 				un projet le plus complet possible. Nous avons donc décidé de faire plusieurs petits jeux avec une IA implémentée dans chacun d'entre eux.</p>
 			</div>
-			<div class="cards-center">		
-				<div class="card-group" style="width: 650px;">
-					<div class="card card1">
-				    	<img src="/image/tictactoe.png" class="card-img-top" alt="TicTacToeImg">
-				    	<div class="card-body">
-				      		<h5 class="card-title text-center">Tic-Tac-Toe</h5>
-				      		<p class="card-text text-justify">Ceci est un jeu de Tic-Tac-Toe avec une IA</p>
-				      		<p class="card-text text-center"><a href="tictactoe" class="btn btn-primary" style="align-content: center;">Notre jeu</a></p>
-				    	</div>
-				  </div>
-				  <div class="card card2">
-				    	<img src="/image/tictactoe.png" class="card-img-top" alt="TicTacToeImg">
-				    	<div class="card-body">
-				      		<h5 class="card-title text-center">Tic-Tac-Toe</h5>
-				      		<p class="card-text text-justify">Ceci est un jeu de Tic-Tac-Toe avec une IA</p>
-				      		<p class="card-text text-center"><a href="tictactoe" class="btn btn-primary" style="align-content: center;">Notre jeu</a></p>
-				    	</div>
-				  </div>
-				  <div class="card card3">
-				    	<img src="/image/tictactoe.png" class="card-img-top" alt="TicTacToeImg">
-				    	<div class="card-body">
-				      		<h5 class="card-title text-center">Tic-Tac-Toe</h5>
-				      		<p class="card-text text-justify">Ceci est un jeu de Tic-Tac-Toe avec une IA</p>
-				      		<p class="card-text text-center"><a href="tictactoe" class="btn btn-primary" style="align-content: center;">Notre jeu</a></p>
-				    	</div>
-				  </div>
+			<div class="img-jee">
+				<img src="/img/jee.png" class="rounded float-end" alt="JEE">
+			</div>
+		</div>
+		
+	
+		<h1 class="title-page" style="margin-top: 4%; margin-bottom: 2%;">Nos jeux</h1>
+		<div class="general">
+			<div class="img-jee">
+				<img src="/img/tictactoe.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
+			</div>
+			<div class="row justify-content-center game-presentation">
+				<div class="body">
+					<h1 class="card-title">Tic-Tac-Toe</h1><br>
+					<p class="card-text">Ceci est notre jeu de Tic-Tac-Toe avec une IA fonctionnelle !</p><br>
+					<p class="card-text text-left"><a href="tictactoe" class="btn btn-primary" style="align-content: left;">Notre jeu</a></p>
 				</div>
 			</div>
 		</div>
-		<%@include file="./include/footer.jsp" %>
+		
 	</body>
 	
 </html>

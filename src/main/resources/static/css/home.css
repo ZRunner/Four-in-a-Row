@@ -1,20 +1,12 @@
+@import "style.css";
+
+
+
 h1.title-page{
 	text-align: center;
 	margin-top: 50px
 }
-/* Home Image */
 
-div.gallery {
-  margin: auto;
-  margin-top: 5%;
-  border: 1px solid #ccc;
-  align: center;
-  width: 200px;
-}
-
-div.gallery:hover {
-  border: 1px solid #777;
-}
 
 div img{
   width: 100%;
@@ -44,7 +36,7 @@ div.presentation{
 
 div.presentation p{
 	text-align: justify;
-	padding-top: 20%;
+	padding-top: 1em;
 }
 
 
@@ -52,6 +44,7 @@ div.general{
   display: flex;
   justify-content: center;
   padding-top: 5%;
+  margin: auto;
 }
 
 
@@ -59,10 +52,18 @@ div#game{
 	padding-top: 5%;
 }
 
+div.text-presentation{
+	margin-right: 300px;
+}
 
+div.game-presentation{
+	margin-left: 150px;
+	width: 30%;
+}
 
-
-
+div.body{
+	width: max-content;
+}
 
 
 

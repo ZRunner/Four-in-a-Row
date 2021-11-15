@@ -20,4 +20,8 @@
 		
 		<spring:url value="/css/tictactoe.css" var="tictactoeCss" />
 		<link href="${tictactoeCss}" rel="stylesheet" />
+		
+		<spring:url value="/js/tictactoe.js" var="tictactoeJs" />
+		<script src="${tictactoeJs}"></script>
+		
 	</head>
