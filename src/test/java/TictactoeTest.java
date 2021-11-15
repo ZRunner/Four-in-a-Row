@@ -1,27 +1,37 @@
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Players;
+import fourinarow.classes.Tictactoe.Player;
+import fourinarow.model.User;
+import fourinarow.services.HistoryLogRepository;
 
+@Service
 class TictactoeTest {
+	
+	public static User dummyUser = new User((long) 1);
+	
+	@Autowired
+	private HistoryLogRepository logsRepo;
 	
 	/**
 	 * Classic game
 	 */
 	@Test
 	void global() {
-		Tictactoe tictactoe = new Tictactoe();
-		Players gagnant = null;
+		Tictactoe tictactoe = new Tictactoe(dummyUser, logsRepo);
+		Player gagnant = null;
 		for(int i=0;i<8;i++) {
-			tictactoe.setSquare(i,i%2==0?Players.PLAYER:Players.IA);
+			tictactoe.setSquare(i,i%2==0?Player.PLAYER:Player.IA);
 			gagnant = tictactoe.win();
 			if(gagnant!=null) {
 				break;
 			}
 		}
-		if(gagnant == Players.PLAYER) {
+		if(gagnant == Player.PLAYER) {
 			System.out.println("global Test : passed");
 		}else {
 			fail("The winner should be PLAYER and it is not.");
@@ -33,10 +43,10 @@ class TictactoeTest {
 	 */
 	@Test
 	void nobodyWin(){
-		Players[] square = {Players.IA,Players.IA,Players.PLAYER,Players.PLAYER,Players.PLAYER,Players.IA,Players.IA,Players.IA,Players.PLAYER};
-		Tictactoe tictactoe = new Tictactoe(square);
-		Players gagnant = tictactoe.win();
-		if(gagnant == Players.NOBODY) {
+		Player[] square = {Player.IA,Player.IA,Player.PLAYER,Player.PLAYER,Player.PLAYER,Player.IA,Player.IA,Player.IA,Player.PLAYER};
+		Tictactoe tictactoe = new Tictactoe(dummyUser, logsRepo, square);
+		Player gagnant = tictactoe.win();
+		if(gagnant == Player.NOBODY) {
 			System.out.println("nobodyWin Test : passed");
 		}else {
 			fail("The winner should be NOBODY and it is not.");
@@ -61,13 +71,13 @@ class TictactoeTest {
 		boolean isPassed = true;
 		
 		for(int i=0 ; i<8 ; i++) {
-			Players[] square = {Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY,Players.NOBODY};
+			Player[] square = {Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY,Player.NOBODY};
 			for(int j=0 ; j<3 ; j++) {
-				square[winCondition[i][j]] = Players.PLAYER;
+				square[winCondition[i][j]] = Player.PLAYER;
 			}
-			Tictactoe tictactoe = new Tictactoe(square);
-			Players gagnant = tictactoe.win();
-			if(gagnant != Players.PLAYER) {
+			Tictactoe tictactoe = new Tictactoe(dummyUser, logsRepo, square);
+			Player gagnant = tictactoe.win();
+			if(gagnant != Player.PLAYER) {
 				isPassed = false;
 			}
 		}
@@ -84,7 +94,7 @@ class TictactoeTest {
 	 */
 	@Test
 	void parseJSONArray() {
-		Tictactoe tictactoe = new Tictactoe();
+		Tictactoe tictactoe = new Tictactoe(dummyUser, logsRepo);
 		if(tictactoe.toString().equals("{\"grid\":[0,0,0,0,0,0,0,0,0]}")) {
 			System.out.println("toJSONString Test : passed");
 		}else {
