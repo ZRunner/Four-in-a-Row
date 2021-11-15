@@ -112,7 +112,7 @@ public class ApiController {
 		}
 	}
 	
-	@GetMapping(path="profile", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="me/profile", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> profile(HttpEntity<String> httpEntity) {
 		try {
 			return authenticationUtils.GET_profile(httpEntity.getHeaders());
@@ -121,6 +121,22 @@ public class ApiController {
 		} catch (InvalidTokenException e) {
 			return ResponseEntity.status(401).body("Invalid token");
 		}
+	}
+	
+	@PostMapping(path="me/password", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> edit_password(HttpEntity<String> httpEntity, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		JSONObject json = new JSONObject(httpEntity.getBody());
+		return authenticationUtils.POST_password(user, json);
+	}
+	
+	@PostMapping(path="me/username", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> edit_username(HttpEntity<String> httpEntity, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		JSONObject json = new JSONObject(httpEntity.getBody());
+		return authenticationUtils.POST_username(user, json);
 	}
 
 	/**************************************

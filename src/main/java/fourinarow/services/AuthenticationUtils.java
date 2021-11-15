@@ -122,7 +122,12 @@ public class AuthenticationUtils {
 		return userRepository.findOne(tokenObj.getUserId());
 	}
 	
-	public String getTokenFromHeaders(HttpHeaders headers) {
+	/**
+	 * Retrieve a token from the request COOKIE header (Springboot version)
+	 * @param headers The springboot headers set
+	 * @return The given token, or null
+	 */
+	private String getTokenFromHeaders(HttpHeaders headers) {
 		if (headers.getFirst("Cookie") == null) {
 			return null;
 		}
@@ -136,7 +141,15 @@ public class AuthenticationUtils {
 		return token;
 	}
 	
-	public String getTokenFromJavaXCookies(Cookie[] cookies) {
+	/**
+	 * Retrieve a token from the request cookie (JavaX version)
+	 * @param cookies The request cookies
+	 * @return The given token, or null
+	 */
+	private String getTokenFromJavaXCookies(Cookie[] cookies) {
+		if (cookies == null) {
+			return null;
+		}
 		String token = null;
 		for (Cookie cookie: cookies) {
 			if (cookie.getName().equals("token")) {
@@ -146,16 +159,31 @@ public class AuthenticationUtils {
 		return token;
 	}
 	
+	/**
+	 * Get a user object from the request COOKIE header (Springboot version)
+	 * @param headers The springboot headers set
+	 * @return The authenticated user
+	 * @throws InvalidTokenException
+	 * @throws MissingTokenException
+	 */
 	public User getUserFromHeaders(HttpHeaders headers) throws InvalidTokenException, MissingTokenException {
 		String token = getTokenFromHeaders(headers);
 		return getUserFromToken(token);
 	}
 	
+	/**
+	 * Get a user from the request object (JavaX version)
+	 * @param req The request object from JavaX
+	 * @return The authenticated user
+	 * @throws InvalidTokenException
+	 * @throws MissingTokenException
+	 */
 	public User getUserFomServletRequest(HttpServletRequest req) throws InvalidTokenException, MissingTokenException {
 		String token = getTokenFromJavaXCookies(req.getCookies());
 		return getUserFromToken(token);
 	}
 	
+	// login user
 	public ResponseEntity<String> POST_login(JSONObject json) {
 		// check if user exists
 		List<User> users = userRepository.getFromUsername(json.getString("username"));
@@ -179,6 +207,7 @@ public class AuthenticationUtils {
 		return ResponseEntity.ok().headers(headers).body("OK");
 	}
 	
+	// create new user
 	public ResponseEntity<String> POST_signup(JSONObject json) {
 		// create the new user
 		User user = this.createUser(json.getString("username"), json.getString("password"));
@@ -198,6 +227,7 @@ public class AuthenticationUtils {
 		return ResponseEntity.ok().headers(headers).body("OK");
 	}
 	
+	// logout user
 	public ResponseEntity<String> POST_logout(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
 		String auth = getTokenFromHeaders(headers);
 		User user = getUserFromToken(auth);
@@ -205,11 +235,37 @@ public class AuthenticationUtils {
 		return ResponseEntity.ok("Used logged out");
 	}
 	
+	// send user profile
 	public ResponseEntity<String> GET_profile(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
 //		String auth = headers.getFirst("Authorization");
 		String auth = getTokenFromHeaders(headers);
 		User user = getUserFromToken(auth);
 		return ResponseEntity.ok(user.toJSON().toString());
+	}
+	
+	// edit user name (must be unique)
+	public ResponseEntity<String> POST_username(User user, JSONObject json) {
+		String new_username = json.getString("username");
+		if (new_username == null || new_username.length() < 4) {
+			return ResponseEntity.badRequest().body("Invalid username");
+		}
+		if (!userRepository.getFromUsername(new_username).isEmpty()) {
+			return ResponseEntity.badRequest().body("Username already exists");
+		}
+		user.setUsername(new_username);
+		userRepository.save(user);
+		return ResponseEntity.ok("OK");
+	}
+	
+	// edit user password
+	public ResponseEntity<String> POST_password(User user, JSONObject json) {
+		String new_password = json.getString("password");
+		if (new_password == null || new_password.length() < 6) {
+			return ResponseEntity.badRequest().body("Invalid password");
+		}
+		user.setPassword(new_password);
+		userRepository.save(user);
+		return ResponseEntity.ok("OK");
 	}
 
 }
