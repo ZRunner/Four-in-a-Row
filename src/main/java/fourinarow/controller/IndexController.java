@@ -2,8 +2,12 @@ package fourinarow.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -13,7 +17,6 @@ public class IndexController {
 	
 	private final Logger logger = LoggerFactory.getLogger(IndexController.class);
 
-	
 	@RequestMapping(value="/", method= RequestMethod.GET)
 	public String index(Map<String, Object> model) throws Exception {
 		logger.info("Hello world");
@@ -27,17 +30,37 @@ public class IndexController {
 	 ***************************************/
 	
 	@RequestMapping(value="/signin", method= RequestMethod.GET)
-	public String signin(Map<String, Object> model) throws Exception {
+	public String signin(Model model) throws Exception {
 		logger.info("Login page");
-		return "/connection/signin";
+		
+		List<String> css = new ArrayList<String>();
+		css.add("/css/login.css");
+		List<String> js = new ArrayList<String>();
+		js.add("/js/login.js");
+		
+		model.addAttribute("css",css);
+		model.addAttribute("js",js);
+		model.addAttribute("title","Sign in");
+		
+		return "connection/signin"; 
 	}
 	
 	@RequestMapping(value="/signup", method= RequestMethod.GET)
-	public String signup(Map<String, Object> model) throws Exception {
+	public String signup(Model model) throws Exception {
 		logger.info("Register page");
-		return "/connection/signup";
+		
+		List<String> css = new ArrayList<String>();
+		css.add("/css/login.css");
+		List<String> js = new ArrayList<String>();
+		js.add("/js/login.js");
+		
+		model.addAttribute("css",css);
+		model.addAttribute("js",js);
+		model.addAttribute("title","Sign up");
+		
+		return "connection/signin"; 
 	}
-	
+
 
 	/**************************************
 	 * Espace de l'utilisateur
@@ -50,7 +73,7 @@ public class IndexController {
 		return "/user/dashboard";
 	}
 	
-	@RequestMapping(value="/choice", method= RequestMethod.GET)
+	@RequestMapping(value="/home", method= RequestMethod.GET)
 	public String choice(Map<String, Object> model) throws Exception {
 		logger.info("Game choice page");
 		return "/user/gameChoice";
