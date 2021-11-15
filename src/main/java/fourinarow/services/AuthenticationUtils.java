@@ -174,7 +174,6 @@ public class AuthenticationUtils {
 		cookie.setPath("/");
 		cookie.setMaxAge(604800); // 7 days
 		HttpHeaders headers = new HttpHeaders();
-		System.out.println(processor.generateHeader(cookie));
 		headers.add("Set-Cookie", processor.generateHeader(cookie));
 		// send to client
 		return ResponseEntity.ok().headers(headers).body("OK");
@@ -209,7 +208,6 @@ public class AuthenticationUtils {
 	public ResponseEntity<String> GET_profile(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
 //		String auth = headers.getFirst("Authorization");
 		String auth = getTokenFromHeaders(headers);
-		System.out.println("auth: " + auth);
 		User user = getUserFromToken(auth);
 		return ResponseEntity.ok(user.toJSON().toString());
 	}
