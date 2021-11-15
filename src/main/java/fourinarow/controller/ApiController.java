@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Players;
+import fourinarow.classes.Tictactoe.Player;
 import fourinarow.model.User;
 import fourinarow.services.AuthenticationUtils;
 import fourinarow.services.AuthenticationUtils.InvalidTokenException;
 import fourinarow.services.AuthenticationUtils.MissingTokenException;
+import fourinarow.services.HistoryLogRepository;
 
 @RestController
 @RequestMapping("/api") //make all URL's through this controller relative to /api
@@ -34,6 +35,9 @@ public class ApiController {
 	
 	@Autowired
 	private AuthenticationUtils authenticationUtils;
+	
+	@Autowired
+	private HistoryLogRepository logsRepository;
 	
 	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
@@ -54,25 +58,22 @@ public class ApiController {
 	 ***************************************/
 	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
-		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("tictactoe") == null){
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
-		game.setSquare(index,Players.PLAYER);
+		game.setSquare(index,Player.PLAYER);
 		if(game.getMessage().equals("ok")) {
 			if (game.getWinner()==null) {/* Implement AI there */
 				do{
-					game.setSquare((int)(Math.random() * 9),Players.IA);
+					game.setSquare((int)(Math.random() * 9),Player.IA);
 				}while(!game.getMessage().equals("ok"));
 			}
 			/* End Implement AI */
 			if(game.getWinner()!=null) {
-				if(game.getWinner()==Players.PLAYER) {
-					//Add a winning game to statistics
-				}else {
-					//Add a loose game to statistics
-				}
-				session.setAttribute("tictactoe", new Tictactoe());
+				game.saveLogs();
+				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
@@ -147,9 +148,10 @@ public class ApiController {
 	 ***************************************/
 	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
-		System.out.println(((User) request.getAttribute("user")).getUsername());
+		User user = (User) request.getAttribute("user");
+		System.out.println(user.getUsername());
 		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		return ResponseEntity.ok(session.getAttribute("tictactoe").toString());		
 	}

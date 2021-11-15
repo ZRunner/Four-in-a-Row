@@ -27,4 +27,7 @@ public interface HistoryLogRepository extends CrudRepository<HistoryLog, Long> {
 	@Query("select h from HistoryLog h where h.wonGame = 1")
 	List<HistoryLog> getWins();
 	
+	@Query("select MAX(h.gameId) from HistoryLog h")
+	Long getMaxGameId();
+	
 }
