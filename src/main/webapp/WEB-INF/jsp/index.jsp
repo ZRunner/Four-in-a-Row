@@ -3,11 +3,10 @@
 	<body class="bg-info text-dark bg-opacity-10">
 	<%@include file="./include/header.jsp" %>
 	<%@include file="./include/navbar.jsp" %>
-		<h1 class="title-page">Notre projet JEE</h1>
+		<h1 class="title-page">Our JEE projet</h1>
 		<div class="general">
 			<div class="presentation row justify-content-center ">
-				<p class="align-middle">Ceci est le projet de notre groupe composé d'Arthur BLAISE, de Théo JULIEN et d'Aurélien GUIMONT. Nous avons voulu combiner plusieurs matières afin de rendre
-				un projet le plus complet possible. Nous avons donc décidé de faire plusieurs petits jeux avec une IA implémentée dans chacun d'entre eux.</p>
+				<p class="align-middle">This is the project realised by our group composed of Arthur Blaise, Théo Julien & Aurélien Guimont. We wanted to combine several school subject in order to make a project as complete as possible.We decided to create different kind of games (like a TicTacToe 's game or a Four in a row's game) with a implemented AI.</p>
 			</div>
 			<div class="img-jee">
 				<img src="/img/jee.png" class="rounded float-end" alt="JEE">
