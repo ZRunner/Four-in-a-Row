@@ -199,7 +199,6 @@ public class Tictactoe {
 		String state = grid.toString();
 		// check if player won
 		boolean hasWon = getWinner() == player;
-		System.out.println("win(): "+win()+" player: "+player);
 		// get the moves count "until now"
 		int moves = player == Player.PLAYER ? Player_moves : AI_moves;
 		// check if the move was from player or AI
