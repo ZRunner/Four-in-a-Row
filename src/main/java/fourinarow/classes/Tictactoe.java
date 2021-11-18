@@ -1,14 +1,18 @@
 package fourinarow.classes;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.springframework.http.converter.HttpMessageNotReadableException;
+
+import fourinarow.model.HistoryLog;
+import fourinarow.model.User;
+import fourinarow.services.HistoryLogRepository;
 
 public class Tictactoe {
 
-	public enum Players {
+	public enum Player {
 		NOBODY(0), PLAYER(1), IA(2); //Each state of a grid square
 		private int value;
 		
@@ -16,7 +20,7 @@ public class Tictactoe {
 		 * enum constructor
 		 * @param value : equivalent int value for the type
 		 */
-		Players(int value){
+		Player(int value){
 			this.value = value;
 		}
 		
@@ -28,9 +32,16 @@ public class Tictactoe {
 			return value;
 		}
 	}; 
-	private Players[] grid = new Players[9]; //Grid of Players
+	
+	private HistoryLogRepository logsRepository;
+	
+	private User user;
+	private Player[] grid = new Player[9]; //Grid of Players
 	private String message = "";
-	private Players winner = null;
+	private Player winner = null;
+	private Long gameId = null;
+	private List<HistoryLog> history = new ArrayList<>();
+	private int AI_moves = 0; private int Player_moves = 0;
 	
 	private int[][] winCondition = {
 			{0,1,2},
@@ -46,9 +57,11 @@ public class Tictactoe {
 	/**
 	 * Initial constructor : it generates a grid with NOBODY everywhere
 	 */
-	public Tictactoe() {
+	public Tictactoe(User user, HistoryLogRepository logRepo) {
+		this.user = user;
+		this.logsRepository = logRepo;
 		for (int i = 0; i < 9; i++) {
-			this.grid[i]=Players.NOBODY;
+			this.grid[i] = Player.NOBODY;
 		}
 		setMessage("ok");
 	}
@@ -57,9 +70,11 @@ public class Tictactoe {
 	 * In-game constructor : it generates a grid from grid parameter
 	 * @param grid : an array (length 9) with each square of the grid as a Players
 	 */
-	public Tictactoe(Players[] grid){
+	public Tictactoe(User user, HistoryLogRepository logRepo, Player[] grid){
+		this.user = user;
+		this.logsRepository = logRepo;
 		for (int i = 0; i < 9; i++) {
-			this.grid[i]=grid[i];
+			this.grid[i] = grid[i];
 		}
 		setMessage("ok");
 	}	
@@ -68,7 +83,7 @@ public class Tictactoe {
 	 * winner getter
 	 * @return winner of the game
 	 */
-	public Players getWinner() {
+	public Player getWinner() {
 		return winner;
 	}
 
@@ -76,7 +91,7 @@ public class Tictactoe {
 	 * winner setter
 	 * @param player : player to set
 	 */
-	public void setWinner(Players winner) {
+	public void setWinner(Player winner) {
 		this.winner = winner;
 	}
 	
@@ -103,7 +118,7 @@ public class Tictactoe {
 			for(int i=0 ; i<9; i++){
 				int player = jsonGrid[i];
 				if(player >2 || player<0) {throw new Exception("Array's elements must be between 0 and 2");}
-				this.grid[i] = Players.values()[player];
+				this.grid[i] = Player.values()[player];
 			}
 			setMessage("ok");
 		}catch(Exception e) {
@@ -115,7 +130,7 @@ public class Tictactoe {
 	 * Grid getter
 	 * @return the current grid
 	 */
-	public Players[] getGrid() {
+	public Player[] getGrid() {
 		return this.grid;
 	}
 	
@@ -124,14 +139,22 @@ public class Tictactoe {
 	 * @param number : grid square to change player (position)
 	 * @param value : the player who played
 	 */
-	public void setSquare(int number, Players value) {
+	public void setSquare(int number, Player value) {
 		try {
 			if(number>=9 || number<0) throw new Exception("The index must be between 0 and 8");
-			if(getGrid()[number] == Players.PLAYER) throw new Exception("You can't play there again");
-			if(getGrid()[number] == Players.IA) throw new Exception("You can't choose your adversary square");
+			if(getGrid()[number] == Player.PLAYER) throw new Exception("You can't play there again");
+			if(getGrid()[number] == Player.IA) throw new Exception("You can't choose your adversary square");
+			// update grid
 			this.grid[number] = value;
 			setMessage("ok");
 			setWinner(win());
+			// update logs
+			if (value == Player.PLAYER) {
+				Player_moves++;
+			} else if (value == Player.IA) {
+				AI_moves++;
+			}
+			writeLog(number, value);
 		}catch(Exception e) {
 			setMessage(e.getMessage());
 		}
@@ -153,17 +176,61 @@ public class Tictactoe {
 	 * 		player : the player who won
 	 * 		null : the game isn't ended
 	 */
-	public Players win() {
+	public Player win() {
 		boolean isEnd = true;
 		for (int i = 0; i < 8; i++) {
-			if(getGrid()[i] == Players.NOBODY) {isEnd = false;}
+			if(getGrid()[i] == Player.NOBODY) {isEnd = false;}
 			if(getGrid()[this.getWinConditionLine(i)[0]] == getGrid()[this.getWinConditionLine(i)[1]]
 					&& getGrid()[this.getWinConditionLine(i)[0]] == getGrid()[this.getWinConditionLine(i)[2]]
-					&& getGrid()[this.getWinConditionLine(i)[0]] != Players.NOBODY) 
+					&& getGrid()[this.getWinConditionLine(i)[0]] != Player.NOBODY) 
 						return getGrid()[getWinConditionLine(i)[0]];
 		}
-		if(getGrid()[8] == Players.NOBODY) {isEnd = false;}
-		return isEnd?Players.NOBODY:null;
+		if(getGrid()[8] == Player.NOBODY) {isEnd = false;}
+		return isEnd?Player.NOBODY:null;
+	}
+	
+	private void writeLog(int chosenMove, Player player) {
+		// if no one played for whatever reason, just don't log
+		if (player == Player.NOBODY) return;
+		// get the current grid
+		JSONArray grid = getGridAsArray();
+		// reverse the last move
+		grid.put(chosenMove, Player.NOBODY);
+		String state = grid.toString();
+		// check if player won
+		boolean hasWon = getWinner() == player;
+		// get the moves count "until now"
+		int moves = player == Player.PLAYER ? Player_moves : AI_moves;
+		// check if the move was from player or AI
+		boolean from_ai = player == Player.IA;
+		// pack them all
+		HistoryLog log = new HistoryLog(user.getIdUser(), from_ai, state, chosenMove, hasWon, moves);
+		this.history.add(log);
+	}
+	
+	public void saveLogs() {
+		if (gameId == null) {
+			Long maxId = logsRepository.getMaxGameId();
+			gameId = maxId!=null ? maxId+1 : 0;
+		}
+		for (HistoryLog log: this.history) {
+			if (log.isFromAi()) {
+				log.setMovesBeforeEnd(AI_moves - log.getMovesBeforeEnd());
+			} else {
+				log.setMovesBeforeEnd(Player_moves - log.getMovesBeforeEnd());
+			}
+			log.setGameId(gameId);
+		}
+		logsRepository.save(this.history);
+		this.history.clear();
+	}
+	
+	private JSONArray getGridAsArray() {
+		JSONArray grid = new JSONArray();
+		for(Player p: this.grid) {
+			grid.put(p.getValue());
+		}
+		return grid;
 	}
 	
 	/**
@@ -173,12 +240,9 @@ public class Tictactoe {
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
 		if(message.equals("ok")) {
-			JSONArray grid = new JSONArray();
-			for(int i=0; i<9; i++) {
-				grid.put(this.grid[i].getValue());
-			}
+			JSONArray grid = this.getGridAsArray();
 			json.put("grid", grid);
-			Players player = win();
+			Player player = win();
 			json.put("winner", player==null?null:player.getValue());
 		}
 		return json;

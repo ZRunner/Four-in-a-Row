@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le : ven. 05 nov. 2021 à 15:41
+-- Généré le : lun. 15 nov. 2021 à 14:26
 -- Version du serveur :  8.0.27-0ubuntu0.20.04.1
 -- Version de PHP : 7.4.3
 
@@ -26,7 +26,34 @@ USE `fourinarow`;
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `history`
+--
+-- Création : lun. 15 nov. 2021 à 12:28
+--
+
+CREATE TABLE `history` (
+  `log_id` int NOT NULL,
+  `user_id` int NOT NULL,
+  `game_id` bigint NOT NULL,
+  `from_ai` tinyint(1) NOT NULL,
+  `current_state` text NOT NULL,
+  `chosen_move` smallint NOT NULL,
+  `won_game` tinyint(1) NOT NULL,
+  `moves_before_end` smallint UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- RELATIONS POUR LA TABLE `history`:
+--
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `tokens`
+--
+-- Création : ven. 05 nov. 2021 à 10:33
+-- Dernière modification : lun. 15 nov. 2021 à 09:11
 --
 
 CREATE TABLE `tokens` (
@@ -35,10 +62,17 @@ CREATE TABLE `tokens` (
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+--
+-- RELATIONS POUR LA TABLE `tokens`:
+--
+
 -- --------------------------------------------------------
 
 --
 -- Structure de la table `users`
+--
+-- Création : ven. 05 nov. 2021 à 10:16
+-- Dernière modification : lun. 15 nov. 2021 à 09:35
 --
 
 CREATE TABLE `users` (
@@ -49,8 +83,21 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
+-- RELATIONS POUR LA TABLE `users`:
+--
+
+--
 -- Index pour les tables déchargées
 --
+
+--
+-- Index pour la table `history`
+--
+ALTER TABLE `history`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `won_game` (`won_game`),
+  ADD KEY `game_id` (`game_id`);
 
 --
 -- Index pour la table `tokens`
@@ -67,6 +114,12 @@ ALTER TABLE `users`
 --
 -- AUTO_INCREMENT pour les tables déchargées
 --
+
+--
+-- AUTO_INCREMENT pour la table `history`
+--
+ALTER TABLE `history`
+  MODIFY `log_id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT pour la table `users`
