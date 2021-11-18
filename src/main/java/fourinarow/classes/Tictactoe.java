@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fourinarow.model.GameType;
 import fourinarow.model.HistoryLog;
 import fourinarow.model.User;
 import fourinarow.services.HistoryLogRepository;
@@ -204,7 +205,7 @@ public class Tictactoe {
 		// check if the move was from player or AI
 		boolean from_ai = player == Player.IA;
 		// pack them all
-		HistoryLog log = new HistoryLog(user.getIdUser(), from_ai, state, chosenMove, hasWon, moves);
+		HistoryLog log = new HistoryLog(user.getIdUser(), GameType.TTT, from_ai, state, chosenMove, hasWon, moves);
 		this.history.add(log);
 	}
 	

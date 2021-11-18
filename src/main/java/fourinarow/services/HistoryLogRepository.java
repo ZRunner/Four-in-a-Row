@@ -28,7 +28,7 @@ public interface HistoryLogRepository extends CrudRepository<HistoryLog, Long> {
 	@Query("select h from HistoryLog h where h.wonGame = 1 and h.fromAi = 0")
 	List<HistoryLog> getWins();
 	
-	@Query("SELECT new fourinarow.model.GameFromHistory(h.userId, h.gameId, MAX(h.createdAt), MAX(h.wonGame)) FROM HistoryLog h WHERE h.fromAi=0 AND h.userId=? GROUP BY gameId, userId")
+	@Query("SELECT new fourinarow.model.GameFromHistory(h.userId, h.gameId, h.gameType, MAX(h.createdAt), MAX(h.wonGame)) FROM HistoryLog h WHERE h.fromAi=0 AND h.userId=? GROUP BY gameId, userId, gameType")
 	List<GameFromHistory> getGamesList(Long userId);
 	
 	@Query("select MAX(h.gameId) from HistoryLog h")

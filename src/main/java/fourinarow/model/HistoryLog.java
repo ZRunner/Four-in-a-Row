@@ -6,6 +6,8 @@ import java.text.SimpleDateFormat;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +23,7 @@ public class HistoryLog implements Serializable {
 	
 	private Long logId;
 	private Long userId;
+	private GameType gameType;
 	private Long gameId;
 	private boolean fromAi;
 	private String currentState;
@@ -31,9 +34,10 @@ public class HistoryLog implements Serializable {
 	
 	public HistoryLog() {}
 
-	public HistoryLog(Long userId, boolean from_ai, String currentState, Integer chosenMove, boolean wonGame, Integer movesBeforeEnd) {
+	public HistoryLog(Long userId, GameType gameType, boolean from_ai, String currentState, Integer chosenMove, boolean wonGame, Integer movesBeforeEnd) {
 		super();
 		this.userId = userId;
+		this.gameType = gameType;
 		this.fromAi = from_ai;
 		this.currentState = currentState;
 		this.chosenMove = chosenMove;
@@ -41,12 +45,13 @@ public class HistoryLog implements Serializable {
 		this.movesBeforeEnd = movesBeforeEnd;
 	}
 	
-	public HistoryLog(Long logId, Long userId, Long gameId, boolean from_ai, String currentState, Integer chosenMove, boolean wonGame,
+	public HistoryLog(Long logId, Long userId, Long gameId, GameType gameType, boolean from_ai, String currentState, Integer chosenMove, boolean wonGame,
 			Integer movesBeforeEnd, Timestamp createdAt) {
 		super();
 		this.logId = logId;
 		this.userId = userId;
 		this.gameId = gameId;
+		this.gameType = gameType;
 		this.fromAi = from_ai;
 		this.currentState = currentState;
 		this.chosenMove = chosenMove;
@@ -84,6 +89,16 @@ public class HistoryLog implements Serializable {
 		this.gameId = gameId;
 	}
 	
+	@Column()
+	@Enumerated(EnumType.STRING)
+	public GameType getGameType() {
+		return gameType;
+	}
+
+	public void setGameType(GameType gameType) {
+		this.gameType = gameType;
+	}
+
 	@Column
 	public boolean isFromAi() {
 		return fromAi;
