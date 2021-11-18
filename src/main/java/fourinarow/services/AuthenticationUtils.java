@@ -10,6 +10,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.tomcat.util.http.Rfc6265CookieProcessor;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 
+import fourinarow.model.GameFromHistory;
 import fourinarow.model.Token;
 import fourinarow.model.User;
 
@@ -30,6 +32,10 @@ public class AuthenticationUtils {
 	
 	@Autowired
 	private TokenRepository tokenRepository;
+	
+	@Autowired
+	private HistoryLogRepository logsRepository;
+	
 	
 	public static class MissingTokenException extends Exception {
 		private static final long serialVersionUID = -3057499381260178233L;
@@ -237,10 +243,14 @@ public class AuthenticationUtils {
 	
 	// send user profile
 	public ResponseEntity<String> GET_profile(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
-//		String auth = headers.getFirst("Authorization");
 		String auth = getTokenFromHeaders(headers);
-		User user = getUserFromToken(auth);
-		return ResponseEntity.ok(user.toJSON().toString());
+		JSONObject user = getUserFromToken(auth).toJSON();
+		JSONArray games = new JSONArray();
+		for (GameFromHistory game: logsRepository.getGamesList(user.getLong("id"))) {
+			games.put(game.toJSON());
+		};
+		user.put("games", games);
+		return ResponseEntity.ok(user.toString());
 	}
 	
 	// edit user name (must be unique)
