@@ -15,3 +15,7 @@
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
 }
+
+nav.navbar{
+    background-color: var(--color-primary);
+}

@@ -1,13 +1,86 @@
 @import "style.css";
 
-
-
-h1.title-page{
+h1{
 	text-align: center;
 	margin-top: 50px
 }
 
+section{
+	padding: 10px 30px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
 
+section .imgBox,
+section .description{
+	margin-top: 50px;
+	flex:1;
+}
+
+section .imgBox{
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position:center center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+section .imgBox img{
+	max-width: 100%;
+	max-height: 200px;
+}
+
+section:nth-child(2n+1) .description{
+	order: -1;
+}
+
+section .description{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: justify;
+}
+
+section .description p{
+	width: 60%;
+}
+
+section .description a{
+	text-decoration: none;
+}
+
+section .description a .button{
+	margin-top: 10px;
+	padding: 10px 20px;
+	color: #fff;
+	background-color: var(--color-primary);
+	border-radius: 18px;
+}
+
+section .description a .button:hover{
+	background-color: var(--color-dark-primary);
+}
+
+@media (max-width: 640px) {
+	section{
+		flex-direction: column;
+	}
+
+	section:nth-child(2n+1) .description{
+		order: 0;
+	}
+
+	section .description p{
+		width: 90%;
+	}
+
+}
+/*
 div img{
   width: 100%;
   height: auto;
@@ -16,9 +89,6 @@ div img{
 div.desc{
   padding: 15px;
   text-align: center;
-}
-
-div.cards-center{
 }
 
 div.card1, div.card2{
@@ -64,14 +134,4 @@ div.game-presentation{
 div.body{
 	width: max-content;
 }
-
-
-
-
-
-
-
-
-
-
-
+*/

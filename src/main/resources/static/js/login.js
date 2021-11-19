@@ -12,7 +12,7 @@ function signin(){
         url: '/api/login',
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
-        	window.location.href = "/home";
+        	window.location.href = "/";
         },
         error: function(error){
         	$("#errorMsg").text(error.responseText);
@@ -38,7 +38,7 @@ function signup(){
         url: '/api/signup',
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
-        	window.location.href = "/home";  	
+        	window.location.href = "/";  	
         },
         error: function(error){
         	$("#errorMsg").text(error.responseText);

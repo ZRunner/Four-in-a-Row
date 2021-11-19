@@ -1,4 +1,6 @@
 <%@include file="../include/header_tag.jsp" %>
+<!DOCTYPE html>
+<html>
 	<%@include file="../include/header.jsp" %>
 	<body class="bg-info text-dark bg-opacity-10">
 		<%@include file="../include/navbar.jsp" %>
@@ -24,12 +26,18 @@
 				</tbody>
 			</table>
 		</div>
+		<div class="alert alert-warning d-flex align-items-center" role="alert">
+			<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+			<div>
+		    	An example warning alert with an icon
+		    </div>
+		</div>
 		<div id="result">
 			<h1></h1>
 		</div>
-		
-	
-	
-		<%@include file="../include/footer.jsp" %>
+		<footer>	
+			<spring:url value="/js/tictactoe.js" var="tictactoeJs" />
+			<script src="${tictactoeJs}"></script>
+		</footer>
 	</body>
 </html>

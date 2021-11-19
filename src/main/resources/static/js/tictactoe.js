@@ -14,10 +14,11 @@ function onclick1(index){
     	}
     	console.log(xhr);
         if (xhr.status === 200){
+        	document.getElementById("alert-warning").style.display="none";
         	var jsonResponse = xhr.response;
             array=jsonResponse.grid;
         }else if(xhr.status==400){
-        	alert("Veuillez choisir une case vierge !");
+        	document.getElementById("alert-warning").style.display=initial;
         	return;
         }
         updateTictactoe(array);
