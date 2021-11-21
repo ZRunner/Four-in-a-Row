@@ -157,6 +157,8 @@ public class HistoryLog implements Serializable {
 		JSONObject o = new JSONObject();
 		o.put("id", this.logId);
 		o.put("userId", userId);
+		o.put("gameType", gameType);
+		o.put("gameId", gameId);
 		o.put("fromAi", fromAi);
 		o.put("currentState", new JSONObject(currentState));
 		o.put("chosenMove", chosenMove);
