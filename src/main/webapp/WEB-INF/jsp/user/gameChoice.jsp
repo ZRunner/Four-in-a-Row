@@ -9,7 +9,7 @@
 <h1>Choix du jeu</h1>
 <a href="/tictactoe">Tictactoe</a><br/>
 <a href="/">Déconnexion</a><br/>
-<a href="/settings">Paramètres</a><br/>
+<a href="/settings/user">Paramètres</a><br/>
 
 	<%@include file="../include/footer.jsp" %>
 </body>

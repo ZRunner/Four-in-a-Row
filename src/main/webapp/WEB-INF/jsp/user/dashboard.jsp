@@ -46,8 +46,8 @@
 		        <c:otherwise>
 					<h3>Current account informations</h3>
 					<div class="account">
-						<div><i class="bi bi-person"></i><p>Théo</p></div>
-						<div><i class="bi bi-calendar"></i><p>10 mars tkt</p></div>
+						<div><i class="bi bi-person"></i><p>...</p></div>
+						<div><i class="bi bi-calendar"></i><p>...</p></div>
 					</div>
 					<h3>Change username</h3>
 					<div class="info-message">Error message</div>
