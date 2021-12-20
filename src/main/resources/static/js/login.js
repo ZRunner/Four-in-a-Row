@@ -11,13 +11,12 @@ function signin(){
         contentType: "application/json",
         url: '/api/login',
         data: JSON.stringify({username:username,password:password}),
-        dataType: "json",
         success: function(data){
-        	window.location.href = "/home";   	
+        	window.location.href = "/home";
         },
         error: function(error){
         	$("#errorMsg").text(error.responseText);
-        }        	
+        }
      });
 }
 
@@ -38,7 +37,6 @@ function signup(){
         contentType: "application/json",
         url: '/api/signup',
         data: JSON.stringify({username:username,password:password}),
-        dataType: "json",
         success: function(data){
         	window.location.href = "/home";  	
         },

@@ -29,7 +29,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
             throws Exception {
         User user;
 		try {
-			user = authenticationUtils.getUserFromToken(request.getHeader("Authorization"));
+			user = authenticationUtils.getUserFomServletRequest(request);
 			/* Identification log */
 			System.out.println("Info -- User "+user.getUsername()+" identified !");
 			/* Put the user in the request, to get it in the API : 

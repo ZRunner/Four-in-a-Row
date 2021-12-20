@@ -20,11 +20,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Players;
+import fourinarow.classes.Tictactoe.Player;
 import fourinarow.model.User;
 import fourinarow.services.AuthenticationUtils;
 import fourinarow.services.AuthenticationUtils.InvalidTokenException;
 import fourinarow.services.AuthenticationUtils.MissingTokenException;
+import fourinarow.services.HistoryLogRepository;
 
 @RestController
 @RequestMapping("/api") //make all URL's through this controller relative to /api
@@ -34,6 +35,9 @@ public class ApiController {
 	
 	@Autowired
 	private AuthenticationUtils authenticationUtils;
+	
+	@Autowired
+	private HistoryLogRepository logsRepository;
 	
 	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
@@ -55,26 +59,21 @@ public class ApiController {
 	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
-		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
+		if(session.getAttribute("tictactoe") == null){
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
-		((Tictactoe) session.getAttribute("tictactoe")).setSquare(index,Players.PLAYER);
-		if(((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok")) {
-			if(((Tictactoe) session.getAttribute("tictactoe")).getWinner()==null) {
-				/* Implement AI there */
+		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		game.setSquare(index,Player.PLAYER);
+		if(game.getMessage().equals("ok")) {
+			if (game.getWinner()==null) {/* Implement AI there */
 				do{
-					((Tictactoe) session.getAttribute("tictactoe")).setSquare((int)(Math.random() * 9),Players.IA);
-				}while(!((Tictactoe) session.getAttribute("tictactoe")).getMessage().equals("ok"));
-				/* End Implement AI */
+					game.setSquare((int)(Math.random() * 9),Player.IA);
+				}while(!game.getMessage().equals("ok"));
 			}
-			Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+			/* End Implement AI */
 			if(game.getWinner()!=null) {
-				if(game.getWinner()==Players.PLAYER) {
-					//Add a winning game to statistics
-				}else {
-					//Add a loose game to statistics
-				}
-				session.setAttribute("tictactoe", new Tictactoe());
+				game.saveLogs();
+				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
@@ -82,14 +81,20 @@ public class ApiController {
 		}
 	}
      
-	@PostMapping(path="login", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="login")
 	@ResponseBody
 	public ResponseEntity<String> login(HttpEntity<String> httpEntity) {
-		JSONObject json = new JSONObject(httpEntity.getBody());
+		JSONObject json;
+		try {
+			json = new JSONObject(httpEntity.getBody());
+		} catch (NullPointerException e) {
+			return ResponseEntity.status(400).body("Invalid JSON body");
+		}
+		
 		return authenticationUtils.POST_login(json);
 	}
 	
-	@PostMapping(path="signup", produces=MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path="signup")
 	@ResponseBody
 	public ResponseEntity<String> signup(HttpEntity<String> httpEntity) {
 		JSONObject json = new JSONObject(httpEntity.getBody());
@@ -107,7 +112,7 @@ public class ApiController {
 		}
 	}
 	
-	@GetMapping(path="profile", produces=MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(path="me/profile", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> profile(HttpEntity<String> httpEntity) {
 		try {
 			return authenticationUtils.GET_profile(httpEntity.getHeaders());
@@ -116,6 +121,22 @@ public class ApiController {
 		} catch (InvalidTokenException e) {
 			return ResponseEntity.status(401).body("Invalid token");
 		}
+	}
+	
+	@PostMapping(path="me/password", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> edit_password(HttpEntity<String> httpEntity, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		JSONObject json = new JSONObject(httpEntity.getBody());
+		return authenticationUtils.POST_password(user, json);
+	}
+	
+	@PostMapping(path="me/username", produces=MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public ResponseEntity<String> edit_username(HttpEntity<String> httpEntity, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		JSONObject json = new JSONObject(httpEntity.getBody());
+		return authenticationUtils.POST_username(user, json);
 	}
 
 	/**************************************
@@ -127,9 +148,10 @@ public class ApiController {
 	 ***************************************/
 	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
-		System.out.println(((User) request.getAttribute("user")).getUsername());
+		User user = (User) request.getAttribute("user");
+		System.out.println(user.getUsername());
 		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		return ResponseEntity.ok(session.getAttribute("tictactoe").toString());		
 	}

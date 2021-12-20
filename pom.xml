@@ -21,8 +21,8 @@
 	</properties>
 	
 	<dependencies>
-	<!-- Jupiter Test unit -->
-	<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
+		<!-- Jupiter Test unit -->
+		<!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api -->
 		<dependency>
 		    <groupId>org.junit.jupiter</groupId>
 		    <artifactId>junit-jupiter-api</artifactId>
@@ -30,11 +30,24 @@
 		</dependency>
 	
 	
-	<!-- Json library-->
-	<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<!-- Json library-->
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 		    <groupId>org.json</groupId>
 		    <artifactId>json</artifactId>
+		</dependency>
+		
+		<!-- Swagger implementation for springboot 2 (API auto doc) -->
+		<!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger2 -->
+		<dependency>
+		    <groupId>io.springfox</groupId>
+		    <artifactId>springfox-swagger2</artifactId>
+		    <version>2.6.1</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>2.6.1</version>
 		</dependency>
 		
 		<!-- JWT-based authentication -->
