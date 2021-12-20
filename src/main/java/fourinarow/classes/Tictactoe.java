@@ -196,7 +196,7 @@ public class Tictactoe {
 		// get the current grid
 		JSONArray grid = getGridAsArray();
 		// reverse the last move
-		grid.put(chosenMove, Player.NOBODY);
+		grid.put(chosenMove, Player.NOBODY.value);
 		String state = grid.toString();
 		// check if player won
 		boolean hasWon = getWinner() == player;
