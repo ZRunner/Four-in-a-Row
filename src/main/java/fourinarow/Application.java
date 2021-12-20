@@ -38,21 +38,22 @@ public class Application extends SpringBootServletInitializer {
 		setRegisterErrorPageFilter(false);
 	}
 
+	@Override
 	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
 		return application.sources(Application.class);
 	}
-	
+
 	@Bean
 	public Docket postsApi() {
-		return new Docket(DocumentationType.SWAGGER_2).groupName("public-api")
-				.select().paths(postPaths()).build();
+		return new Docket(DocumentationType.SWAGGER_2).groupName("public-api").select().paths(getDocumentedPaths())
+				.build();
 	}
 
 	/**
 	 * Get the location of endpoints which should be documented by Swagger
 	 * @return A set of locations
 	 */
-	private Predicate<String> postPaths() {
+	private Predicate<String> getDocumentedPaths() {
 		return regex("/api/*.*");
 	}
 
