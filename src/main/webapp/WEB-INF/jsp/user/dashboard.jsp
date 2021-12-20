@@ -46,8 +46,8 @@
 		        <c:otherwise>
 					<h3>Current account informations</h3>
 					<div class="account">
-						<div><i class="bi bi-person"></i><p>...</p></div>
-						<div><i class="bi bi-calendar"></i><p>...</p></div>
+						<div><i class="bi bi-person"></i><p id="username_info">...</p></div>
+						<div><i class="bi bi-calendar"></i><p id="date_info">...</p></div>
 					</div>
 					<h3>Change username</h3>
 					<div class="info-message">Error message</div>
@@ -96,10 +96,10 @@
 		</div>
 	</div>
 <footer>
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 	<c:forEach items="${js}" var ="javascript">
 		 <script src="${javascript}"></script>
 	</c:forEach>
-	<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-</footer>
+	</footer>
 </body>
 </html>

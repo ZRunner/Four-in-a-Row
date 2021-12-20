@@ -244,6 +244,7 @@ public class AuthenticationUtils {
 	// send user profile
 	public ResponseEntity<String> GET_profile(HttpHeaders headers) throws MissingTokenException, InvalidTokenException {
 		String auth = getTokenFromHeaders(headers);
+		System.out.println("Get entering !");
 		JSONObject user = getUserFromToken(auth).toJSON();
 		JSONArray games = new JSONArray();
 		for (GameFromHistory game: logsRepository.getGamesList(user.getLong("id"))) {
