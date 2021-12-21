@@ -45,41 +45,6 @@ public class ApiController {
 		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
 		return ResponseEntity.ok(resp.toString());
 	}
-	
-	/**************************************
-	 * Set a square in the Tictactoe grid
-	 * If won game : reset the grid and put stats in database
-	 * path : /api/setTictactoe
-	 * method : GET
-	 * params : 
-	 * 		index : position where the player played
-	 * content-type :
-	 * 		out : JSON
-	 ***************************************/
-	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
-		User user = (User) request.getAttribute("user");
-		if(session.getAttribute("tictactoe") == null){
-			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
-		}
-		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
-		game.setSquare(index,Player.PLAYER);
-		if(game.getMessage().equals("ok")) {
-			if (game.getWinner()==null) {/* Implement AI there */
-				do{
-					game.setSquare((int)(Math.random() * 9),Player.IA);
-				}while(!game.getMessage().equals("ok"));
-			}
-			/* End Implement AI */
-			if(game.getWinner()!=null) {
-				game.saveLogs();
-				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
-			}
-			return ResponseEntity.ok(game.toString());
-		}else{
-			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
-		}
-	}
      
 	@PostMapping(path="login")
 	@ResponseBody
@@ -154,5 +119,40 @@ public class ApiController {
 			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		return ResponseEntity.ok(session.getAttribute("tictactoe").toString());		
+	}
+	
+	/**************************************
+	 * Set a square in the Tictactoe grid
+	 * If won game : reset the grid and put stats in database
+	 * path : /api/setTictactoe
+	 * method : GET
+	 * params : 
+	 * 		index : position where the player played
+	 * content-type :
+	 * 		out : JSON
+	 ***************************************/
+	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("tictactoe") == null){
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
+		}
+		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		game.setSquare(index,Player.PLAYER);
+		if(game.getMessage().equals("ok")) {
+			if (game.getWinner()==null) {/* Implement AI there */
+				do{
+					game.setSquare((int)(Math.random() * 9),Player.IA);
+				}while(!game.getMessage().equals("ok"));
+			}
+			/* End Implement AI */
+			if(game.getWinner()!=null) {
+				game.saveLogs();
+				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
+			}
+			return ResponseEntity.ok(game.toString());
+		}else{
+			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+		}
 	}
 }
