@@ -5,8 +5,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * Class used to parse cookies from the "Cookie" request header
+ * 
+ * We created that one because HttpCookie.parse doesn't seem to correctly handle multiple cookies for that specific header
+ *
+ */
 public class CookieParser {
 	
+	/**
+	 * Parse cookies from the given "Cookie" header
+	 * @param cookies_header The raw header content
+	 * @return A list of parsed cookies
+	 */
 	public static List<HttpCookie> parseCookies(String cookies_header) {
 		List<HttpCookie> cookies = new ArrayList<>();
 		StringTokenizer tokenizer = new StringTokenizer(cookies_header, ";");
