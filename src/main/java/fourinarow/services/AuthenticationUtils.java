@@ -137,7 +137,7 @@ public class AuthenticationUtils {
 		if (headers.getFirst("Cookie") == null) {
 			return null;
 		}
-		List<HttpCookie> cookies = HttpCookie.parse(headers.getFirst("Cookie"));
+		List<HttpCookie> cookies = CookieParser.parseCookies(headers.getFirst("Cookie"));
 		String token = null;
 		for (HttpCookie cookie: cookies) {
 			if (cookie.getName().equals("token")) {
