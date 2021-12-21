@@ -57,17 +57,17 @@
 								<label for="username">Enter the new username</label>
 								<div class="inputBox">
 									<i class="bi bi-people"></i>
-									<input type="text" id="username">
+									<input type="text" id="username" name="username">
 								</div>
 							</div>
 							<div class="labelBox">
 								<label for="username_verif">Confirm the new username</label>
 								<div class="inputBox">
 									<i class="bi bi-people"></i>
-									<input type="text" id="username_verif">
+									<input type="text" id="username_verif" name="username_verif">
 								</div>
 							</div>
-							<button onclick="changeUsername()">Change</button>
+							<button type="button" onclick="changeUsername()">Change</button>
 						</form>
 					</div>
 					<h3>Change password</h3>
@@ -78,17 +78,17 @@
 								<label for="password">Enter the new password</label>
 								<div class="inputBox">
 									<i class="bi bi-key-fill"></i>
-									<input type="password" id="password">
+									<input type="password" id="password" name="password">
 								</div>
 							</div>
 							<div class="labelBox">
 								<label for="password_verif">Confirm the new password</label>
 								<div class="inputBox">
 									<i class="bi bi-key-fill"></i>
-									<input type="password" id="password_verif">
+									<input type="password" id="password_verif" name="password_verif">
 								</div>
 							</div>
-							<button onclick="changePassword()">Change</button>
+							<button type="button" onclick="changePassword()">Change</button>
 						</form>
 					</div>
 				</c:otherwise>
