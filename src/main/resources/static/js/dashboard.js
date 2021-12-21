@@ -97,6 +97,21 @@ function changePassword(){
      });
 }
 
+function disconnect(){
+	$.ajax({
+        type: "POST",
+        contentType: "application/json",
+        dataType:"text",
+        url: '/api/logout',
+        success: function(data){
+        	window.location.replace("/signin");
+        },
+        error: function(error){
+        	console.log(error);
+        }
+     });
+}
+
 setInfos();
 
 

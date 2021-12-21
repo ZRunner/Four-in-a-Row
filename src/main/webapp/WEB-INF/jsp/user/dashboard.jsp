@@ -32,6 +32,7 @@
 				<li><a href="/settings/profile"><i class="bi bi-person-circle"></i><p>Profile</p></a></li>
 				<li><a href="/settings/statistics"><i class="bi bi-activity"></i><p>Statistics</p></a></li>
 				<li><a href="/settings/history"><i class="bi bi-clock-history"></i><p>History</p></a></li>
+				<li><a onclick="disconnect()"><i class="bi bi-box-arrow-in-left"></i><p>Logout</p></a></li>
 			</ol>
 		</div>
 		<div class="content">
