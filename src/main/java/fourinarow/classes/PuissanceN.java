@@ -11,10 +11,11 @@ public class PuissanceN {
 	    }
 	}
 
-	
+	private String message="";
 	private int puissance;
 	private int width;
 	private int height;
+
 	private Player[][] grid = null; /* grid[x][y], [0][0] is the bot left corner */
 	
 	
@@ -49,6 +50,14 @@ public class PuissanceN {
 	public Player[][] getGrid() {
 		return grid;
 	}
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
 	
 	private void initGrid(int width, int height) {
 		Player[][] grid = new Player[width][height];
@@ -59,11 +68,29 @@ public class PuissanceN {
 		}
 		this.grid = grid;
 	}
+
+	/**
+	 * Add a piece in the puissanceN and set message "ok" if everything is ok
+	 * @param x : column where the piece have to be added
+	 * @param player : the player who plays
+	 */
+	public void play(int x,Player player) {
+		int i;
+		try {
+			if(x<0 || x>=getWidth()) throw new Exception("The index must be between 0 and "+(getWidth()-1));
+			if(getGrid()[x][getHeight()-1]!=Player.NOBODY) throw new Exception("The column is full, you can't play there");
+			for(i=0; i<getHeight() && getGrid()[x][i]!=Player.NOBODY ; i++){/*height calculator*/}
+			this.grid[x][i] = player;
+			setMessage("ok");
+		}catch(Exception e) {
+			setMessage(e.getMessage());
+		}
+	}
 	
 	public void printGrid() {
 		for (int y = height-1; y >= 0;y--) {
 			System.out.print("|");
-			for (int x =width-1; x >= 0; x--) {
+			for (int x =0; x < getWidth(); x++) {
 				System.out.print(grid[x][y].getValue()+"|");
 			}
 			System.out.print("\n");
