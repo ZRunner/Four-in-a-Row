@@ -137,7 +137,7 @@ public class AuthenticationUtils {
 		if (headers.getFirst("Cookie") == null) {
 			return null;
 		}
-		List<HttpCookie> cookies = HttpCookie.parse(headers.getFirst("Cookie"));
+		List<HttpCookie> cookies = CookieParser.parseCookies(headers.getFirst("Cookie"));
 		String token = null;
 		for (HttpCookie cookie: cookies) {
 			if (cookie.getName().equals("token")) {
@@ -208,6 +208,7 @@ public class AuthenticationUtils {
 		cookie.setPath("/");
 		cookie.setMaxAge(604800); // 7 days
 		HttpHeaders headers = new HttpHeaders();
+		System.out.println("new header: "+processor.generateHeader(cookie));
 		headers.add("Set-Cookie", processor.generateHeader(cookie));
 		// send to client
 		return ResponseEntity.ok().headers(headers).body("OK");
