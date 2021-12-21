@@ -6,6 +6,7 @@ import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import fourinarow.ai.TictactoeAI;
 import fourinarow.model.GameType;
 import fourinarow.model.HistoryLog;
 import fourinarow.model.User;
@@ -35,6 +36,7 @@ public class Tictactoe {
 	}; 
 	
 	private HistoryLogRepository logsRepository;
+	private TictactoeAI GameAI = TictactoeAI.getInstance();
 	
 	private User user;
 	private Player[] grid = new Player[9]; //Grid of Players
@@ -59,12 +61,7 @@ public class Tictactoe {
 	 * Initial constructor : it generates a grid with NOBODY everywhere
 	 */
 	public Tictactoe(User user, HistoryLogRepository logRepo) {
-		this.user = user;
-		this.logsRepository = logRepo;
-		for (int i = 0; i < 9; i++) {
-			this.grid[i] = Player.NOBODY;
-		}
-		setMessage("ok");
+		this(user, logRepo, null);
 	}
 
 	/**
@@ -74,9 +71,16 @@ public class Tictactoe {
 	public Tictactoe(User user, HistoryLogRepository logRepo, Player[] grid){
 		this.user = user;
 		this.logsRepository = logRepo;
-		for (int i = 0; i < 9; i++) {
-			this.grid[i] = grid[i];
+		if (grid == null) {
+			for (int i = 0; i < 9; i++) {
+				this.grid[i] = Player.NOBODY;
+			}
+		} else {
+			for (int i = 0; i < 9; i++) {
+				this.grid[i] = grid[i];
+			}
 		}
+		GameAI.buildTree(logRepo);
 		setMessage("ok");
 	}	
 	
@@ -133,6 +137,19 @@ public class Tictactoe {
 	 */
 	public Player[] getGrid() {
 		return this.grid;
+	}
+	
+	public void playAI() {
+		int cell;
+		try {
+			cell = GameAI.getBestDecision(getGridAsArray());
+		} catch (AINotInitializedException e) {
+			e.printStackTrace();
+			GameAI.buildTree(logsRepository);
+			playAI();
+			return;
+		}
+		setSquare(cell, Player.IA);
 	}
 	
 	/**

@@ -59,24 +59,22 @@ public class ApiController {
 	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
-		if(session.getAttribute("tictactoe") == null){
+		if (session.getAttribute("tictactoe") == null){
 			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
 		game.setSquare(index,Player.PLAYER);
 		if(game.getMessage().equals("ok")) {
-			if (game.getWinner()==null) {/* Implement AI there */
-				do{
-					game.setSquare((int)(Math.random() * 9),Player.IA);
-				}while(!game.getMessage().equals("ok"));
+			if (game.getWinner() == null) {
+				game.playAI();
 			}
 			/* End Implement AI */
-			if(game.getWinner()!=null) {
+			if (game.getWinner() != null) {
 				game.saveLogs();
 				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 			}
 			return ResponseEntity.ok(game.toString());
-		}else{
+		} else {
 			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
 		}
 	}
