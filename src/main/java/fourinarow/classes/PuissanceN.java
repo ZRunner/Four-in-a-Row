@@ -1,13 +1,13 @@
 package fourinarow.classes;
 
-import fourinarow.classes.PuissanceN.InvalidSizeException;
 import fourinarow.classes.Tictactoe.Player;
 
 public class PuissanceN {
 	
 	/* Size exception */
-	public class InvalidSizeException extends Exception { 
-	    public InvalidSizeException() {
+	public class InvalidSizeException extends Exception {
+		private static final long serialVersionUID = -6069371299567744116L;
+		public InvalidSizeException() {
 	        super("Invalid size (not between 3 and 7)");
 	    }
 	}
@@ -110,7 +110,7 @@ public class PuissanceN {
 		boolean isFull=true;
 		boolean isSame;
 		int compt;
-		/* Checking lines */
+		/* Checking 4 condition : up, right, diagonal up-right, diagonal down-right */
 		for(int line = 0;line<getHeight();line++) {
 			for(int column = 0; column< getWidth();column++) {
 				currentPlayer = getGrid()[column][line];
@@ -129,6 +129,27 @@ public class PuissanceN {
 						if(isSame){return getGrid()[column][line];}
 					}
 					//check column
+					if(line<=getHeight()-puissance) {
+						isSame = true;
+						for(int k=1;k<puissance;k++) {
+							if(currentPlayer!=getGrid()[column][line+k]){
+								isSame = false;
+								break;
+							}
+						}
+						if(isSame){return getGrid()[column][line];}
+					}
+					//check diagonal up-right
+					if(line<=getHeight()-puissance && column<=getWidth()-puissance) {
+						isSame = true;
+						for(int k=1;k<puissance;k++) {
+							if(currentPlayer!=getGrid()[column+k][line+k]){
+								isSame = false;
+								break;
+							}
+						}
+						if(isSame){return getGrid()[column][line];}
+					}
 				}
 			}
 		}
@@ -146,3 +167,18 @@ public class PuissanceN {
 	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
