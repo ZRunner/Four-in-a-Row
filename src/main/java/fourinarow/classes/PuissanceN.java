@@ -150,6 +150,16 @@ public class PuissanceN {
 						}
 						if(isSame){return getGrid()[column][line];}
 					}
+					if(line>puissance-2 && column<=getWidth()-puissance) {
+						isSame = true;
+						for(int k=1;k<puissance;k++) {
+							if(currentPlayer!=getGrid()[column+k][line-k]){
+								isSame = false;
+								break;
+							}
+						}
+						if(isSame){return getGrid()[column][line];}
+					}
 				}
 			}
 		}

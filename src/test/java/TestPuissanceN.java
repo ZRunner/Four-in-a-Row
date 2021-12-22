@@ -126,6 +126,22 @@ class TestPuissanceN {
 			}
 		}
 	}
+	
+	@Test
+	void EveryDiagonalDownRightWinCondition() throws InvalidSizeException {//PuissanceN with n=4
+		Player[][] grid;
+		PuissanceN game;
+		for(int j = 5; j > 2;j--) {//Each line
+			for(int i = 0; i < 4;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(4)).getGrid();
+				for(int k = 0; k <4; k++) {//setting the combination of 4
+					grid[i+k][j-k]=Player.PLAYER;
+				}
+				game = new PuissanceN(4,grid);
+				assertEquals(Player.PLAYER,game.win());
+			}
+		}
+	}
 }
 
 
