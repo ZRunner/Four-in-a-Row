@@ -15,7 +15,7 @@
 			</ul>
 			<ul class="navbar-nav mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a class="nav-link active" href="signup">Sign in</a>
+					<a class="nav-link active" href="signup">Sign up</a>
 				</li>
 			</ul>
 		</div>
