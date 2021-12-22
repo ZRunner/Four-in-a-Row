@@ -82,13 +82,15 @@ class TestPuissanceN {
 	void EveryHorizontalWinCondition() throws InvalidSizeException {//PuissanceN with n=4
 		Player[][] grid;
 		PuissanceN game;
-		for(int j = 0; j < 6;j++) {//Each line
-			for(int i = 0; i < 4;i++) {//each case of line (except 3 lasts)
-				grid = (new PuissanceN(4)).getGrid();
-				for(int k = 0; k <4; k++) {//setting the combination of 4
+		int n = 4;
+		PuissanceN size = new PuissanceN(n);
+		for(int j = 0; j < size.getHeight();j++) {//Each line
+			for(int i = 0; i < size.getWidth()-n+1;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(n)).getGrid();
+				for(int k = 0; k < n; k++) {//setting the combination of 4
 					grid[i+k][j]=Player.PLAYER;
 				}
-				game = new PuissanceN(4,grid);
+				game = new PuissanceN(n,grid);
 				assertEquals(Player.PLAYER,game.win());
 			}
 		}
@@ -99,13 +101,15 @@ class TestPuissanceN {
 	void EveryVerticalWinCondition() throws InvalidSizeException {//PuissanceN with n=4
 		Player[][] grid;
 		PuissanceN game;
-		for(int j = 0; j < 3;j++) {//Each line
-			for(int i = 0; i < 7;i++) {//each case of line (except 3 lasts)
-				grid = (new PuissanceN(4)).getGrid();
-				for(int k = 0; k <4; k++) {//setting the combination of 4
+		int n = 4;
+		PuissanceN size = new PuissanceN(n);
+		for(int j = 0; j < size.getHeight()-n+1;j++) {//Each line (except 3 lasts)
+			for(int i = 0; i < size.getWidth();i++) {//each case of line 
+				grid = (new PuissanceN(n)).getGrid();
+				for(int k = 0; k <n; k++) {//setting the combination of 4
 					grid[i][j+k]=Player.PLAYER;
 				}
-				game = new PuissanceN(4,grid);
+				game = new PuissanceN(n,grid);
 				assertEquals(Player.PLAYER,game.win());
 			}
 		}
@@ -115,13 +119,15 @@ class TestPuissanceN {
 	void EveryDiagonalUpRightWinCondition() throws InvalidSizeException {//PuissanceN with n=4
 		Player[][] grid;
 		PuissanceN game;
-		for(int j = 0; j < 3;j++) {//Each line
-			for(int i = 0; i < 4;i++) {//each case of line (except 3 lasts)
-				grid = (new PuissanceN(4)).getGrid();
-				for(int k = 0; k <4; k++) {//setting the combination of 4
+		int n = 4;
+		PuissanceN size = new PuissanceN(n);
+		for(int j = 0; j < size.getHeight()-n+1;j++) {//Each line (except 3 lasts)
+			for(int i = 0; i < size.getWidth()-n+1;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(n)).getGrid();
+				for(int k = 0; k <n; k++) {//setting the combination of 4
 					grid[i+k][j+k]=Player.PLAYER;
 				}
-				game = new PuissanceN(4,grid);
+				game = new PuissanceN(n,grid);
 				assertEquals(Player.PLAYER,game.win());
 			}
 		}
@@ -131,13 +137,15 @@ class TestPuissanceN {
 	void EveryDiagonalDownRightWinCondition() throws InvalidSizeException {//PuissanceN with n=4
 		Player[][] grid;
 		PuissanceN game;
-		for(int j = 5; j > 2;j--) {//Each line
-			for(int i = 0; i < 4;i++) {//each case of line (except 3 lasts)
-				grid = (new PuissanceN(4)).getGrid();
-				for(int k = 0; k <4; k++) {//setting the combination of 4
+		int n = 4;
+		PuissanceN size = new PuissanceN(n);
+		for(int j = size.getHeight()-1; j > n-2;j--) {//Each line (except 3 lasts)
+			for(int i = 0; i < size.getWidth()-n+1;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(n)).getGrid();
+				for(int k = 0; k <n; k++) {//setting the combination of 4
 					grid[i+k][j-k]=Player.PLAYER;
 				}
-				game = new PuissanceN(4,grid);
+				game = new PuissanceN(n,grid);
 				assertEquals(Player.PLAYER,game.win());
 			}
 		}
