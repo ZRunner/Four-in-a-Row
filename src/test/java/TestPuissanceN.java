@@ -171,21 +171,16 @@ class TestPuissanceN {
 		assertEquals(Player.NOBODY,game.win());
 	}
 	
+	@Test 
+	void toJSONString() throws InvalidSizeException{
+		Player[][] grid = (new PuissanceN(4)).getGrid();
+		for(int k = 0; k <4; k++) {//setting the combination of 4
+			grid[0][k]=Player.PLAYER;
+		}
+		assertEquals(
+				"{\"grid\":[[0,0,1,1,1,1],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0]],\"n\":4}",
+				(new PuissanceN(4,grid)).toJSON().toString()
+		);
+	}
+	
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

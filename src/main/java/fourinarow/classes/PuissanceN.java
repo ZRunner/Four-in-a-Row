@@ -1,5 +1,8 @@
 package fourinarow.classes;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import fourinarow.classes.Tictactoe.Player;
 
 public class PuissanceN {
@@ -191,19 +194,38 @@ public class PuissanceN {
 		}
 	}
 	
+	public JSONArray getGridAsArray() {
+		JSONArray json = new JSONArray();
+		JSONArray column;
+		for(int i=0;i<getWidth();i++) {
+			column = new JSONArray();
+			for(int j=getHeight()-1; j>=0 ; j--){
+				column.put(getGrid()[i][j].getValue());
+			}
+			json.put(column);
+		}
+		return json;
+	}
+	
+	/**
+	 * Convert the grid into a JSON object :
+	 * n -> puissance 
+	 * grid[] -> Column 
+	 * grid[][] -> Element from top to bot of the column
+	 */
+	public JSONObject toJSON() {
+		JSONObject json = new JSONObject();
+		json.put("n",getPuissance());
+		json.put("grid",getGridAsArray());
+		return json;
+	}
+	
+	/**
+	 * Grid to String converter
+	 * @return a JSON stringify with the state of each square in the grid
+	 */
+	@Override
+	public String toString() {
+		return toJSON().toString();
+	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
