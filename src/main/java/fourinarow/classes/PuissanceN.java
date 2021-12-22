@@ -105,8 +105,54 @@ public class PuissanceN {
 		}
 	}
 	
+	private Player winCheckRight(int column, int line, Player currentPlayer) {
+		if(column<=getWidth()-puissance) {
+			for(int k=1;k<puissance;k++) {
+				if(currentPlayer!=getGrid()[column+k][line]){
+					return null;
+				}
+			}
+			return getGrid()[column][line];
+		}else return null;
+	}
+	
+	private Player winCheckDown(int column, int line, Player currentPlayer) {
+		if(line>puissance-2) {
+			for(int k=1;k<puissance;k++) {
+				if(currentPlayer!=getGrid()[column][line-k]){
+					return null;
+				}
+			}
+			return getGrid()[column][line];
+		}else return null;
+	}
+	
+
+	private Player winCheckUpRight(int column, int line, Player currentPlayer) {
+		if(line<=getHeight()-puissance && column<=getWidth()-puissance) {
+			for(int k=1;k<puissance;k++) {
+				if(currentPlayer!=getGrid()[column+k][line+k]){
+					return null;
+				}
+			}
+			return getGrid()[column][line];
+		}else return null;
+	}
+	
+	private Player winCheckDownRight(int column, int line, Player currentPlayer) {
+		if(line>puissance-2 && column<=getWidth()-puissance) {
+			for(int k=1;k<puissance;k++) {
+				if(currentPlayer!=getGrid()[column+k][line-k]){
+					return null;
+				}
+			}
+			return getGrid()[column][line];
+		}else return null;
+	}
+	
 	public Player win() {
 		Player currentPlayer;
+		Player res;
 		boolean isFull=true;
 		boolean isSame;
 		int compt;
@@ -117,49 +163,18 @@ public class PuissanceN {
 				if(currentPlayer==Player.NOBODY) {
 					isFull=false;
 				}else {
-					//check line
-					if(column<=getWidth()-puissance) {
-						isSame = true;
-						for(int k=1;k<puissance;k++) {
-							if(currentPlayer!=getGrid()[column+k][line]){
-								isSame = false;
-								break;
-							}
-						}
-						if(isSame){return getGrid()[column][line];}
-					}
-					//check column
-					if(line<=getHeight()-puissance) {
-						isSame = true;
-						for(int k=1;k<puissance;k++) {
-							if(currentPlayer!=getGrid()[column][line+k]){
-								isSame = false;
-								break;
-							}
-						}
-						if(isSame){return getGrid()[column][line];}
-					}
+					//check horizontal right
+					res = winCheckRight(column,line,currentPlayer);
+					if(res!=null) return res;
+					//check vertical down
+					res = winCheckDown(column,line,currentPlayer);
+					if(res!=null) return res;
 					//check diagonal up-right
-					if(line<=getHeight()-puissance && column<=getWidth()-puissance) {
-						isSame = true;
-						for(int k=1;k<puissance;k++) {
-							if(currentPlayer!=getGrid()[column+k][line+k]){
-								isSame = false;
-								break;
-							}
-						}
-						if(isSame){return getGrid()[column][line];}
-					}
-					if(line>puissance-2 && column<=getWidth()-puissance) {
-						isSame = true;
-						for(int k=1;k<puissance;k++) {
-							if(currentPlayer!=getGrid()[column+k][line-k]){
-								isSame = false;
-								break;
-							}
-						}
-						if(isSame){return getGrid()[column][line];}
-					}
+					res = winCheckUpRight(column,line,currentPlayer);
+					if(res!=null) return res;
+					//check diagonal down-right
+					res = winCheckDownRight(column,line,currentPlayer);
+					if(res!=null) return res;
 				}
 			}
 		}

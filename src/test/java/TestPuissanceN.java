@@ -142,6 +142,27 @@ class TestPuissanceN {
 			}
 		}
 	}
+	
+	@Test
+	void NobodyWin() throws InvalidSizeException{
+		PuissanceN game = new PuissanceN(4);
+		Player player;
+		int compt = 0;
+		for (int i = 0; i < 7;i++) {
+			compt = 0;
+			if(i%2==0) {player = Player.PLAYER;}else{player = Player.IA;}
+			for (int j = 0;j<game.getHeight();j++) {
+				game.play(i,player);
+				compt++;
+				if(compt == 2) {
+					compt = 0;
+					player = (player==Player.PLAYER)?Player.IA:Player.PLAYER;
+				}
+			}
+		}
+		assertEquals(Player.NOBODY,game.win());
+	}
+	
 }
 
 
