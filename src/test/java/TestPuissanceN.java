@@ -12,7 +12,6 @@ import fourinarow.classes.Tictactoe.Player;
 
 @Service
 class TestPuissanceN {
-	
 	@Test
 	void creation11() {
 		assertThrows(InvalidSizeException.class, () -> {
@@ -78,5 +77,40 @@ class TestPuissanceN {
 			}
 		}
 	}
+	
+	@Test 
+	void EveryHorizontalWinCondition() throws InvalidSizeException {//PuissanceN with n=4
+		Player[][] grid;
+		PuissanceN game;
+		for(int j = 0; j < 6;j++) {//Each line
+			for(int i = 0; i < 4;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(4)).getGrid();
+				for(int k = 0; k <4; k++) {//setting the combination of 4
+					grid[i+k][j]=Player.PLAYER;
+				}
+				game = new PuissanceN(4,grid);
+				System.out.println("Nouvelle grille");
+				game.printGrid();
+				System.out.println("Gagnant : "+game.win());
+				assertEquals(Player.PLAYER,game.win());
+			}
+		}
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
