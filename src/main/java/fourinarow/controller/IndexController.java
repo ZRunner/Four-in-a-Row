@@ -89,6 +89,12 @@ public class IndexController {
 		logger.info("Tictactoe game page");
 		return "/games/tictactoe";
 	}
+
+	@RequestMapping(value="/nrows", method= RequestMethod.GET)
+	public String nrows(Map<String, Object> model) throws Exception {
+		logger.info("N in a rows game page");
+		return "/games/nrows";
+	}
 	
 
 }
