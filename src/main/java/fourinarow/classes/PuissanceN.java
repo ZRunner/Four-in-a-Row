@@ -1,5 +1,6 @@
 package fourinarow.classes;
 
+import fourinarow.classes.PuissanceN.InvalidSizeException;
 import fourinarow.classes.Tictactoe.Player;
 
 public class PuissanceN {
@@ -15,6 +16,7 @@ public class PuissanceN {
 	private int puissance;
 	private int width;
 	private int height;
+	private Player winner=Player.NOBODY;
 
 	private Player[][] grid = null; /* grid[x][y], [0][0] is the bot left corner */
 	
@@ -33,6 +35,14 @@ public class PuissanceN {
 		width = ((n-1) * 2) + 1;
 		height = (n-1) * 2;
 		initGrid(width, height);
+	}
+	
+	public PuissanceN(int n, Player[][] grid) throws InvalidSizeException {
+		if(n<3 || n>7 || grid.length != (((n-1) * 2) + 1) || grid[0].length != ((n-1) * 2)) throw new InvalidSizeException();
+		puissance = n;
+		width = grid.length;
+		height = grid[0].length;
+		this.grid = grid;
 	}
 
 	public int getPuissance() {
@@ -58,6 +68,14 @@ public class PuissanceN {
 	public void setMessage(String message) {
 		this.message = message;
 	}
+
+	public Player getWinner() {
+		return winner;
+	}
+
+	public void setWinner(Player winner) {
+		this.winner = winner;
+	}
 	
 	private void initGrid(int width, int height) {
 		Player[][] grid = new Player[width][height];
@@ -79,12 +97,42 @@ public class PuissanceN {
 		try {
 			if(x<0 || x>=getWidth()) throw new Exception("The index must be between 0 and "+(getWidth()-1));
 			if(getGrid()[x][getHeight()-1]!=Player.NOBODY) throw new Exception("The column is full, you can't play there");
-			for(i=0; i<getHeight() && getGrid()[x][i]!=Player.NOBODY ; i++){/*height calculator*/}
+			for(i=0; i<getHeight() && getGrid()[x][i]!=Player.NOBODY ; i++);
 			this.grid[x][i] = player;
 			setMessage("ok");
 		}catch(Exception e) {
 			setMessage(e.getMessage());
 		}
+	}
+	
+	public Player win() {
+		Player currentPlayer;
+		boolean isFull=true;
+		boolean isSame;
+		int compt;
+		/* Checking lines */
+		for(int line = 0;line<getHeight();line++) {
+			for(int column = 0; column< getWidth();column++) {
+				currentPlayer = getGrid()[column][line];
+				if(currentPlayer==Player.NOBODY) {
+					isFull=false;
+				}else {
+					//check line
+					if(column<=getWidth()-puissance) {
+						isSame = true;
+						for(int k=1;k<puissance;k++) {
+							if(currentPlayer!=getGrid()[column+k][line]){
+								isSame = false;
+								break;
+							}
+						}
+						if(isSame){return getGrid()[column][line];}
+					}
+					//check column
+				}
+			}
+		}
+		return isFull?Player.NOBODY:null;
 	}
 	
 	public void printGrid() {
