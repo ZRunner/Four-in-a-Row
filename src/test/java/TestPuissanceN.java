@@ -89,9 +89,23 @@ class TestPuissanceN {
 					grid[i+k][j]=Player.PLAYER;
 				}
 				game = new PuissanceN(4,grid);
-				System.out.println("Nouvelle grille");
-				game.printGrid();
-				System.out.println("Gagnant : "+game.win());
+				assertEquals(Player.PLAYER,game.win());
+			}
+		}
+	}
+	
+
+	@Test 
+	void EveryVerticalWinCondition() throws InvalidSizeException {//PuissanceN with n=4
+		Player[][] grid;
+		PuissanceN game;
+		for(int j = 0; j < 3;j++) {//Each line
+			for(int i = 0; i < 7;i++) {//each case of line (except 3 lasts)
+				grid = (new PuissanceN(4)).getGrid();
+				for(int k = 0; k <4; k++) {//setting the combination of 4
+					grid[i][j+k]=Player.PLAYER;
+				}
+				game = new PuissanceN(4,grid);
 				assertEquals(Player.PLAYER,game.win());
 			}
 		}
