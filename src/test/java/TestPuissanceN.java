@@ -1,8 +1,5 @@
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Scanner;
-
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Service;
 
@@ -29,24 +26,24 @@ class TestPuissanceN {
 	@Test
 	void creation4() throws InvalidSizeException {
 		PuissanceN game = new PuissanceN(4);
-		Assert.assertEquals(7,game.getWidth());
-		Assert.assertEquals(6,game.getHeight());
-		Assert.assertEquals(7,game.getGrid().length);
-		Assert.assertEquals(6,game.getGrid()[0].length);
+		assertEquals(7,game.getWidth());
+		assertEquals(6,game.getHeight());
+		assertEquals(7,game.getGrid().length);
+		assertEquals(6,game.getGrid()[0].length);
 	}
 	
 	@Test 
 	void playNegativeX() throws InvalidSizeException{
 		PuissanceN game = new PuissanceN(4);
 		game.play(-1,Player.PLAYER);
-		Assert.assertEquals("The index must be between 0 and "+(game.getWidth()-1),game.getMessage());
+		assertEquals("The index must be between 0 and "+(game.getWidth()-1),game.getMessage());
 	}
 	
 	@Test 
 	void playOutLimitX() throws InvalidSizeException{
 		PuissanceN game = new PuissanceN(4);
 		game.play(7,Player.PLAYER);
-		Assert.assertEquals("The index must be between 0 and "+(game.getWidth()-1),game.getMessage());
+		assertEquals("The index must be between 0 and "+(game.getWidth()-1),game.getMessage());
 	}
 	
 	@Test 
@@ -55,7 +52,7 @@ class TestPuissanceN {
 		for(int i=0;i<=game.getHeight();i++) {
 			game.play(0,Player.PLAYER);
 		}
-		Assert.assertEquals("The column is full, you can't play there",game.getMessage());
+		assertEquals("The column is full, you can't play there",game.getMessage());
 	}
 	
 	@Test
