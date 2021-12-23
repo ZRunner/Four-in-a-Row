@@ -33,7 +33,8 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(AuthInterceptor())
         	.addPathPatterns("/api/???Tictactoe")
         	.addPathPatterns("/api/me/**")
-        	.addPathPatterns("/settings/**");
+        	.addPathPatterns("/settings/**")
+        	.addPathPatterns("/api/ninarow/**");
 
         //Example
         /*registry.addInterceptor(new AdminInterceptor())
