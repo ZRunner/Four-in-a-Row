@@ -19,7 +19,7 @@ public class PuissanceN {
 	private int puissance;
 	private int width;
 	private int height;
-	private Player winner=Player.NOBODY;
+	private Player winner=null;
 
 	private Player[][] grid = null; /* grid[x][y], [0][0] is the bot left corner */
 	
@@ -90,6 +90,12 @@ public class PuissanceN {
 		this.grid = grid;
 	}
 
+	public void playAI() {
+		int x=0;
+		for(x=0;x<getWidth() && getGrid()[x][getHeight()-1]!=Player.NOBODY;x++);
+		play(x, Player.IA);
+	}
+	
 	/**
 	 * Add a piece in the puissanceN and set message "ok" if everything is ok
 	 * @param x : column where the piece have to be added
@@ -103,6 +109,7 @@ public class PuissanceN {
 			for(i=0; i<getHeight() && getGrid()[x][i]!=Player.NOBODY ; i++);
 			this.grid[x][i] = player;
 			setMessage("ok");
+			setWinner(win());
 		}catch(Exception e) {
 			setMessage(e.getMessage());
 		}
@@ -157,8 +164,6 @@ public class PuissanceN {
 		Player currentPlayer;
 		Player res;
 		boolean isFull=true;
-		boolean isSame;
-		int compt;
 		/* Checking 4 condition : up, right, diagonal up-right, diagonal down-right */
 		for(int line = 0;line<getHeight();line++) {
 			for(int column = 0; column< getWidth();column++) {
@@ -212,9 +217,11 @@ public class PuissanceN {
 	 * n -> puissance 
 	 * grid[] -> Column 
 	 * grid[][] -> Element from top to bot of the column
+	 * winner -> null if not ended, value between 0 and 2 if ended
 	 */
 	public JSONObject toJSON() {
 		JSONObject json = new JSONObject();
+		json.put("winner", getWinner()==null?null:getWinner().getValue());
 		json.put("n",getPuissance());
 		json.put("grid",getGridAsArray());
 		return json;

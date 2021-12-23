@@ -201,4 +201,45 @@ public class ApiController {
 			return ResponseEntity.status(409).body(error.toString());
 		}
 	}
+	
+	/**************************************
+	 * Put a piece in the PuissanceN grid
+	 * If won game : reset the grid
+	 * path : /api/ninarow/set
+	 * method : GET
+	 * params : 
+	 * 		index : column where the player played
+	 * content-type :
+	 * 		out : JSON
+	 ***************************************/
+	@GetMapping(value="ninarow/set",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> ninarowSet(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("ninarow")==null){
+			JSONObject error = new JSONObject();
+			error.put("error","The game isn't initialized yet");
+			return ResponseEntity.status(424).body(error.toString());
+		}
+		PuissanceN game = (PuissanceN) session.getAttribute("ninarow");
+		game.play(index,Player.PLAYER);
+		if (game.getMessage().equals("ok")) {
+			if (game.getWinner() == null) {
+				game.playAI();
+				if(game.getWinner() != null) {
+					ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
+					session.setAttribute("ninarow",null);
+					return response;
+				}
+			}else {
+				ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
+				session.setAttribute("ninarow",null);
+				return response;
+			}
+			return ResponseEntity.ok(game.toString());
+		}else{
+			JSONObject error = new JSONObject();
+			error.put("error",((PuissanceN) session.getAttribute("ninarow")).getMessage());
+			return ResponseEntity.status(400).body(error.toString());
+		}
+	}
 }
