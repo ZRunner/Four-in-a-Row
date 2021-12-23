@@ -114,7 +114,6 @@ public class ApiController {
 	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
-		System.out.println(user.getUsername());
 		if(session.getAttribute("tictactoe")==null){
 			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
@@ -156,7 +155,21 @@ public class ApiController {
 		}
 	}
 	
-	//get for get grid and new
+	/**************************************
+	 * Get the PuissanceN grid
+	 * path : /api/ninarow/get
+	 * method : GET
+	 * content-type :
+	 * 		out : JSON with grid and puissance
+	 ***************************************/
+	@GetMapping(value="/ninarow/get",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> ninarowGet(HttpSession session, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("ninarow")==null){
+			return ResponseEntity.status(424).body("The game isn't initialized yet");
+		}
+		return ResponseEntity.ok(session.getAttribute("ninarow").toString());		
+	}
 	//get for put a piece in a column with index
 	//get for initialisation of the puissance of PuissanceN
 }
