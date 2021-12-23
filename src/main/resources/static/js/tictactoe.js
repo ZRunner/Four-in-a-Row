@@ -39,7 +39,7 @@ function onclick1(index){
 
 function updateTictactoe(tab){  
     if (tab.length == 9){
-        for ( var ind=0; ind<9; ind++){
+        for (var ind=0; ind<9; ind++){
             if (tab[ind]=="0"){
                 document.getElementById(ind).innerHTML="";
             }else if(tab[ind]=="1"){

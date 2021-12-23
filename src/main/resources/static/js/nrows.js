@@ -2,49 +2,85 @@
 var myArray;
 var size_n=null;
 
-function onclick1(index){
-    var xhr=new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8082/api/setTictactoe?index="+index, true);
-    xhr.responseType='json';
-    xhr.send();
-    xhr.onreadystatechange=function(){
-    	if (xhr.readyState != 4){
-    		return;
-    	}
-    	console.log(xhr);
-        if (xhr.status === 200){
-        	document.getElementById("alert-warning").style.display="none";
-        	var jsonResponse = xhr.response;
-            array=jsonResponse.grid;
-        }else if(xhr.status==400){
-        	document.getElementById("alert-warning").style.display=initial;
-        	return;
+function initN(){
+    if(size_n!=null){
+        var xhr=new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8082/api/ninarow/init?size="+size_n, true);
+        xhr.responseType='json';
+        xhr.send();
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState != 4){
+                return;
+            }
+            if (xhr.status === 200){
+                document.getElementById("alert-warning").style.display="none";
+                return true;
+            }else if(xhr.status==424){
+                document.getElementById("alert-warning").style.display=initial;
+                alert("Game not initialized")
+                return;
+            }else{
+                return;
+            }
         }
-        updateTictactoe(array);
-        if (jsonResponse.winner != null){
-        	if (jsonResponse.winner === 1){
-        		document.getElementById("result").innerHTML= "Bravo, vous avez gagné !";
-        	}else if (jsonResponse.winner === 2){
-            	document.getElementById("result").innerHTML= "Dommage, l'ordinateur a gagné !";}
-        }else{
-        	document.getElementById("result").innerHTML= "";
+    }else{
+        setTimeout(initN,100);
+    }
+}
+
+function onclick2(index){
+    if(initN()){
+        var xhr=new XMLHttpRequest();
+        xhr.open("GET", "http://localhost:8082/api/ninarow/set?index="+index, true);
+        xhr.responseType='json';
+        xhr.send();
+        xhr.onreadystatechange=function(){
+            if (xhr.readyState != 4){
+                return;
+            }
+            console.log(xhr);
+            if (xhr.status === 200){
+                document.getElementById("alert-warning").style.display="none";
+                var jsonResponse = xhr.response;
+                array=jsonResponse.grid;
+            }else if(xhr.status==400){
+                document.getElementById("alert-warning").style.display=initial;
+                return;
+            }
+            updateNinarow(array);
+            if (jsonResponse.winner != null){
+                if (jsonResponse.winner === 1){
+                    document.getElementById("result").innerHTML= "Bravo, vous avez gagné !";
+                }else if (jsonResponse.winner === 2){
+                    document.getElementById("result").innerHTML= "Dommage, l'ordinateur a gagné !";}
+            }else{
+                document.getElementById("result").innerHTML= "";
+            }
         }
     }
 }
 
 
 
-
-
-function updateTictactoe(tab){  
-    if (tab.length == 9){
-        for ( var ind=0; ind<9; ind++){
-            if (tab[ind]=="0"){
-                document.getElementById(ind).innerHTML="";
-            }else if(tab[ind]=="1"){
-                document.getElementById(ind).innerHTML="X";
-            }else{
-                document.getElementById(ind).innerHTML="O";
+function updateNinarow(tab){  
+    if (size_n != null){
+        for(var i=0; i<2*size_n-1; i++){
+            for(var j=0; j<2*n-2; j++){
+                if (tab[i][j]=="1"){
+                    var a=2*size_n-1;
+                    while((tab[a][j]=="1" || tab[a][j]=="2") && a>0){
+                        a--;
+                    }
+                    document.getElementById().innerHTML="X";
+                }else if(tab[i][j]=="1"){
+                    var a=2*size_n-1;
+                    while((tab[a][j]=="1" || tab[a][j]=="2") && a>0){
+                        a--;
+                    }
+                    document.getElementById().innerHTML="0";
+                }else{
+                    document.getElementById().innerHTML="";
+                }
             }
         }
     }else{
@@ -57,6 +93,7 @@ function save(){
     if(size_n==null){
         size_n = document.getElementById("select").value;
         createBoard();
+        initN();
     }else{
         alert("Game already began");
     }
@@ -74,6 +111,8 @@ function createBoard(){
                 var td=document.createElement("td");
                 var button=document.createElement("button");
                 button.classList.add("game");
+                button.setAttribute("id",i+""+j);
+                button.onclick=onclick2();
                 td.appendChild(button);
                 tr.appendChild(td);
                 tbody.appendChild(tr);
