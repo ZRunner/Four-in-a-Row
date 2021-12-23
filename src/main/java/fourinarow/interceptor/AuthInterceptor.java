@@ -37,6 +37,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 			 * get user with request.getAttribute("user") */
 	        request.setAttribute("user", user);
 		} catch (MissingTokenException e) {
+			//Transform in json response
 			response.sendError(401, "Missing token");
 	        return false;
 		} catch (InvalidTokenException e) {
