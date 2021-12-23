@@ -3,8 +3,6 @@ var myArray;
 var size_n=null;
 
 function onclick1(index){
-    var response;
-    var object;
     var xhr=new XMLHttpRequest();
     xhr.open("GET", "http://localhost:8082/api/setTictactoe?index="+index, true);
     xhr.responseType='json';
@@ -56,25 +54,33 @@ function updateTictactoe(tab){
 }
 
 function save(){
-    size_n = document.getElementById("select").value;
+    if(size_n==null){
+        size_n = document.getElementById("select").value;
+        createBoard();
+    }else{
+        alert("Game already began");
+    }
 }
 
 function createBoard(){
-    if (size_n!=null && size_n>=3 && size_n<=11){
+    const game=document.getElementById("game");
+    const tab=document.createElement("table");
+    tab.classList.add("test");
+    const tbody=document.createElement("tbody");
+    if (size_n>=3 && size_n<=11){
         for(let i=0; i<(2*size_n-1); i++){
-            document.write("<tr>");
-            for(let j=0; j<(2*size_n-2); j++){
-                document.write("<td><button class=\"game\" onclick=\"onclick1("+(i+j)+")\"></button></td>");
+            var tr=document.createElement("tr");
+            for(let j=0; j<(2*size_n-2); j++){ 
+                var td=document.createElement("td");
+                var button=document.createElement("button");
+                button.classList.add("game");
+                td.appendChild(button);
+                tr.appendChild(td);
+                tbody.appendChild(tr);
             }
-            document.write("</tr>");
         }
+        tab.appendChild(tbody);
+        game.appendChild(tab);
     }
 
-}
-
-function create(){
-    while(size_n==null){
-        setInterval(createBoard, 10);
-    }
-    createBoard();
 }

@@ -5,13 +5,10 @@
 	<body class="bg-info text-dark bg-opacity-10">
 		<%@include file="../include/navbar.jsp" %>
 		<h1 class="title-page">N in a rows</h1>
-		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">Select your game board's size</button>
+		<div id="buttonSelection">
+			<button type="button" class="btn btn-primary btnSelection" data-toggle="modal" data-target="#exampleModalCenter">Select your game board's size</button>
+		</div>
 		<div id="game">
-			<table>
-				<tbody id='tbody'>
-					<script type="text/javascript" src="/js/nrows.js">window.onload=functon(){create();};</script>
-				</tbody>
-			</table>
 		</div>
 		<div id="result">
 			<h1></h1>
