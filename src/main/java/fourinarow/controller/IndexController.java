@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -67,9 +68,28 @@ public class IndexController {
 	 * **Gestion du compte : /settings
 	 * **Choix du jeu : /choice
 	 ***************************************/
-	@RequestMapping(value="/settings", method= RequestMethod.GET)
-	public String settings(Map<String, Object> model) throws Exception {
+	@RequestMapping(value="/settings/{page}", method= RequestMethod.GET)
+	public String settings(Model model, @PathVariable(value = "page") String page) throws Exception {
 		logger.info("Settings page");
+		
+		List<String> css = new ArrayList<String>();
+		css.add("/css/dashboard.css");
+		List<String> js = new ArrayList<String>();
+		js.add("/js/dashboard.js");
+		
+		switch(page) {
+		  case "statistics":
+				model.addAttribute("title","Statistics");
+		    break;
+		  case "history":
+				model.addAttribute("title","Game history");
+		    break;
+		  default:
+				model.addAttribute("title","Settings");
+		}
+		model.addAttribute("css",css);
+		model.addAttribute("js",js);
+		
 		return "/user/dashboard";
 	}
 	

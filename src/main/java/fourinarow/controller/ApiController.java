@@ -19,12 +19,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fourinarow.classes.PuissanceN;
+import fourinarow.classes.PuissanceN.InvalidSizeException;
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Players;
+import fourinarow.classes.Tictactoe.Player;
 import fourinarow.model.User;
 import fourinarow.services.AuthenticationUtils;
 import fourinarow.services.AuthenticationUtils.InvalidTokenException;
 import fourinarow.services.AuthenticationUtils.MissingTokenException;
+import fourinarow.services.HistoryLogRepository;
 
 @RestController
 @RequestMapping("/api") //make all URL's through this controller relative to /api
@@ -35,49 +38,14 @@ public class ApiController {
 	@Autowired
 	private AuthenticationUtils authenticationUtils;
 	
+	@Autowired
+	private HistoryLogRepository logsRepository;
+	
 	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
 		logger.info("Ping log");
 		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
 		return ResponseEntity.ok(resp.toString());
-	}
-	
-	/**************************************
-	 * Set a square in the Tictactoe grid
-	 * If won game : reset the grid and put stats in database
-	 * path : /api/setTictactoe
-	 * method : GET
-	 * params : 
-	 * 		index : position where the player played
-	 * content-type :
-	 * 		out : JSON
-	 ***************************************/
-	@GetMapping(value="/setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
-		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
-		}
-		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
-		game.setSquare(index,Players.PLAYER);
-		if(game.getMessage().equals("ok")) {
-			if (game.getWinner()==null) {/* Implement AI there */
-				do{
-					game.setSquare((int)(Math.random() * 9),Players.IA);
-				}while(!game.getMessage().equals("ok"));
-			}
-			/* End Implement AI */
-			if(game.getWinner()!=null) {
-				if(game.getWinner()==Players.PLAYER) {
-					//Add a winning game to statistics
-				}else {
-					//Add a loose game to statistics
-				}
-				session.setAttribute("tictactoe", new Tictactoe());
-			}
-			return ResponseEntity.ok(game.toString());
-		}else{
-			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
-		}
 	}
      
 	@PostMapping(path="login")
@@ -145,12 +113,133 @@ public class ApiController {
 	 * content-type :
 	 * 		out : the grid
 	 ***************************************/
-	@GetMapping(value="/getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
-		System.out.println(((User) request.getAttribute("user")).getUsername());
+		User user = (User) request.getAttribute("user");
 		if(session.getAttribute("tictactoe")==null){
-			session.setAttribute("tictactoe", new Tictactoe());
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		return ResponseEntity.ok(session.getAttribute("tictactoe").toString());		
+	}
+	
+	/**************************************
+	 * Set a square in the Tictactoe grid
+	 * If won game : reset the grid and put stats in database
+	 * path : /api/setTictactoe
+	 * method : GET
+	 * params : 
+	 * 		index : position where the player played
+	 * content-type :
+	 * 		out : JSON
+	 ***************************************/
+	@GetMapping(value="setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if (session.getAttribute("tictactoe") == null){
+			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
+		}
+		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
+		game.setSquare(index,Player.PLAYER);
+		if (game.getMessage().equals("ok")) {
+			if (game.getWinner() == null) {
+				game.playAI();
+			}
+			if (game.getWinner() != null) {
+				game.saveLogs();
+				session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
+			}
+			return ResponseEntity.ok(game.toString());
+		}else{
+			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+		}
+	}
+	
+	/**************************************
+	 * Get the PuissanceN grid
+	 * path : /api/ninarow/get
+	 * method : GET
+	 * content-type :
+	 * 		out : JSON with grid and puissance
+	 ***************************************/
+	@GetMapping(value="ninarow/get",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> ninarowGet(HttpSession session, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("ninarow")==null){
+			JSONObject error = new JSONObject();
+			error.put("error","The game isn't initialized yet");
+			return ResponseEntity.status(424).body(error.toString());
+		}
+		return ResponseEntity.ok(session.getAttribute("ninarow").toString());		
+	}
+	
+	/**************************************
+	 * Initialization of the PuissanceN grid
+	 * path : /ninarow/init
+	 * method : GET
+	 * params : 
+	 * 		size : size of the game (correspond to "puissance" in the class)
+	 * content-type :
+	 * 		out : JSON
+	 ***************************************/
+	@GetMapping(value="ninarow/init",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> ninarowInit(@RequestParam int size, HttpSession session, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		PuissanceN game;
+		if(session.getAttribute("ninarow")==null){
+			try {
+				game = new PuissanceN(size);
+				session.setAttribute("ninarow",game);
+			}catch(InvalidSizeException e) {
+				JSONObject error = new JSONObject();
+				error.put("error",e.getMessage());
+				return ResponseEntity.status(400).body(error.toString());
+			}
+			return ResponseEntity.ok((new JSONObject()).put("reponse","Game initialized successfully with a size of "+size).toString());
+		}else {
+			JSONObject error = new JSONObject();
+			error.put("error","The game is already initialized");
+			return ResponseEntity.status(409).body(error.toString());
+		}
+	}
+	
+	/**************************************
+	 * Put a piece in the PuissanceN grid
+	 * If won game : reset the grid
+	 * path : /api/ninarow/set
+	 * method : GET
+	 * params : 
+	 * 		index : column where the player played
+	 * content-type :
+	 * 		out : JSON
+	 ***************************************/
+	@GetMapping(value="ninarow/set",produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> ninarowSet(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
+		User user = (User) request.getAttribute("user");
+		if(session.getAttribute("ninarow")==null){
+			JSONObject error = new JSONObject();
+			error.put("error","The game isn't initialized yet");
+			return ResponseEntity.status(424).body(error.toString());
+		}
+		PuissanceN game = (PuissanceN) session.getAttribute("ninarow");
+		game.play(index,Player.PLAYER);
+		if (game.getMessage().equals("ok")) {
+			if (game.getWinner() == null) {
+				game.playAI();
+				if(game.getWinner() != null) {
+					ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
+					session.setAttribute("ninarow",null);
+					return response;
+				}
+			}else {
+				ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
+				session.setAttribute("ninarow",null);
+				return response;
+			}
+			return ResponseEntity.ok(game.toString());
+		}else{
+			JSONObject error = new JSONObject();
+			error.put("error",((PuissanceN) session.getAttribute("ninarow")).getMessage());
+			return ResponseEntity.status(400).body(error.toString());
+		}
 	}
 }
