@@ -155,4 +155,8 @@ public class ApiController {
 			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
 		}
 	}
+	
+	//get for get grid and new
+	//get for put a piece in a column with index
+	//get for initialisation of the puissance of PuissanceN
 }
