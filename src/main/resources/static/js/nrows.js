@@ -3,30 +3,21 @@ var myArray;
 var size_n=null;
 
 function initN(){
-    if(size_n!=null){
-        var xhr=new XMLHttpRequest();
-        xhr.open("GET", "http://localhost:8082/api/ninarow/init?size="+size_n, true);
-        xhr.responseType='json';
-        xhr.send();
-        xhr.onreadystatechange=function(){
-            if (xhr.readyState != 4){
-                return;
-            }
-            if (xhr.status === 200){
-                document.getElementById("alert-warning").style.display="none";
-                return true;
-            }else if(xhr.status==424){
-                document.getElementById("alert-warning").style.display=initial;
-                alert("Game not initialized")
-                return;
-            }else{
-                return;
-            }
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: '/api/ninarow/init?size='+size_n,
+        success: function(data){
+            document.getElementById("alert-warning").style.display="none";
+            return true;
+        },
+        error: function(error){
+            document.getElementById("alert-warning").style.display=initial;
+            console.log(error);
         }
-    }else{
-        setTimeout(initN,100);
-    }
+     });
 }
+
 
 function onclick2(index){
     if(initN()){
@@ -65,21 +56,13 @@ function onclick2(index){
 function updateNinarow(tab){  
     if (size_n != null){
         for(var i=0; i<2*size_n-1; i++){
-            for(var j=0; j<2*n-2; j++){
+            for(var j=0; j<2*size_n-2; j++){
                 if (tab[i][j]=="1"){
-                    var a=2*size_n-1;
-                    while((tab[a][j]=="1" || tab[a][j]=="2") && a>0){
-                        a--;
-                    }
-                    document.getElementById().innerHTML="X";
+                    document.getElementById(i+""+j).innerHTML="X";
                 }else if(tab[i][j]=="1"){
-                    var a=2*size_n-1;
-                    while((tab[a][j]=="1" || tab[a][j]=="2") && a>0){
-                        a--;
-                    }
-                    document.getElementById().innerHTML="0";
+                    document.getElementById(i+""+j).innerHTML="0";
                 }else{
-                    document.getElementById().innerHTML="";
+                    document.getElementById(i+""+j).innerHTML="";
                 }
             }
         }
@@ -107,19 +90,31 @@ function createBoard(){
     if (size_n>=3 && size_n<=11){
         for(let i=0; i<(2*size_n-1); i++){
             var tr=document.createElement("tr");
-            for(let j=0; j<(2*size_n-2); j++){ 
+            for(let j=0; j<(2*size_n-1); j++){ 
                 var td=document.createElement("td");
-                var button=document.createElement("button");
-                button.classList.add("game");
-                button.setAttribute("id",i+""+j);
-                button.onclick=onclick2();
-                td.appendChild(button);
-                tr.appendChild(td);
-                tbody.appendChild(tr);
+                var div=document.createElement("div");
+                if(i<=2*size_n-2){
+                    div.classList.add("case");
+                    td.appendChild(div);
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                }else{
+                    var button=document.createElement("button");
+                    var text=document.createTextNode("Play");
+                    button.classList.add("play");
+                    button.setAttribute("id", j);
+                    button.onclick=onclick2();
+                    button.appendChild(text);
+                    td.appendChild(button);
+                    tr.appendChild(td);
+                    tbody.appendChild(tr);
+                }
             }
         }
         tab.appendChild(tbody);
         game.appendChild(tab);
+    }else{
+        alert("Fatal error, reload the page");
     }
 
 }

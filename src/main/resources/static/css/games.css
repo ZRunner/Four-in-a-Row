@@ -29,3 +29,14 @@ button.buttonSelection{
 	margin-left: auto;
 	margin-right: auto;
 }
+
+div.case{
+	width: 100px;
+	height: 100px;
+}
+
+button.play{
+	margin-top: 20px;
+	width: 100px;
+	height: 100px;
+}
