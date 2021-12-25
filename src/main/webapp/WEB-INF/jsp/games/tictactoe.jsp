@@ -9,19 +9,19 @@
 			<table>
 				<tbody>
 					<tr class="plateau plateau1">
-						<td><button class="game" onclick="onclick1(0)" id="0"></button></td>
-						<td><button class="game" onclick="onclick1(1)" id="1"></button></td>
-						<td><button class="game" onclick="onclick1(2)" id="2"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(0)" id="0"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(1)" id="1"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(2)" id="2"></button></td>
 					</tr>
 					<tr class="plateau">
-						<td><button class="game" onclick="onclick1(3)" id="3"></button></td>
-						<td><button class="game" onclick="onclick1(4)" id="4"></button></td>
-						<td><button class="game" onclick="onclick1(5)" id="5"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(3)" id="3"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(4)" id="4"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(5)" id="5"></button></td>
 					</tr>
 					<tr class="plateau">
-						<td><button class="game" onclick="onclick1(6)" id="6"></button></td>
-						<td><button class="game" onclick="onclick1(7)" id="7"></button></td>
-						<td><button class="game" onclick="onclick1(8)" id="8"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(6)" id="6"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(7)" id="7"></button></td>
+						<td class="simple"><button class="game" onclick="onclick1(8)" id="8"></button></td>
 					</tr>
 				</tbody>
 			</table>

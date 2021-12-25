@@ -43,9 +43,9 @@ function updateTictactoe(tab){
             if (tab[ind]=="0"){
                 document.getElementById(ind).innerHTML="";
             }else if(tab[ind]=="1"){
-                document.getElementById(ind).innerHTML="X";
+                document.getElementById(ind).innerHTML="<img src=\"img/cross.png\" style=\"width: 100%; height: 100%;\" alt=\"cross\">";
             }else{
-                document.getElementById(ind).innerHTML="O";
+                document.getElementById(ind).innerHTML="<img src=\"img/circle.png\" style=\"width: 100%; height: 100%;\" alt=\"cross\">";
             }
         }
     }else{
