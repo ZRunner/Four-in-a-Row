@@ -12,5 +12,6 @@
 	<link href="css/home.css" rel="stylesheet" />
 	<link href="css/footer.css" rel="stylesheet" />
 	<link href="css/games.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap3-dialog/1.34.7/css/bootstrap-dialog.min.css"/>
 	
 </head>

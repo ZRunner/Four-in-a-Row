@@ -8,7 +8,6 @@ function initN(){
         contentType: "application/json",
         url: '/api/ninarow/init?size='+size_n,
         success: function(data){
-            document.getElementById("alert-warning").style.display="none";
             return;
         },
         error: function(error){
@@ -28,18 +27,22 @@ function onclick2(index){
             return;
         }
         if (xhr.status === 200){
-            document.getElementById("alert-warning").style.display="none";
             var jsonResponse = xhr.response;
             array=jsonResponse.grid;
         }
         updateNinarow(array);
         if (jsonResponse.winner != null){
             if (jsonResponse.winner === 1){
-                document.getElementById("result").innerHTML= "<div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">Modal title</h5><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\">\"Félicitation, vous avez gagné !\"</div><div class=\"modal-footer\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button><button type=\"button\" class=\"btn btn-primary\">Save changes</button></div></div></div></div>";
+                var div = document.getElementById("test");
+                var text = document.createTextNode("Félicitation, vous avez gagné !")
+                div.appendChild(text);
+                $('#testModal').modal('show');
             }else if (jsonResponse.winner === 2){
-                document.getElementById("result").innerHTML= "<div class=\"modal fade\" id=\"exampleModal\" tabindex=\"-1\" aria-labelledby=\"exampleModalLabel\" aria-hidden=\"true\"><div class=\"modal-dialog\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"exampleModalLabel\">Modal title</h5><button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"modal\" aria-label=\"Close\"></button></div><div class=\"modal-body\">\"Dommage, vous avez perdu !\"</div><div class=\"modal-footer\"><button type=\"button\" class=\"btn btn-secondary\" data-bs-dismiss=\"modal\">Close</button><button type=\"button\" class=\"btn btn-primary\">Save changes</button></div></div></div></div>";}
-        }else{
-            document.getElementById("result").innerHTML= "";
+                var div = document.getElementById("test");
+                var text = document.createTextNode("Dommage, vous avez perdu !")
+                div.appendChild(text);
+                $('#testModal').modal('show');
+            }
         }
     }
 }
@@ -129,4 +132,3 @@ function createBoard(size_n){
     }
 
 }
-

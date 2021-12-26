@@ -25,7 +25,7 @@ div#result{
 	text-align:center;
 }
 
-button.buttonSelection{
-	margin-left: auto;
-	margin-right: auto;
+button.btnSelection{
+	margin-top: 2%;
+	margin-bottom: 2%;
 }

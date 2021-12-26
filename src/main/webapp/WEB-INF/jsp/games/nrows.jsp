@@ -4,9 +4,9 @@
 	<%@include file="../include/header.jsp" %>
 	<body class="bg-info text-dark bg-opacity-10">
 		<%@include file="../include/navbar.jsp" %>
-		<h1 class="title-page">N in a rows</h1>
+		<h1 class="title-page">N in a row</h1>
 		<div id="buttonSelection">
-			<button type="button" class="btn btn-primary btnSelection" data-toggle="modal" data-target="#exampleModalCenter">Select your game board's size</button>
+			<button type="button" class="btn btn-primary btnSelection position-relative top-50 start-50 translate-middle" data-toggle="modal" data-target="#exampleModalCenter">Select your game board's size</button>
 		</div>
 		<div id="game">
 		</div>
@@ -31,15 +31,23 @@
 				</div>
 			</div>
 		</div>
-		<div id="alert-warning">
-			<div class="alert d-flex align-items-center" role="alert">
-				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-				<div>
-					An example warning alert with an icon
+
+		<div class="modal fade" id="testModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Résultat</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body" id="test">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary">Save changes</button>
+				</div>
 				</div>
 			</div>
 		</div>
-	
 		<footer>	
 			<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 			<spring:url value="/js/nrows.js" var="nrowsJs" />
