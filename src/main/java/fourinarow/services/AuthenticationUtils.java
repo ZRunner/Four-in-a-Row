@@ -271,14 +271,20 @@ public class AuthenticationUtils {
 	public ResponseEntity<String> POST_username(User user, JSONObject json) {
 		String new_username = json.getString("username");
 		if (new_username == null || new_username.length() < 4) {
-			return ResponseEntity.badRequest().body("Invalid username");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		if (!userRepository.getFromUsername(new_username).isEmpty()) {
-			return ResponseEntity.badRequest().body("Username already exists");
+			JSONObject error = new JSONObject();
+			error.put("error","Username already exists");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		user.setUsername(new_username);
 		userRepository.save(user);
-		return ResponseEntity.ok("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","Ok");
+		return ResponseEntity.ok(res.toString());
 	}
 	
 	// edit user password
