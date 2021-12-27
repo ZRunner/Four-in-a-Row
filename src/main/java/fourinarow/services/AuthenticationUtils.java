@@ -285,11 +285,15 @@ public class AuthenticationUtils {
 	public ResponseEntity<String> POST_password(User user, JSONObject json) {
 		String new_password = json.getString("password");
 		if (new_password == null || new_password.length() < 6) {
-			return ResponseEntity.badRequest().body("Invalid password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		user.setPassword(new_password);
 		userRepository.save(user);
-		return ResponseEntity.ok("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok(res.toString());
 	}
 
 }
