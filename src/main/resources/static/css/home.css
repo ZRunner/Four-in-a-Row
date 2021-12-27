@@ -1,0 +1,137 @@
+@import "style.css";
+
+h1{
+	text-align: center;
+	margin-top: 50px
+}
+
+section{
+	padding: 10px 30px;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+section .imgBox,
+section .description{
+	margin-top: 50px;
+	flex:1;
+}
+
+section .imgBox{
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position:center center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+section .imgBox img{
+	max-width: 100%;
+	max-height: 200px;
+}
+
+section:nth-child(2n+1) .description{
+	order: -1;
+}
+
+section .description{
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	text-align: justify;
+}
+
+section .description p{
+	width: 60%;
+}
+
+section .description a{
+	text-decoration: none;
+}
+
+section .description a .button{
+	margin-top: 10px;
+	padding: 10px 20px;
+	color: #fff;
+	background-color: var(--color-primary);
+	border-radius: 18px;
+}
+
+section .description a .button:hover{
+	background-color: var(--color-dark-primary);
+}
+
+@media (max-width: 640px) {
+	section{
+		flex-direction: column;
+	}
+
+	section:nth-child(2n+1) .description{
+		order: 0;
+	}
+
+	section .description p{
+		width: 90%;
+	}
+
+}
+/*
+div img{
+  width: 100%;
+  height: auto;
+}
+
+div.desc{
+  padding: 15px;
+  text-align: center;
+}
+
+div.card1, div.card2{
+	border: 1px solid #ccc;
+}
+div.card3, div.card2{
+	border: 1px solid #ccc;
+}
+
+
+div.presentation{
+	width: 40%;
+	padding-right: 7%;
+}
+
+div.presentation p{
+	text-align: justify;
+	padding-top: 1em;
+}
+
+
+div.general{	
+  display: flex;
+  justify-content: center;
+  padding-top: 5%;
+  margin: auto;
+}
+
+
+div#game{
+	padding-top: 5%;
+}
+
+div.text-presentation{
+	margin-right: 300px;
+}
+
+div.game-presentation{
+	margin-left: 150px;
+	width: 30%;
+}
+
+div.body{
+	width: max-content;
+}
+*/

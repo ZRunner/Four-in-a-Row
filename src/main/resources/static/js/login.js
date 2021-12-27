@@ -13,7 +13,7 @@ function signin(){
         dataType:"json",
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
-        	window.location.href = "/home";
+        	window.location.href = "/";
         },
         error: function(error){
         	$("#errorMsg").text(error.responseText);
@@ -40,7 +40,7 @@ function signup(){
         dataType:"json",
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
-        	window.location.href = "/home";  	
+        	window.location.href = "/";  	
         },
         error: function(error){
         	$("#errorMsg").text(JSON.parse(error.responseText).error);
