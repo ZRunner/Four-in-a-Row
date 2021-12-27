@@ -91,9 +91,13 @@ public class ApiController {
 		try {
 			return authenticationUtils.GET_profile(httpEntity.getHeaders());
 		} catch (MissingTokenException e) {
-			return ResponseEntity.status(401).body("Missing token");
+			JSONObject error = new JSONObject();
+			error.put("error","Missing token");
+			return ResponseEntity.status(401).body(error.toString());
 		} catch (InvalidTokenException e) {
-			return ResponseEntity.status(401).body("Invalid token");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid token");
+			return ResponseEntity.status(401).body(error.toString());
 		}
 	}
 	
