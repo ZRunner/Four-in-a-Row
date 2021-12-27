@@ -250,7 +250,9 @@ public class AuthenticationUtils {
 		String auth = getTokenFromHeaders(headers);
 		User user = getUserFromToken(auth);
 		this.tokenRepository.deleteFromUser(user.getIdUser());
-		return ResponseEntity.ok("Used logged out");
+		JSONObject res = new JSONObject();
+		res.put("response","Used logged out");
+		return ResponseEntity.ok(res.toString());
 	}
 	
 	// send user profile
