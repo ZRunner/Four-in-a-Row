@@ -5,13 +5,14 @@ function setInfos(){
         type: "GET",
         contentType: "application/json",
         url: '/api/me/profile',
+        dataType:"json",
         success: function(data){
         	let creationDate = new Date(data.createdAt);
         	username.innerHTML = data.username;
         	date_creation.innerHTML = creationDate.toLocaleDateString();
         },
         error: function(error){
-        	$(".info-message").text(error.responseText);
+        	$(".info-message").text(JSON.parse(error.responseText).error);
         }
      });
 }
@@ -34,7 +35,7 @@ function changeUsername(){
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        dataType:"text",
+        dataType:"json",
         url: '/api/me/username',
         data: JSON.stringify({username:username}),
         success: function(data){
@@ -43,7 +44,7 @@ function changeUsername(){
         	setInfos();
         },
         error: function(error){
-        	msg_element.innerHTML = error.responseText;
+        	msg_element.innerHTML = JSON.parse(error.responseText).error;
         	msg_element.style.color = "red";
         },
         complete: function(){
@@ -70,7 +71,7 @@ function changePassword(){
     $.ajax({
         type: "POST",
         contentType: "application/json",
-        dataType:"text",
+        dataType:"json",
         url: '/api/me/password',
         data: JSON.stringify({password:password}),
         success: function(data){
@@ -79,7 +80,7 @@ function changePassword(){
         	setInfos();
         },
         error: function(error){
-        	msg_element.innerHTML = error.responseText;
+        	msg_element.innerHTML = JSON.parse(error.responseText).error;
         	msg_element.style.color = "red";
         },
         complete: function(){

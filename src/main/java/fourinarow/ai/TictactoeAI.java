@@ -54,8 +54,14 @@ public class TictactoeAI {
 		
 	private Map<TreeNode, Double> tree = new HashMap<>();
 	private Random rand = new Random();
+	private boolean initialized = false;
 	
 	private TictactoeAI() {}
+	
+
+	public void setInitialized(boolean initialized) {
+		this.initialized = initialized;
+	}
 	
 	/**
 	 * Build the decision tree used by the game AI
@@ -111,7 +117,7 @@ public class TictactoeAI {
 	 */
 	public int getBestDecision(JSONArray state) throws AINotInitializedException {
 		// if the tree wasn't initialized yet, raise an error
-		if (tree.size() == 0) {
+		if (this.initialized) {
 			throw new AINotInitializedException();
 		}
 		

@@ -31,12 +31,13 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
 		try {
 			user = authenticationUtils.getUserFomServletRequest(request);
 			/* Identification log */
-			System.out.println("Info -- User "+user.getUsername()+" identified !");
+			System.out.println("[Auth-log] User "+user.getUsername()+" identified !");
 			/* Put the user in the request, to get it in the API : 
 			 * add HttpServletRequest request to parameters
 			 * get user with request.getAttribute("user") */
 	        request.setAttribute("user", user);
 		} catch (MissingTokenException e) {
+			//Transform in json response
 			response.sendError(401, "Missing token");
 	        return false;
 		} catch (InvalidTokenException e) {

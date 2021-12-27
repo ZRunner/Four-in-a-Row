@@ -31,7 +31,7 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(AuthInterceptor())
-        	.addPathPatterns("/api/???Tictactoe")
+        	.addPathPatterns("/api/tictactoe/**")
         	.addPathPatterns("/api/me/**")
         	.addPathPatterns("/settings/**")
         	.addPathPatterns("/api/ninarow/**");

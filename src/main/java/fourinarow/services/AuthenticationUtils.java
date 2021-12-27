@@ -194,13 +194,17 @@ public class AuthenticationUtils {
 		// check if user exists
 		List<User> users = userRepository.getFromUsername(json.getString("username"));
 		if (users.isEmpty()) {
-			return ResponseEntity.badRequest().body("Unknown user");
+			JSONObject error = new JSONObject();
+			error.put("error","Unknown user");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		User user = users.get(0);
 		// create a new token for this user, if passwords match
 		String token = loginUser(user.getUsername(), json.getString("password"), user.getIdUser());
 		if (token == null) {
-			return ResponseEntity.badRequest().body("Invalid username or password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username or password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// package it into a header
 		Cookie cookie = new Cookie("token", token);
@@ -210,7 +214,9 @@ public class AuthenticationUtils {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Set-Cookie", processor.generateHeader(cookie));
 		// send to client
-		return ResponseEntity.ok().headers(headers).body("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok().headers(headers).body(res.toString());
 	}
 	
 	// create new user
@@ -219,18 +225,24 @@ public class AuthenticationUtils {
 		User user = this.createUser(json.getString("username"), json.getString("password"));
 		if (user == null) {
 			// if a user with the same username already exists, we exit
-			return ResponseEntity.badRequest().body("Username already exists");
+			JSONObject error = new JSONObject();
+			error.put("error","Username already exists");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// create a token for the new user
 		String token = loginUser(user.getUsername(), user.getPassword(), user.getIdUser());
 		if (token == null) {
-			return ResponseEntity.badRequest().body("Invalid username or password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username or password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// package it into a header
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Set-Cookie", "token="+token+"; Path=/; Max-Age=604800; HttpOnly"); // 7 days
 		// send to client
-		return ResponseEntity.ok().headers(headers).body("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok().headers(headers).body(res.toString());
 	}
 	
 	// logout user
@@ -238,7 +250,9 @@ public class AuthenticationUtils {
 		String auth = getTokenFromHeaders(headers);
 		User user = getUserFromToken(auth);
 		this.tokenRepository.deleteFromUser(user.getIdUser());
-		return ResponseEntity.ok("Used logged out");
+		JSONObject res = new JSONObject();
+		res.put("response","Used logged out");
+		return ResponseEntity.ok(res.toString());
 	}
 	
 	// send user profile
@@ -257,25 +271,35 @@ public class AuthenticationUtils {
 	public ResponseEntity<String> POST_username(User user, JSONObject json) {
 		String new_username = json.getString("username");
 		if (new_username == null || new_username.length() < 4) {
-			return ResponseEntity.badRequest().body("Invalid username");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		if (!userRepository.getFromUsername(new_username).isEmpty()) {
-			return ResponseEntity.badRequest().body("Username already exists");
+			JSONObject error = new JSONObject();
+			error.put("error","Username already exists");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		user.setUsername(new_username);
 		userRepository.save(user);
-		return ResponseEntity.ok("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","Ok");
+		return ResponseEntity.ok(res.toString());
 	}
 	
 	// edit user password
 	public ResponseEntity<String> POST_password(User user, JSONObject json) {
 		String new_password = json.getString("password");
 		if (new_password == null || new_password.length() < 6) {
-			return ResponseEntity.badRequest().body("Invalid password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		user.setPassword(new_password);
 		userRepository.save(user);
-		return ResponseEntity.ok("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok(res.toString());
 	}
 
 }
