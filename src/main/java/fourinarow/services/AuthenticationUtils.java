@@ -194,13 +194,17 @@ public class AuthenticationUtils {
 		// check if user exists
 		List<User> users = userRepository.getFromUsername(json.getString("username"));
 		if (users.isEmpty()) {
-			return ResponseEntity.badRequest().body("Unknown user");
+			JSONObject error = new JSONObject();
+			error.put("error","Unknown user");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		User user = users.get(0);
 		// create a new token for this user, if passwords match
 		String token = loginUser(user.getUsername(), json.getString("password"), user.getIdUser());
 		if (token == null) {
-			return ResponseEntity.badRequest().body("Invalid username or password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username or password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// package it into a header
 		Cookie cookie = new Cookie("token", token);
@@ -210,7 +214,9 @@ public class AuthenticationUtils {
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Set-Cookie", processor.generateHeader(cookie));
 		// send to client
-		return ResponseEntity.ok().headers(headers).body("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok().headers(headers).body(res.toString());
 	}
 	
 	// create new user

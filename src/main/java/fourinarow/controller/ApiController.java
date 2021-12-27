@@ -56,7 +56,9 @@ public class ApiController {
 		try {
 			json = new JSONObject(httpEntity.getBody());
 		} catch (NullPointerException e) {
-			return ResponseEntity.status(400).body("Invalid JSON body");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid JSON body");
+			return ResponseEntity.status(400).body(error.toString());
 		}
 		
 		return authenticationUtils.POST_login(json);
