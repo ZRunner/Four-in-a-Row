@@ -12,5 +12,5 @@
 	<link href="css/home.css" rel="stylesheet" />
 	<link href="css/footer.css" rel="stylesheet" />
 	<link href="css/games.css" rel="stylesheet" />
-	
+	<!-- use springboot to generation -->
 </head>
