@@ -44,7 +44,8 @@ public class ApiController {
 	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
 		logger.info("Ping log");
-		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
+		JSONObject resp = new JSONObject();
+		resp.put("response","pong");
 		return ResponseEntity.ok(resp.toString());
 	}
      
