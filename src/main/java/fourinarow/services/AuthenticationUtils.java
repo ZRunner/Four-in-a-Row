@@ -225,18 +225,24 @@ public class AuthenticationUtils {
 		User user = this.createUser(json.getString("username"), json.getString("password"));
 		if (user == null) {
 			// if a user with the same username already exists, we exit
-			return ResponseEntity.badRequest().body("Username already exists");
+			JSONObject error = new JSONObject();
+			error.put("error","Username already exists");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// create a token for the new user
 		String token = loginUser(user.getUsername(), user.getPassword(), user.getIdUser());
 		if (token == null) {
-			return ResponseEntity.badRequest().body("Invalid username or password");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid username or password");
+			return ResponseEntity.badRequest().body(error.toString());
 		}
 		// package it into a header
 		HttpHeaders headers = new HttpHeaders();
 		headers.add("Set-Cookie", "token="+token+"; Path=/; Max-Age=604800; HttpOnly"); // 7 days
 		// send to client
-		return ResponseEntity.ok().headers(headers).body("OK");
+		JSONObject res = new JSONObject();
+		res.put("response","OK");
+		return ResponseEntity.ok().headers(headers).body(res.toString());
 	}
 	
 	// logout user
