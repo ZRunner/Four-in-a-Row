@@ -113,7 +113,7 @@ public class ApiController {
 	 * content-type :
 	 * 		out : the grid
 	 ***************************************/
-	@GetMapping(value="getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="tictactoe/get",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
 		if(session.getAttribute("tictactoe")==null){
@@ -132,7 +132,7 @@ public class ApiController {
 	 * content-type :
 	 * 		out : JSON
 	 ***************************************/
-	@GetMapping(value="setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="tictactoe/set",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
 		if (session.getAttribute("tictactoe") == null){
@@ -150,7 +150,9 @@ public class ApiController {
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
-			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+			JSONObject error = new JSONObject();
+			error.put("error",((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+			return ResponseEntity.status(400).body(error.toString());
 		}
 	}
 	

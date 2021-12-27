@@ -5,7 +5,7 @@ function onclick1(index){
     var response;
     var object;
     var xhr=new XMLHttpRequest();
-    xhr.open("GET", "http://localhost:8082/api/setTictactoe?index="+index, true);
+    xhr.open("GET", "http://localhost:8082/api/tictactoe/set?index="+index, true);
     xhr.responseType='json';
     xhr.send();
     xhr.onreadystatechange=function(){
