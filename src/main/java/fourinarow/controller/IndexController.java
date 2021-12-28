@@ -75,7 +75,6 @@ public class IndexController {
 	/**************************************
 	 * Espace de l'utilisateur
 	 * **Gestion du compte : /settings
-	 * **Choix du jeu : /choice
 	 ***************************************/
 	@RequestMapping(value="/settings/{page}", method= RequestMethod.GET)
 	public String settings(Model model, @PathVariable(value = "page") String page) throws Exception {
@@ -99,12 +98,6 @@ public class IndexController {
 		model.addAttribute("js",js);
 		
 		return "/user/dashboard";
-	}
-	
-	@RequestMapping(value="/home", method= RequestMethod.GET)
-	public String choice(Map<String, Object> model) throws Exception {
-		logger.info("Game choice page");
-		return "/user/gameChoice";
 	}
 	
 	/**************************************
