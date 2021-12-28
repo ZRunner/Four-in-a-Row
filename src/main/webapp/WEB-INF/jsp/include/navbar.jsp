@@ -1,4 +1,3 @@
-
 <nav class="navbar navbar-expand-sm navbar-dark">
 	<div class="container-fluid">
 		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">

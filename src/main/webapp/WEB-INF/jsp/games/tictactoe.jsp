@@ -37,9 +37,6 @@
 				</div>
 			</div>
 		</div>
-		<footer>	
-			<spring:url value="/js/tictactoe.js" var="tictactoeJs" />
-			<script src="${tictactoeJs}"></script>
-		</footer>
+		<%@include file="../include/footer.jsp" %>
 	</body>
 </html>

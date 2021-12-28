@@ -16,7 +16,7 @@ function signin(){
         	window.location.href = "/";
         },
         error: function(error){
-        	$("#errorMsg").text(error.responseText);
+        	$("#errorMsg").text(JSON.parse(error.responseText).error);
         }
      });
 }

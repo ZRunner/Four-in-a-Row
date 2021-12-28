@@ -8,6 +8,7 @@ import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import fourinarow.interceptor.AuthInterceptor;
+import fourinarow.interceptor.PageAccessInterceptor;
 
 @Configuration
 public class WebMvcConfig extends WebMvcConfigurerAdapter {
@@ -16,6 +17,11 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
     AuthInterceptor AuthInterceptor() {
          return new AuthInterceptor();
     }
+	
+	@Bean
+	PageAccessInterceptor PageAccessInterceptor() {
+		return new PageAccessInterceptor();
+	}
 
     // Static Resource Config
     @Override
@@ -33,9 +39,13 @@ public class WebMvcConfig extends WebMvcConfigurerAdapter {
         registry.addInterceptor(AuthInterceptor())
         	.addPathPatterns("/api/tictactoe/**")
         	.addPathPatterns("/api/me/**")
-        	.addPathPatterns("/settings/**")
         	.addPathPatterns("/api/ninarow/**");
-
+        
+        registry.addInterceptor(PageAccessInterceptor())
+        	.addPathPatterns("/settings/**")
+        	.addPathPatterns("/tictactoe")
+        	.addPathPatterns("/nrows");
+        
         //Example
         /*registry.addInterceptor(new AdminInterceptor())
                 .addPathPatterns("/admin/*")

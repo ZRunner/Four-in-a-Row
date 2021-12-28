@@ -1,5 +1,9 @@
 @import "style.css";
 
+body{
+	padding-bottom:20px;
+}
+
 h1{
 	text-align: center;
 	margin-top: 50px
@@ -80,58 +84,3 @@ section .description a .button:hover{
 	}
 
 }
-/*
-div img{
-  width: 100%;
-  height: auto;
-}
-
-div.desc{
-  padding: 15px;
-  text-align: center;
-}
-
-div.card1, div.card2{
-	border: 1px solid #ccc;
-}
-div.card3, div.card2{
-	border: 1px solid #ccc;
-}
-
-
-div.presentation{
-	width: 40%;
-	padding-right: 7%;
-}
-
-div.presentation p{
-	text-align: justify;
-	padding-top: 1em;
-}
-
-
-div.general{	
-  display: flex;
-  justify-content: center;
-  padding-top: 5%;
-  margin: auto;
-}
-
-
-div#game{
-	padding-top: 5%;
-}
-
-div.text-presentation{
-	margin-right: 300px;
-}
-
-div.game-presentation{
-	margin-left: 150px;
-	width: 30%;
-}
-
-div.body{
-	width: max-content;
-}
-*/
