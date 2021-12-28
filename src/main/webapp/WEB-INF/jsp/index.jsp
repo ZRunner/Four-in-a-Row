@@ -26,12 +26,24 @@
 	</section>
 	<section>
 		<div class="imgBox">
-			<img src="img/tictactoe.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
+			<img src="img/ninarow.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
 		</div>
 		<div class="description">
 			<h3>N in a row</h3><br>
 				<p >This a game of "N in a row", developed by ourselves with an other implemented AI.</p>
 				<a href="nrows"><div class="button">Play</div></a>
+		</div>
+	</section>
+	
+	<h1>Your account</h1>
+	<section>
+		<div class="imgBox">
+			<img src="img/settings.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
+		</div>
+		<div class="description">
+			<h3>Settings</h3>
+				<p>The setting of your account, where you can change your username and password.</p>
+				<a href="settings/user"><div class="button">Account</div></a>
 		</div>
 	</section>
 	<%@include file="./include/footer.jsp" %>
