@@ -13,7 +13,7 @@ import fourinarow.services.AuthenticationUtils.InvalidTokenException;
 import fourinarow.services.AuthenticationUtils.MissingTokenException;
 
 //Based on : https://devstory.net/11229/spring-mvc-interceptor
-public class AuthInterceptor extends HandlerInterceptorAdapter{
+public class PageAccessInterceptor extends HandlerInterceptorAdapter{
 
 	@Autowired
 	private AuthenticationUtils authenticationUtils;
@@ -30,17 +30,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter{
         User user;
 		try {
 			user = authenticationUtils.getUserFomServletRequest(request);
-			/* Identification log */
-			System.out.println("[Auth-log] User "+user.getUsername()+" identified !");
-			/* Put the user in the request, to get it in the API : 
-			 * add HttpServletRequest request to parameters
-			 * get user with request.getAttribute("user") */
-	        request.setAttribute("user", user);
-		} catch (MissingTokenException e) {
-			response.sendError(401, "Missing token");
-	        return false;
-		} catch (InvalidTokenException e) {
-			response.sendError(401, "Invalid token");
+		} catch (MissingTokenException | InvalidTokenException e) {
+			response.setStatus(401);
+			response.sendRedirect("/signin");
 	        return false;
 		}
 		return true;
