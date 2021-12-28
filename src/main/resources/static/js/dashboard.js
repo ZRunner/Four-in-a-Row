@@ -103,9 +103,3 @@ function disconnect(){
         }
      });
 }
-
-setInfos();
-
-
-
-

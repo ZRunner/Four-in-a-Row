@@ -82,5 +82,6 @@
 		</div>
 	</div>
 <%@include file="../include/footer.jsp" %>
+<c:if test = "${title != 'Game history' && title != 'Statistics'}"><script>setInfos();</script></c:if>
 </body>
 </html>
