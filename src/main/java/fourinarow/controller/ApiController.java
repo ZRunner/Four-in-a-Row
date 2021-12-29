@@ -117,6 +117,11 @@ public class ApiController {
 		return authenticationUtils.POST_username(user, json);
 	}
 
+	@GetMapping(path="admin/users", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getUsers(HttpEntity<String> httpEntity) {
+		return authenticationUtils.GET_users();
+		
+	}
 	/**************************************
 	 * Get the Tictactoe grid
 	 * path : /api/getTictactoe

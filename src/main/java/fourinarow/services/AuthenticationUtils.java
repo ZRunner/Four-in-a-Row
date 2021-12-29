@@ -3,6 +3,7 @@ package fourinarow.services;
 import java.net.HttpCookie;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -299,6 +300,17 @@ public class AuthenticationUtils {
 		userRepository.save(user);
 		JSONObject res = new JSONObject();
 		res.put("response","OK");
+		return ResponseEntity.ok(res.toString());
+	}
+	
+	// list of all users
+	public ResponseEntity<String> GET_users() {
+		Iterable<User> users = userRepository.findAll();
+		Iterator<User> it = users.iterator();
+		JSONArray res = new JSONArray();
+		while(it.hasNext()) {
+			res.put(it.next().toJSON());
+		}
 		return ResponseEntity.ok(res.toString());
 	}
 
