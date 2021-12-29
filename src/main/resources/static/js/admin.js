@@ -1,6 +1,18 @@
 function deleteUser(id){
-	console.log("User "+id+" deleted.");
-	loadUsers();
+	$.ajax({
+		type: "GET",
+		contentType: "application/json",
+		url: '/api/admin/delete?password=123abc&id='+id,
+		dataType:"json",
+		success: function(data){
+			console.log(data);
+			alertCreator("success","Success !",data.response);
+			loadUsers();
+		},
+		error: function(error){
+			alertCreator("danger","An error occurred",JSON.parse(error.responseText).error);
+		}
+	});
 }
 
 function resetUser(id){
