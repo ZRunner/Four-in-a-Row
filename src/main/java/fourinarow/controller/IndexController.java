@@ -1,5 +1,6 @@
 package fourinarow.controller;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/") //make all URL's through this controller relative to /index
@@ -95,6 +97,25 @@ public class IndexController {
 		model.addAttribute("js",js);
 		
 		return "/user/dashboard";
+	}
+	
+	@RequestMapping(value="/admin", method= RequestMethod.GET)
+	public String admin(Model model, @RequestParam String password) throws Exception {
+		if(!password.equals("123abc")) {
+			return "accessDenied";
+		}
+		List<String> css = new ArrayList<String>();
+		css.add("<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">");
+		css.add("<link href=\"/css/admin.css\" rel=\"stylesheet\" />");
+		List<String> js = new ArrayList<String>();
+		js.add("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>");
+		js.add("<script src=\"/js/admin.js\"></script>");
+		
+		model.addAttribute("css",css);
+		model.addAttribute("js",js);
+		model.addAttribute("title","Admin panel");
+		
+		return "user/admin"; 
 	}
 	
 	/**************************************
