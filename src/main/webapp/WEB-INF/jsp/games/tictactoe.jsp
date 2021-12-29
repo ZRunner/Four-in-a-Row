@@ -26,17 +26,17 @@
 				</tbody>
 			</table>
 		</div>
-		<div id="result">
-			<h1></h1>
-		</div>
-		<div id="alert-warning">
-			<div class="alert d-flex align-items-center" role="alert">
-				<svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-				<div>
-					An example warning alert with an icon
+
+		<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+					<div class="modal-header"><h5 class="modal-title" id="resultat">R&#233;sultat</h5></div>
+					<div class="modal-body" id="result"></div>
+					<div class="modal-footer"><button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="reinit()">Close</button></div>
 				</div>
-			</div>
+	   		</div>
 		</div>
+
 		<%@include file="../include/footer.jsp" %>
 	</body>
 </html>
