@@ -137,6 +137,16 @@ public class ApiController {
 		}
 		return authenticationUtils.DELETE_user(id);
 	}
+	
+	@GetMapping(path="admin/reset", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> resetUser(HttpEntity<String> httpEntity, @RequestParam String password, @RequestParam Long id) {
+		if(!password.equals(adminPassword)) {
+			JSONObject json = new JSONObject();
+			json.put("error","Access denied.");
+			return ResponseEntity.status(401).body(json.toString());
+		}
+		return authenticationUtils.RESET_user(id);
+	}
 	/**************************************
 	 * Get the Tictactoe grid
 	 * path : /api/getTictactoe

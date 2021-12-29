@@ -315,24 +315,43 @@ public class AuthenticationUtils {
 	}
 	
 	// delete a user by his id
-		public ResponseEntity<String> DELETE_user(Long id) {
-			try {
-				User user = userRepository.findOne(id);
-			}catch(Exception e) {
-				JSONObject error = new JSONObject();
-				error.put("error","User doesn't exist.");
-				return ResponseEntity.status(400).body(error.toString());
-			}
-			try {
-				userRepository.delete(id);
-				tokenRepository.deleteFromUser(id);
-				JSONObject res = new JSONObject();
-				res.put("response","User "+id+" deleted.");
-				return ResponseEntity.ok(res.toString());
-			}catch (Exception e) {
-				JSONObject error = new JSONObject();
-				error.put("error",e.getMessage());
-				return ResponseEntity.status(500).body(error.toString());
-			}
+	public ResponseEntity<String> DELETE_user(Long id) {
+		User user = userRepository.findOne(id);
+		if(user == null) {
+			JSONObject error = new JSONObject();
+			error.put("error","User doesn't exist.");
+			return ResponseEntity.status(400).body(error.toString());
 		}
+		try {
+			userRepository.delete(id);
+			tokenRepository.deleteFromUser(id);
+			JSONObject res = new JSONObject();
+			res.put("response","User "+id+" deleted.");
+			return ResponseEntity.ok(res.toString());
+		}catch (Exception e) {
+			JSONObject error = new JSONObject();
+			error.put("error",e.getMessage());
+			return ResponseEntity.status(500).body(error.toString());
+		}
+	}
+	
+	// delete a user by his id
+	public ResponseEntity<String> RESET_user(Long id) {
+		User user = userRepository.findOne(id);
+		if(user == null) {
+			JSONObject error = new JSONObject();
+			error.put("error","User doesn't exist.");
+			return ResponseEntity.status(400).body(error.toString());
+		}
+		try {
+			logsRepository.deleteStatistics(id);
+			JSONObject res = new JSONObject();
+			res.put("response","User's statistics deleted.");
+			return ResponseEntity.ok(res.toString());
+		}catch (Exception e) {
+			JSONObject error = new JSONObject();
+			error.put("error",e.getMessage());
+			return ResponseEntity.status(500).body(error.toString());
+		}
+	}
 }

@@ -38,4 +38,8 @@ public interface HistoryLogRepository extends CrudRepository<HistoryLog, Long> {
 	@Query(value="SELECT h1.log_id as logId, h1.game_id as gameId, (CASE WHEN h1.from_ai THEN h1.current_state ELSE REPLACE(REPLACE(REPLACE(h1.current_state, \"2\", \"3\"), \"1\", \"2\"), \"3\", \"1\") END) as currentState, h1.chosen_move as chosenMove, h1.won_game as wonGame, h1.moves_before_end as movesBeforeEnd, coalesce((SELECT (CASE WHEN h2.from_ai=h1.from_ai THEN TRUE ELSE FALSE END) FROM history h2 WHERE h2.game_id = h1.game_id AND won_game = 1), FALSE) as ledToWin FROM `history` h1 WHERE game_type = \"TTT\"", nativeQuery = true)
 	List<TttDecisionLog> getTttDecisions();
 	
+	@Transactional
+	@Modifying
+	@Query("UPDATE HistoryLog h SET h.userId = -1 WHERE h.userId = ?1")
+	void deleteStatistics(Long userId);
 }

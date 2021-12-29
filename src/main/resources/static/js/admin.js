@@ -16,10 +16,24 @@ function deleteUser(id){
 }
 
 function resetUser(id){
-	console.log("User "+id+" reinitialized.");
+	$.ajax({
+		type: "GET",
+		contentType: "application/json",
+		url: '/api/admin/reset?password=123abc&id='+id,
+		dataType:"json",
+		success: function(data){
+			console.log(data);
+			alertCreator("success","Success !",data.response);
+			loadUsers();
+		},
+		error: function(error){
+			alertCreator("danger","An error occurred",JSON.parse(error.responseText).error);
+		}
+	});
 }
 
 function alertCreator(type, title, message){
+	$(".alert").remove();
 	var alert = document.createElement("div");
 	alert.setAttribute("role","alert");
 	alert.classList.add("alert", "alert-dismissible", "fade", "show");
