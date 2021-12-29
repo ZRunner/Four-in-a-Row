@@ -1,3 +1,5 @@
+@import "style.css";
+
 table{
 	width:300px;
 	margin:auto;
@@ -9,7 +11,7 @@ tr.plateau{
 }
 
 
-td{
+td.simple{
 	width:100px;
 	height:100%;
 }
@@ -25,7 +27,7 @@ div#result{
 	text-align:center;
 }
 
-button.buttonSelection{
-	margin-left: auto;
-	margin-right: auto;
+button.btnSelection{
+	margin-top: 2%;
+	margin-bottom: 2%;
 }
