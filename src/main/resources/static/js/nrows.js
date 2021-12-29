@@ -132,3 +132,4 @@ function createBoard(size_n){
     }
 
 }
+
