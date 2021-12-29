@@ -14,21 +14,25 @@ function onclick1(index){
     	}
     	console.log(xhr);
         if (xhr.status === 200){
-        	document.getElementById("alert-warning").style.display="none";
         	var jsonResponse = xhr.response;
             array=jsonResponse.grid;
         }else if(xhr.status==400){
-        	document.getElementById("alert-warning").style.display=initial;
         	return;
         }
         updateTictactoe(array);
         if (jsonResponse.winner != null){
-        	if (jsonResponse.winner === 1){
-        		document.getElementById("result").innerHTML= "Bravo, vous avez gagné !";
-        	}else if (jsonResponse.winner === 2){
-            	document.getElementById("result").innerHTML= "Dommage, l'ordinateur a gagné !";}
-        }else{
-        	document.getElementById("result").innerHTML= "";
+            switch (jsonResponse.winner){
+                case 0:
+                    document.getElementById("result").innerHTML="Partie nulle !";
+                    break;
+                case 1:
+                    document.getElementById("result").innerHTML="Félicitation, vous avez gagné !";
+                    break;
+                default:
+                    document.getElementById("result").innerHTML="Dommage, vous avez perdu !";
+                    break;
+            }
+            $('#modal').modal('show');
         }
     }
 }
@@ -55,3 +59,9 @@ function updateTictactoe(tab){
 }
 
 
+function reinit(){
+    myArray=null;
+    for(var i=0; i<9; i++){
+        document.getElementById(i).innerHTML="";
+    }
+}
