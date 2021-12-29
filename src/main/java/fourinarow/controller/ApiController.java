@@ -33,6 +33,7 @@ import fourinarow.services.HistoryLogRepository;
 @RequestMapping("/api") //make all URL's through this controller relative to /api
 public class ApiController {
 	
+	private final String adminPassword = "123abc";
 	private final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
 	@Autowired
@@ -118,9 +119,13 @@ public class ApiController {
 	}
 
 	@GetMapping(path="admin/users", produces=MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<String> getUsers(HttpEntity<String> httpEntity) {
+	public ResponseEntity<String> getUsers(HttpEntity<String> httpEntity, @RequestParam String password) {
+		if(!password.equals(adminPassword)) {
+			JSONObject json = new JSONObject();
+			json.put("error","Access denied.");
+			return ResponseEntity.status(401).body(json.toString());
+		}
 		return authenticationUtils.GET_users();
-		
 	}
 	/**************************************
 	 * Get the Tictactoe grid

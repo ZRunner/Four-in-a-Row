@@ -313,5 +313,4 @@ public class AuthenticationUtils {
 		}
 		return ResponseEntity.ok(res.toString());
 	}
-
 }

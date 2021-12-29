@@ -5,6 +5,14 @@ h1{
 	margin-bottom: 30px;
 }
 
+.alert{
+	margin: 0 auto;
+	width: 80%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
 .content{
 	padding-top: 50px;
 	display: flex;
@@ -19,7 +27,6 @@ h1{
 
 
 @media (max-width: 768px) {
-	
 	.content table{
 		width:100%;
 	}
