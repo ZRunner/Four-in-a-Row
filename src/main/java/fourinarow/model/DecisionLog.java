@@ -1,6 +1,6 @@
 package fourinarow.model;
 
-public interface TttDecisionLog {
+public interface DecisionLog {
 
 	Long getLogId();
 	Long getGameId();

@@ -13,27 +13,6 @@ import fourinarow.model.User;
 import fourinarow.services.HistoryLogRepository;
 
 public class Tictactoe {
-
-	public enum Player {
-		NOBODY(0), PLAYER(1), IA(2); //Each state of a grid square
-		private int value;
-		
-		/**
-		 * enum constructor
-		 * @param value : equivalent int value for the type
-		 */
-		Player(int value){
-			this.value = value;
-		}
-		
-		/**
-		 * value getter
-		 * @return value : equivalent int value for the type
-		 */
-		public int getValue(){
-			return value;
-		}
-	}; 
 	
 	private HistoryLogRepository logsRepository;
 	private TictactoeAI GameAI = TictactoeAI.getInstance();
@@ -146,7 +125,6 @@ public class Tictactoe {
 		} catch (AINotInitializedException e) {
 			e.printStackTrace();
 			GameAI.buildTree(logsRepository);
-			GameAI.setInitialized(true);
 			playAI();
 			return;
 		}
@@ -174,7 +152,7 @@ public class Tictactoe {
 				AI_moves++;
 			}
 			writeLog(number, value);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			setMessage(e.getMessage());
 		}
 	}
@@ -214,7 +192,7 @@ public class Tictactoe {
 		// get the current grid
 		JSONArray grid = getGridAsArray();
 		// reverse the last move
-		grid.put(chosenMove, Player.NOBODY.value);
+		grid.put(chosenMove, Player.NOBODY.getValue());
 		String state = grid.toString();
 		// check if player won
 		boolean hasWon = getWinner() == player;

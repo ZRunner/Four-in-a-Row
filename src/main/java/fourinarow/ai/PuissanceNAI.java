@@ -15,34 +15,29 @@ import fourinarow.classes.AINotInitializedException;
 import fourinarow.classes.TreeNode;
 import fourinarow.services.HistoryLogRepository;
 
-public class TictactoeAI {
+public class PuissanceNAI {
 	
 	private static final Logger LOG = LoggerFactory.getLogger(Application.class);
 	
-	private static TictactoeAI instance = new TictactoeAI();
+	private static PuissanceNAI instance = new PuissanceNAI();
 	
-	public static TictactoeAI getInstance() {
+	public static PuissanceNAI getInstance() {
 		return instance;
 	}
-		
-	private Map<TreeNode, Double> tree = new HashMap<>();
+	
+	private Map<TreeNode, Double> tree = new HashMap<TreeNode, Double>();
 	private Random rand = new Random();
 	private boolean initialized = false;
 	
-	private TictactoeAI() {}
-
+	private PuissanceNAI() {}
 	
-	/**
-	 * Build the decision tree used by the game AI
-	 * This must be called at least once in the runtime, before calling getBestDecision()
-	 * @param logsRepo The history logs repository used to get the decisions
-	 */
+	
 	public void buildTree(HistoryLogRepository logsRepo) {
-		LOG.info("Building TicTacToe tree...");
+		LOG.info("Building PuissanceN tree...");
 		Map<TreeNode, int[]> temp_tree = new HashMap<>();
 		
 		// for each saved decision
-		logsRepo.getTttDecisionLogs("TTT").forEach(log -> {
+		logsRepo.getTttDecisionLogs("PuissanceN").forEach(log -> {
 			// get the corresponding node
 			TreeNode key = new TreeNode(log.getCurrentState(), log.getChosenMove());
 			int[] v = temp_tree.get(key);
@@ -98,24 +93,26 @@ public class TictactoeAI {
 		LOG.debug("Trying to find a decision for "+fixedState);
 		
 		// for each possible move
-		for (int i=0; i<state.length(); i++) {
-			if (state.getInt(i) == 0) {
+		for (int c=0; c<state.length(); c++) {
+			JSONArray column = state.getJSONArray(c);
+			// if we can play on that column
+			if (column.getInt(0) == 0) {
 				// get the prediction from the decision tree
-				TreeNode mov = new TreeNode(fixedState, i);
+				TreeNode mov = new TreeNode(fixedState, c);
 				Double prediction = tree.get(mov);
 				// if it couldn't be found, pass
 				if (prediction == null) {
-					LOG.trace(" could not find "+i);
-					empty_cells.add(i);
+					LOG.trace(" could not find "+c);
+					empty_cells.add(c);
 					continue;
 				}
 				// if it's better than the last one, save it
 				if (prediction > best_value) {
-					LOG.trace(" better option for i="+i+": prediction="+prediction);
-					best_move = i;
+					LOG.trace(" better option for c="+c+": prediction="+prediction);
+					best_move = c;
 					best_value = prediction;
 				} else {
-					LOG.trace(" not a better option for i="+i+": prediction="+prediction);
+					LOG.trace(" not a better option for c="+c+": prediction="+prediction);
 				}
 			}
 		}
@@ -129,7 +126,9 @@ public class TictactoeAI {
 			}
 			// else, get the first available cell
 			for (int i=0; i<state.length(); i++) {
-				if (state.getInt(i) == 0) {
+				JSONArray column = state.getJSONArray(i);
+				// if we can play on that column
+				if (column.getInt(0) == 0) {
 					return i;
 				}
 			}

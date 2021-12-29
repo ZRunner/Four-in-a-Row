@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import fourinarow.classes.Player;
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Player;
 import fourinarow.model.User;
 import fourinarow.services.HistoryLogRepository;
 
