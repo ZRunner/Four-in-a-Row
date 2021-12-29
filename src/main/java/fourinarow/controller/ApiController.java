@@ -44,7 +44,8 @@ public class ApiController {
 	@GetMapping(path="ping", produces=MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> hello() throws Exception {
 		logger.info("Ping log");
-		JSONObject resp = new JSONObject("{\"response\":\"pong\"}");
+		JSONObject resp = new JSONObject();
+		resp.put("response","pong");
 		return ResponseEntity.ok(resp.toString());
 	}
      
@@ -55,7 +56,9 @@ public class ApiController {
 		try {
 			json = new JSONObject(httpEntity.getBody());
 		} catch (NullPointerException e) {
-			return ResponseEntity.status(400).body("Invalid JSON body");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid JSON body");
+			return ResponseEntity.status(400).body(error.toString());
 		}
 		
 		return authenticationUtils.POST_login(json);
@@ -73,9 +76,13 @@ public class ApiController {
 		try {
 			return authenticationUtils.POST_logout(httpEntity.getHeaders());
 		} catch (MissingTokenException e) {
-			return ResponseEntity.status(401).body("Missing token");
+			JSONObject error = new JSONObject();
+			error.put("error","Missing token");
+			return ResponseEntity.status(401).body(error.toString());
 		} catch (InvalidTokenException e) {
-			return ResponseEntity.status(401).body("Invalid token");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid token");
+			return ResponseEntity.status(401).body(error.toString());
 		}
 	}
 	
@@ -84,9 +91,13 @@ public class ApiController {
 		try {
 			return authenticationUtils.GET_profile(httpEntity.getHeaders());
 		} catch (MissingTokenException e) {
-			return ResponseEntity.status(401).body("Missing token");
+			JSONObject error = new JSONObject();
+			error.put("error","Missing token");
+			return ResponseEntity.status(401).body(error.toString());
 		} catch (InvalidTokenException e) {
-			return ResponseEntity.status(401).body("Invalid token");
+			JSONObject error = new JSONObject();
+			error.put("error","Invalid token");
+			return ResponseEntity.status(401).body(error.toString());
 		}
 	}
 	
@@ -113,7 +124,7 @@ public class ApiController {
 	 * content-type :
 	 * 		out : the grid
 	 ***************************************/
-	@GetMapping(value="getTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="tictactoe/get",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> getTictactoe(HttpSession session, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
 		if(session.getAttribute("tictactoe")==null){
@@ -132,7 +143,7 @@ public class ApiController {
 	 * content-type :
 	 * 		out : JSON
 	 ***************************************/
-	@GetMapping(value="setTictactoe",produces = MediaType.APPLICATION_JSON_VALUE)
+	@GetMapping(value="tictactoe/set",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> updateTictactoe(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
 		if (session.getAttribute("tictactoe") == null){
@@ -150,7 +161,9 @@ public class ApiController {
 			}
 			return ResponseEntity.ok(game.toString());
 		}else{
-			return ResponseEntity.status(400).body(((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+			JSONObject error = new JSONObject();
+			error.put("error",((Tictactoe) session.getAttribute("tictactoe")).getMessage());
+			return ResponseEntity.status(400).body(error.toString());
 		}
 	}
 	

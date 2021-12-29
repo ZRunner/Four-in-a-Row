@@ -10,12 +10,13 @@ function signin(){
         type: "POST",
         contentType: "application/json",
         url: '/api/login',
+        dataType:"json",
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
         	window.location.href = "/";
         },
         error: function(error){
-        	$("#errorMsg").text(error.responseText);
+        	$("#errorMsg").text(JSON.parse(error.responseText).error);
         }
      });
 }
@@ -36,12 +37,13 @@ function signup(){
         type: "POST",
         contentType: "application/json",
         url: '/api/signup',
+        dataType:"json",
         data: JSON.stringify({username:username,password:password}),
         success: function(data){
         	window.location.href = "/";  	
         },
         error: function(error){
-        	$("#errorMsg").text(error.responseText);
+        	$("#errorMsg").text(JSON.parse(error.responseText).error);
         }        	
      });
 }

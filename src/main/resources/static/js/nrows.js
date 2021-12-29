@@ -32,17 +32,19 @@ function onclick2(index){
         }
         updateNinarow(array);
         if (jsonResponse.winner != null){
-            if (jsonResponse.winner === 1){
-                var div = document.getElementById("test");
-                var text = document.createTextNode("Félicitation, vous avez gagné !")
-                div.appendChild(text);
-                $('#testModal').modal('show');
-            }else if (jsonResponse.winner === 2){
-                var div = document.getElementById("test");
-                var text = document.createTextNode("Dommage, vous avez perdu !")
-                div.appendChild(text);
-                $('#testModal').modal('show');
+            var div = document.getElementById("test");
+            switch (jsonResponse.winner){
+                case 0:
+                    div.innerHTML="Partie nulle !";
+                    break;
+                case 1:
+                    div.innerHTML="Félicitation, vous avez gagné !";
+                    break;
+                default:
+                    div.innerHTML="Dommage, vous avez perdu !";
+                    break;
             }
+            $('#testModal').modal('show');
         }
     }
 }
@@ -133,3 +135,8 @@ function createBoard(size_n){
 
 }
 
+function reinit(){
+    document.getElementById("game").innerHTML="";
+    size_n=null;
+    myArray=null;
+}

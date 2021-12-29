@@ -146,6 +146,7 @@ public class Tictactoe {
 		} catch (AINotInitializedException e) {
 			e.printStackTrace();
 			GameAI.buildTree(logsRepository);
+			GameAI.setInitialized(true);
 			playAI();
 			return;
 		}
