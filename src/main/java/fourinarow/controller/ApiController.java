@@ -33,6 +33,7 @@ import fourinarow.services.HistoryLogRepository;
 @RequestMapping("/api") //make all URL's through this controller relative to /api
 public class ApiController {
 	
+	private final String adminPassword = "123abc";
 	private final Logger logger = LoggerFactory.getLogger(ApiController.class);
 	
 	@Autowired
@@ -117,6 +118,35 @@ public class ApiController {
 		return authenticationUtils.POST_username(user, json);
 	}
 
+	@GetMapping(path="admin/users", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> getUsers(HttpEntity<String> httpEntity, @RequestParam String password) {
+		if(!password.equals(adminPassword)) {
+			JSONObject json = new JSONObject();
+			json.put("error","Access denied.");
+			return ResponseEntity.status(401).body(json.toString());
+		}
+		return authenticationUtils.GET_users();
+	}
+	
+	@GetMapping(path="admin/delete", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> deleteUser(HttpEntity<String> httpEntity, @RequestParam String password, @RequestParam Long id) {
+		if(!password.equals(adminPassword)) {
+			JSONObject json = new JSONObject();
+			json.put("error","Access denied.");
+			return ResponseEntity.status(401).body(json.toString());
+		}
+		return authenticationUtils.DELETE_user(id);
+	}
+	
+	@GetMapping(path="admin/reset", produces=MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<String> resetUser(HttpEntity<String> httpEntity, @RequestParam String password, @RequestParam Long id) {
+		if(!password.equals(adminPassword)) {
+			JSONObject json = new JSONObject();
+			json.put("error","Access denied.");
+			return ResponseEntity.status(401).body(json.toString());
+		}
+		return authenticationUtils.RESET_user(id);
+	}
 	/**************************************
 	 * Get the Tictactoe grid
 	 * path : /api/getTictactoe
