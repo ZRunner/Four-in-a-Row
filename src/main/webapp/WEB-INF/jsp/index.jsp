@@ -13,7 +13,7 @@
 			<p>This is the project realized by our group composed of Arthur Blaise, Théo Julien & Aurélien Guimont. We wanted to combine several school subject in order to make a project as complete as possible. We decided to create different kind of games (like a TicTacToe's game or a Four in a row's game) with a implemented AI.</p>
 		</div>
 	</section>		
-	<h1>Our games</h1>
+	<h1>Our games</h1><div></div>
 	<section>
 		<div class="imgBox">
 			<img src="img/tictactoe.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
@@ -35,10 +35,10 @@
 		</div>
 	</section>
 	
-	<h1>Your account</h1>
+	<h1>Your account</h1><div></div>
 	<section>
 		<div class="imgBox">
-			<img src="img/settings.png" class="img-fluid rounded-start" alt="TicTacToeImg"  style="max-width: 200px;">
+			<img src="img/settings.png" class="img-fluid rounded-start" alt="Settings"  style="max-width: 200px;">
 		</div>
 		<div class="description">
 			<h3>Settings</h3>

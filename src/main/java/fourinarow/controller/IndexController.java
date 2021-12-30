@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,20 +17,38 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import fourinarow.model.User;
+import fourinarow.services.AuthenticationUtils;
+
 @Controller
 @RequestMapping("/") //make all URL's through this controller relative to /index
 public class IndexController {
 	
 	private final Logger logger = LoggerFactory.getLogger(IndexController.class);
+	
+	@Autowired
+	private AuthenticationUtils authenticationUtils;
 
 	@RequestMapping(value="/", method= RequestMethod.GET)
-	public String index(Model model) throws Exception {
+	public String index(HttpServletRequest request, Model model) throws Exception {
 		List<String> js = new ArrayList<String>();
-		js.add("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>");
-		js.add("<script src=\"https://code.jquery.com/jquery-3.3.1.slim.min.js\" integrity=\"sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo\" crossorigin=\"anonymous\"></script>");
+		js.add("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>");
+		js.add("<script src=\"/js/navbar.js\"></script>");
 		List<String> css = new ArrayList<String>();
 		css.add("<link href=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css\" rel=\"stylesheet\" integrity=\"sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3\" crossorigin=\"anonymous\">");
 		css.add("<link href=\"css/home.css\" rel=\"stylesheet\" />");
+		
+		try{
+			User user = authenticationUtils.getUserFomServletRequest(request);
+			if(user != null){
+				model.addAttribute("logged",true);				
+			}else {
+				model.addAttribute("logged",false);				
+			}
+		}catch(Exception e){
+			model.addAttribute("logged",false);
+		}
+		
 		
 		model.addAttribute("js",js);
 		model.addAttribute("css",css);
@@ -111,6 +133,7 @@ public class IndexController {
 		js.add("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"/js/admin.js\"></script>");
+		js.add("<script src=\"/js/navbar.js\"></script>");
 		
 		model.addAttribute("css",css);
 		model.addAttribute("js",js);
@@ -133,6 +156,7 @@ public class IndexController {
 		js.add("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"/js/tictactoe.js\"></script>");
+		js.add("<script src=\"/js/navbar.js\"></script>");
 		
 		model.addAttribute("css",css);
 		model.addAttribute("js",js);
@@ -150,6 +174,7 @@ public class IndexController {
 		js.add("<script src=\"https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js\" integrity=\"sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"https://code.jquery.com/jquery-3.6.0.min.js\" integrity=\"sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=\" crossorigin=\"anonymous\"></script>");
 		js.add("<script src=\"/js/nrows.js\"></script>");
+		js.add("<script src=\"/js/navbar.js\"></script>");
 		
 		model.addAttribute("css",css);
 		model.addAttribute("js",js);

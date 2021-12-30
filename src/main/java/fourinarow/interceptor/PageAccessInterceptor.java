@@ -30,6 +30,7 @@ public class PageAccessInterceptor extends HandlerInterceptorAdapter{
         User user;
 		try {
 			user = authenticationUtils.getUserFomServletRequest(request);
+			request.setAttribute("logged",true);
 		} catch (MissingTokenException | InvalidTokenException e) {
 			response.setStatus(401);
 			response.sendRedirect("/signin");
