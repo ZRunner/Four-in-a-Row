@@ -5,7 +5,6 @@ function deleteUser(id){
 		url: '/api/admin/delete?password=123abc&id='+id,
 		dataType:"json",
 		success: function(data){
-			console.log(data);
 			alertCreator("success","Success !",data.response);
 			loadUsers();
 		},
@@ -22,7 +21,6 @@ function resetUser(id){
 		url: '/api/admin/reset?password=123abc&id='+id,
 		dataType:"json",
 		success: function(data){
-			console.log(data);
 			alertCreator("success","Success !",data.response);
 			loadUsers();
 		},

@@ -17,7 +17,12 @@
 			</ul>
 			<ul class="navbar-nav mb-2 mb-lg-0">
 				<li class="nav-item">
-					<a class="nav-link active" href="signup">Sign up</a>
+					<c:if test = "${logged == false}">
+						<a class="nav-link active" href="signin">Sign in</a>
+					</c:if>
+					<c:if test = "${logged == true}">
+							<a class="nav-link active" onclick="logoff()" style="cursor:pointer">Log out</a>
+					</c:if>
 				</li>
 			</ul>
 		</div>

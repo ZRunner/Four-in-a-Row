@@ -12,7 +12,6 @@ function onclick1(index){
     	if (xhr.readyState != 4){
     		return;
     	}
-    	console.log(xhr);
         if (xhr.status === 200){
         	var jsonResponse = xhr.response;
             array=jsonResponse.grid;
