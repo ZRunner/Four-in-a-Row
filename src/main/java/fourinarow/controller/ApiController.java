@@ -19,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fourinarow.classes.Player;
 import fourinarow.classes.PuissanceN;
 import fourinarow.classes.PuissanceN.InvalidSizeException;
 import fourinarow.classes.Tictactoe;
-import fourinarow.classes.Tictactoe.Player;
 import fourinarow.model.User;
 import fourinarow.services.AuthenticationUtils;
 import fourinarow.services.AuthenticationUtils.InvalidTokenException;
@@ -180,7 +180,7 @@ public class ApiController {
 			session.setAttribute("tictactoe", new Tictactoe(user, logsRepository));
 		}
 		Tictactoe game = (Tictactoe) session.getAttribute("tictactoe");
-		game.setSquare(index,Player.PLAYER);
+		game.setSquare(index, Player.PLAYER);
 		if (game.getMessage().equals("ok")) {
 			if (game.getWinner() == null) {
 				game.playAI();
@@ -207,7 +207,7 @@ public class ApiController {
 	@GetMapping(value="ninarow/get",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> ninarowGet(HttpSession session, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
-		if(session.getAttribute("ninarow")==null){
+		if (session.getAttribute("ninarow")==null){
 			JSONObject error = new JSONObject();
 			error.put("error","The game isn't initialized yet");
 			return ResponseEntity.status(424).body(error.toString());
@@ -228,9 +228,9 @@ public class ApiController {
 	public ResponseEntity<String> ninarowInit(@RequestParam int size, HttpSession session, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
 		PuissanceN game;
-		if(session.getAttribute("ninarow")==null){
+		if(session.getAttribute("ninarow") == null){
 			try {
-				game = new PuissanceN(size);
+				game = new PuissanceN(size, user, logsRepository);
 				session.setAttribute("ninarow",game);
 			}catch(InvalidSizeException e) {
 				JSONObject error = new JSONObject();
@@ -258,7 +258,7 @@ public class ApiController {
 	@GetMapping(value="ninarow/set",produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<String> ninarowSet(@RequestParam int index, HttpSession session,@RequestHeader HttpHeaders headers, HttpServletRequest request) {
 		User user = (User) request.getAttribute("user");
-		if(session.getAttribute("ninarow")==null){
+		if (session.getAttribute("ninarow") == null) {
 			JSONObject error = new JSONObject();
 			error.put("error","The game isn't initialized yet");
 			return ResponseEntity.status(424).body(error.toString());
@@ -268,18 +268,15 @@ public class ApiController {
 		if (game.getMessage().equals("ok")) {
 			if (game.getWinner() == null) {
 				game.playAI();
-				if(game.getWinner() != null) {
-					ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
-					session.setAttribute("ninarow",null);
-					return response;
-				}
-			}else {
+			}
+			if (game.getWinner() != null){
+				game.saveLogs();
 				ResponseEntity<String> response = ResponseEntity.ok(session.getAttribute("ninarow").toString());
 				session.setAttribute("ninarow",null);
 				return response;
 			}
 			return ResponseEntity.ok(game.toString());
-		}else{
+		} else {
 			JSONObject error = new JSONObject();
 			error.put("error",((PuissanceN) session.getAttribute("ninarow")).getMessage());
 			return ResponseEntity.status(400).body(error.toString());
