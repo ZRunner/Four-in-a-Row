@@ -10,7 +10,15 @@
 		<div class="contentBx">
 			<div class="formBx">
 				<h2>${title}</h2>
-				<form id="login_form" >
+
+				<c:if test = "${title == 'Sign up'}">
+					<c:set value="signup(event);return false" var="onsubmit"></c:set>
+				</c:if>
+				<c:if test = "${title == 'Sign in'}">
+					<c:set value="signin(event);return false" var="onsubmit"></c:set>
+				</c:if>
+
+				<form id="login_form" onsubmit="${onsubmit}" >
 					<p id="errorMsg"></p>
 					<div class="inputBx">
 						<span>Username</span>
@@ -26,7 +34,7 @@
 							<input type="password" name="password_verif">
 						</div>
 						<div class="inputBx">
-							<button class="input_submit" type="button" onclick="signup()">${title}</button>
+							<button class="input_submit" type="submit">${title}</button>
 						</div>
 						<div class="inputBx">
 							<p>Already have an account ? <a href="/signin">Sign in</a></p>
@@ -34,7 +42,7 @@
 					</c:if>
 					<c:if test = "${title == 'Sign in'}">
 						<div class="inputBx">
-							<button class="input_submit" type="button" onclick="signin()">${title}</button>
+							<button class="input_submit" type="submit">${title}</button>
 						</div>
 						<div class="inputBx">
 							<p>Don't have an account ? <a href="/signup">Sign up</a></p>

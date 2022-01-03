@@ -1,4 +1,5 @@
-function signin(){
+function signin(event) {
+    event.preventDefault();
 	var form = document.forms["login_form"];
 	let username = form.elements["username"].value.trim();
 	let password = form.elements["password"].value.trim();
@@ -21,7 +22,8 @@ function signin(){
      });
 }
 
-function signup(){
+function signup(event) {
+    event.preventDefault();
 	var form = document.forms["login_form"];
 	let username = form.elements["username"].value.trim();
 	let password = form.elements["password"].value.trim();
