@@ -21,13 +21,13 @@ button.game{
 	height:100px;
 }
 
-div#result{
-	margin-top:5%;
-	font-size:20px;
-	text-align:center;
+button.btnSelection{
+	margin-top: 2%;
+	margin-bottom: 2%;
 }
 
-button.btnSelection{
+h1.title-page{
+	text-align: center;
 	margin-top: 2%;
 	margin-bottom: 2%;
 }
